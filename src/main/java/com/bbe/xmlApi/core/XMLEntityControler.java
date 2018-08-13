@@ -18,7 +18,7 @@ public class XMLEntityControler{
 	
 	protected static Map<Long, AbstractXMLEntity> mapEntities = new HashMap<Long, AbstractXMLEntity>();
 
-	protected long getNewValue() {
+	protected synchronized long getNewValue() {
 		return compt++;
 	}
 	
