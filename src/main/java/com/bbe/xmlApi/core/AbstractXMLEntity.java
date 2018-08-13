@@ -1,6 +1,5 @@
 package com.bbe.xmlApi.core;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -171,5 +170,5 @@ public abstract class AbstractXMLEntity {
 	public AbstractXMLEntity getEntityById(long l) {
 		return XMLEntityControler.getInstance().getEntity(l);
 	}
-
+	
 }

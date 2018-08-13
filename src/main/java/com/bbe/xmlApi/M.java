@@ -1,6 +1,5 @@
 package com.bbe.xmlApi;
 
-import com.bbe.xmlApi.core.AbstractXMLEntity;
 import com.bbe.xmlApi.core.XMLEntity;
 
 public class M {

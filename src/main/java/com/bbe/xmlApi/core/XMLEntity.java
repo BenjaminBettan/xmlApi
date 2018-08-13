@@ -1,11 +1,8 @@
 package com.bbe.xmlApi.core;
 
-
-
 import java.util.Map;
 
 /**
- * 
  * @author benjamin
  * Entity to persist
  */
@@ -45,14 +42,14 @@ public class XMLEntity extends AbstractXMLEntity{
 
 	public String showXml() {
 
-		return showXml("1.0","UTF-8",null);
+		return XmlFormatter.format((showXml("1.0","UTF-8",null)));
 	}
 
 	public String showXml(String version, String encoding, String grammaire) {
 
 		return "<?xml version=\""+version+"\" encoding=\""+encoding+"\""+ ((grammaire == null) ? "" : " "+grammaire)  +" ?>"+showXmlValue();
 	}
-
+	
 	public String showXmlValue() {
 		
 		
