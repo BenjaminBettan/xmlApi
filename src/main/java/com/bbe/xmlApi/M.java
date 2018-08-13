@@ -13,7 +13,6 @@ public class M {
 		XMLEntity y2 = y.addChild("y2");
 		
 		x2.addChild(y2);
-		
 		System.out.println(x.showXml());
 		
 		System.out.println(x);

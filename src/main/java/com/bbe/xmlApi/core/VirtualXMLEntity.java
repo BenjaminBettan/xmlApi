@@ -9,27 +9,27 @@ import java.util.Map;
  * @author benjamin
  * Entity to persist
  */
-public class XMLEntity extends AbstractXMLEntity{
+public class VirtualXMLEntity extends AbstractXMLEntity{
 
-	public XMLEntity(String currentTag, Map<String, String> currentAttributes, int level2) {
+	public VirtualXMLEntity(String currentTag, Map<String, String> currentAttributes, int level2) {
 		this.id = XMLEntityControler.getInstance().getNewValue();
 		this.tag = currentTag;
 		this.attributes = currentAttributes;
 		this.level = level2;
-		this.isVirtualXMLEntity = false;
+		this.isVirtualXMLEntity = true;
 	}
 
-	public XMLEntity(String currentTag, Map<String, String> att) {
-		this(currentTag, att,0);
+	public VirtualXMLEntity(String currentTag, Map<String, String> att) {
+		this(currentTag,att,0);
 	}
 	
-	public XMLEntity(String currentTag) {
-		this(currentTag, null,0);
+	public VirtualXMLEntity(String currentTag) {
+		this(currentTag,null,0);
 	}
 	
 	@Override
 	public XMLEntity addChild(AbstractXMLEntity x_) {
-		return addChild((XMLEntity) x_);
+		return addChild((VirtualXMLEntity) x_);
 	}
 
 	public XMLEntity addChild(XMLEntity x_) {
