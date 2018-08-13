@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class VirtualXMLEntity extends AbstractXMLEntity{
 
-	public VirtualXMLEntity(String currentTag, Map<String, String> currentAttributes, int level2) {
+	private VirtualXMLEntity(String currentTag, Map<String, String> currentAttributes, int level2) {
 		this.id = XMLEntityControler.getInstance().getNewValue();
 		this.tag = currentTag;
 		this.attributes = currentAttributes;
