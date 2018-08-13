@@ -7,11 +7,11 @@ Feature: test du scenario 1
 #<?xml version="1.0" encoding="UTF-8" ?><x1><x2><y1><y2></y2></y1></x2></x1>
 
 
-  Scenario Outline: Today is or is not Friday
+  Scenario Outline: Test d un premier xml
     Given je charge scenario 1 et je cherche <xpath>
     Then je dois trouver : <answer>
 
   Examples:
     | xpath           | answer |
     | "/x1/x2/y1/y2/" |  1     |
-#    | "/x/x2/"    |  1     |    
+    | "/x1/x2/"       |  1     |    

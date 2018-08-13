@@ -21,21 +21,25 @@ public class StepDefinitions {
 		
 		xpath = xpath_;
 		
-		String str = new String(xpath_);
+		xpath_ = new String(xpath_.substring(1, xpath_.length() - 1));
 		
-		str = str.substring(1, str.length() - 1);
-		String[] tags = str.split("/");
+		String[] tags = xpath_.split("/");
 		tagToFind = tags[tags.length - 1];
-		
+		XMLEntity y1,x2;
 		switch (scenario) {
 		case 1:
 			x = new XMLEntity("x1");
-			XMLEntity y1 = new XMLEntity("y1");
+			y1 = new XMLEntity("y1");
 			
-			XMLEntity x2 = x.addChild("x2");
+			x2 = x.addChild("x2");
 			y1.addChild("y2");
 			
 			x2.addChild(y1);
+			break;
+		case 2:
+			x = new XMLEntity("x1");
+			x.addChild("x2");
+			x.addChild("x2");
 			break;
 
 		default:
@@ -49,7 +53,7 @@ public class StepDefinitions {
 	@Then("^je dois trouver : (\\d+)$")
 	public void je_dois_trouver(int nbEntities) throws Throwable {
 
-		assertTrue("Number of entities found should be equal to : " + nbEntities,mapEntities.size() == nbEntities);
+		assertTrue("Expected number of entitie(s) : " + nbEntities + "/Found : "+mapEntities.size() + " entitie(s)",mapEntities.size() == nbEntities);
 		
 		for (Map.Entry<Long, AbstractXMLEntity> xmlEntity : mapEntities.entrySet()) {
 			assertTrue(xmlEntity.getValue().getTag().equals(tagToFind));
