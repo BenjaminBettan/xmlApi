@@ -21,6 +21,7 @@ public class VirtualXMLEntity extends AbstractXMLEntity{
 
 	public VirtualXMLEntity(String currentTag, Map<String, String> att) {
 		this(currentTag,att,0);
+		XMLEntityControler.mapEntities.put(this.getId(), this);
 	}
 	
 	public VirtualXMLEntity(String currentTag) {

@@ -11,34 +11,31 @@ import java.util.Map;
  */
 public class XMLEntity extends AbstractXMLEntity{
 
-	public XMLEntity(String currentTag, Map<String, String> currentAttributes, int level2) {
+	private XMLEntity(String currentTag, Map<String, String> currentAttributes, int level2) {
 		this.id = XMLEntityControler.getInstance().getNewValue();
 		this.tag = currentTag;
 		this.attributes = currentAttributes;
 		this.level = level2;
 		this.isVirtualXMLEntity = false;
+		
 	}
 
 	public XMLEntity(String currentTag, Map<String, String> att) {
 		this(currentTag, att,0);
+		XMLEntityControler.mapEntities.put(this.getId(), this);
 	}
 	
 	public XMLEntity(String currentTag) {
 		this(currentTag, null,0);
-	}
-	
-	@Override
-	public XMLEntity addChild(AbstractXMLEntity x_) {
-		return addChild((XMLEntity) x_);
+		XMLEntityControler.mapEntities.put(this.getId(), this);
 	}
 
-	public XMLEntity addChild(XMLEntity x_) {
-		this.setIsFatherOf(x_.getId());
-		x_.setIsChildOf(this.getId());
-		x_.level = this.level+1;
-		return x_;
-	}
 	
+	public XMLEntity(String currentTag, int i) {
+		this(currentTag, null,i);
+		XMLEntityControler.mapEntities.put(this.getId(), this);
+	}
+
 	@Override
 	public String toString() {
 		return "XMLEntity [id=" + id + ", level=" + level + ", tag=" + tag + ", data=" + data +  ", leaf="

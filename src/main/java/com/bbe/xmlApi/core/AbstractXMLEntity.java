@@ -1,13 +1,10 @@
 package com.bbe.xmlApi.core;
 
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 
 public abstract class AbstractXMLEntity {
 	
@@ -19,11 +16,6 @@ public abstract class AbstractXMLEntity {
 	protected Map<String, String> attributes = null;
 	protected int level = 0;
 	protected boolean isVirtualXMLEntity;
-
-	
-	public abstract XMLEntity addChild(XMLEntity x_);
-	public abstract XMLEntity addChild(AbstractXMLEntity x_);
-	
 	
 	public abstract String showXml();
 	public abstract String showXml(String version, String encoding, String grammaire);
@@ -31,7 +23,7 @@ public abstract class AbstractXMLEntity {
 	
 	public XMLEntity addChild(String currentTag) {
 
-		XMLEntity x_ = new XMLEntity(currentTag, null, level+1);
+		XMLEntity x_ = new XMLEntity(currentTag, level+1);
 		
 		XMLEntity this_ = (XMLEntity) getThis();
 		
@@ -43,6 +35,17 @@ public abstract class AbstractXMLEntity {
 		return x_;
 	}
 	
+	public XMLEntity addChild(AbstractXMLEntity x_) {
+		return addChild((XMLEntity) x_);
+	}
+
+	public XMLEntity addChild(XMLEntity x_) {
+		this.setIsFatherOf(x_.getId());
+		x_.setIsChildOf(this.getId());
+		x_.level = this.level+1;
+		XMLEntityControler.mapEntities.put(x_.getId(), x_);
+		return x_;
+	}
 	public abstract Object getThis();
 	
 	public boolean thisNodeHasNoAttribute() {
@@ -76,7 +79,7 @@ public abstract class AbstractXMLEntity {
 		return isFatherOf == null || isFatherOf.size() == 0;
 	}
 
-	public XMLEntity getParent() {
+	public AbstractXMLEntity getParent() {
 		return XMLEntityControler.getInstance().getEntity(isChildOf);
 	}
 
@@ -92,8 +95,8 @@ public abstract class AbstractXMLEntity {
 		this.attributes = attributes;
 	}
 
-	public Map<Long, XMLEntity> getChilds() {
-		Map<Long, XMLEntity> mapEntities = new HashMap<Long, XMLEntity>();
+	public Map<Long, AbstractXMLEntity> getChilds() {
+		Map<Long, AbstractXMLEntity> mapEntities = new HashMap<Long, AbstractXMLEntity>();
 		for (Long l : isFatherOf) {
 			mapEntities.put(l, XMLEntityControler.getInstance().getEntity(l));
 		}
@@ -109,15 +112,14 @@ public abstract class AbstractXMLEntity {
 		this.isFatherOf.add(id2);
 	}
 	
-	public Map<Long, XMLEntity> getEntitiesByXpath(String xpath_) {
+	public Map<Long, AbstractXMLEntity> getEntitiesByXpath(String xpath_) {
 		
-		Map<Long, XMLEntity> mapEntities = new HashMap<Long, XMLEntity>();
+		Map<Long, AbstractXMLEntity> mapEntities = new HashMap<Long, AbstractXMLEntity>();
 		
 		xpath_ = xpath_.substring(1, xpath_.length() - 1);
 		String[] x = xpath_.split("/");
 		String[] xp = new String[x.length - 1];
-
-				;
+		
 		for (int i = 1; i < x.length; i++) {
 			xp[i-1] = x[i];
 		}
@@ -125,36 +127,32 @@ public abstract class AbstractXMLEntity {
 		XMLEntity x_ = (XMLEntity) getThis();
 
 		if (x_.getTag().equals(x[0])) {
-			findIt(mapEntities,xp,x_,0);
+			findNextEntity(mapEntities,xp,x_,0);
 
 		}
 		else {
 			return mapEntities;	
 		}
 		
-		
-		
 		return mapEntities;
 	}
 	
-	private void findIt(Map<Long, XMLEntity> mapEntities, String[] xp, XMLEntity x_, int i) {
+	private void findNextEntity(Map<Long, AbstractXMLEntity> mapEntities, String[] xp, AbstractXMLEntity x_, int i) {
 		
 		String tagToFind = xp[i];
 		
-		for (Map.Entry<Long, XMLEntity> xmlEntity : x_.getChilds().entrySet()) {
+		for (Map.Entry<Long, AbstractXMLEntity> xmlEntity : x_.getChilds().entrySet()) {
 			if (tagToFind.equals(xmlEntity.getValue().getTag())) {
-				System.out.println(tagToFind);
-				
 				if (i+1 == xp.length) {
 					mapEntities.put(xmlEntity.getValue().id, xmlEntity.getValue());
 				}
 				else {
-					findIt(mapEntities,xp,xmlEntity.getValue(),i+1);					
+					findNextEntity(mapEntities,xp,xmlEntity.getValue(),i+1);					
 				}
-				
 			}
 		}
 	}
+	
 	protected String getSonTags() {
 
 		String s = new String("");
@@ -170,7 +168,8 @@ public abstract class AbstractXMLEntity {
 		return s;
 	}
 
-	public XMLEntity getEntityById(long l) {
+	public AbstractXMLEntity getEntityById(long l) {
 		return XMLEntityControler.getInstance().getEntity(l);
 	}
+
 }

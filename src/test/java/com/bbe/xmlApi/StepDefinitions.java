@@ -14,26 +14,28 @@ public class StepDefinitions {
 	
 	private AbstractXMLEntity x;
 	private String xpath,tagToFind;
-	private Map<Long, XMLEntity> mapEntities;
+	private Map<Long, AbstractXMLEntity> mapEntities;
 	
 	@Given("^je charge scenario (\\d+) et je cherche \"(.*?)\"$")
 	public void je_charge_scenario_et_je_cherche(int scenario, String xpath_) throws Throwable {
 		
 		xpath = xpath_;
 		
-		xpath_ = xpath_.substring(1, xpath_.length() - 1);
-		String[] tags = xpath_.split("/");
+		String str = new String(xpath_);
+		
+		str = str.substring(1, str.length() - 1);
+		String[] tags = str.split("/");
 		tagToFind = tags[tags.length - 1];
 		
 		switch (scenario) {
 		case 1:
-			x = new XMLEntity("x");
-			AbstractXMLEntity y = new XMLEntity("y");
+			x = new XMLEntity("x1");
+			XMLEntity y1 = new XMLEntity("y1");
 			
-			AbstractXMLEntity x2 = x.addChild("x2");
-			AbstractXMLEntity y2 = y.addChild("y2");
+			XMLEntity x2 = x.addChild("x2");
+			y1.addChild("y2");
 			
-			x2.addChild(y2);
+			x2.addChild(y1);
 			break;
 
 		default:
@@ -49,7 +51,7 @@ public class StepDefinitions {
 
 		assertTrue("Number of entities found should be equal to : " + nbEntities,mapEntities.size() == nbEntities);
 		
-		for (Map.Entry<Long, XMLEntity> xmlEntity : mapEntities.entrySet()) {
+		for (Map.Entry<Long, AbstractXMLEntity> xmlEntity : mapEntities.entrySet()) {
 			assertTrue(xmlEntity.getValue().getTag().equals(tagToFind));
 		}
 		
