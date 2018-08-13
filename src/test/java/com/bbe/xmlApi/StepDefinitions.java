@@ -40,6 +40,7 @@ public class StepDefinitions {
 			throw new RuntimeException();
 		}
 	}
+	
 	@When("^je cherche \"(.*?)\"$")
 	public void je_cherche(String xpath_) throws Throwable {
 		xp = xpath_;
