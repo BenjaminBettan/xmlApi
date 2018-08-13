@@ -54,19 +54,34 @@ public class XMLEntity extends AbstractXMLEntity{
 	}
 
 	public String showXmlValue() {
-
-		String header;
-
-		if (attributes==null || attributes.size()==0) 
-		{
-			header=new String("<"+tag+">");
+		
+		
+		
+		String header,footer;
+		if ("".equals(data) && this.isLeaf()) {
+			footer=new String("");
+			if (attributes==null || attributes.size()==0) 
+			{
+				header=new String("<"+tag+"/>");
+			}
+			else 
+			{
+				header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\"/>");
+			}
 		}
-		else 
-		{
-			header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\">");
+		else {
+			footer=new String("</"+tag+">");
+			if (attributes==null || attributes.size()==0) 
+				{
+					header=new String("<"+tag+">");
+				}
+				else 
+				{
+					header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\">");
+				}
 		}
 
-		String footer=new String("</"+tag+">");
+		
 		return header + data + getSonTags() +footer;
 
 	}
