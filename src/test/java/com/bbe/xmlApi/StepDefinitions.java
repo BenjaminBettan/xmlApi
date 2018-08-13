@@ -16,15 +16,9 @@ public class StepDefinitions {
 	private String xpath,tagToFind;
 	private Map<Long, AbstractXMLEntity> mapEntities;
 	
-	@Given("^je charge scenario (\\d+) et je cherche \"(.*?)\"$")
-	public void je_charge_scenario_et_je_cherche(int scenario, String xpath_) throws Throwable {
+	@Given("^je charge scenario (\\d+)$")
+	public void je_charge_scenario(int scenario) throws Throwable {
 		
-		xpath = xpath_;
-		
-		xpath_ = new String(xpath_.substring(1, xpath_.length() - 1));
-		
-		String[] tags = xpath_.split("/");
-		tagToFind = tags[tags.length - 1];
 		XMLEntity y1,x2;
 		switch (scenario) {
 		case 1:
@@ -45,18 +39,32 @@ public class StepDefinitions {
 		default:
 			throw new RuntimeException();
 		}
-		
+	}
+	@When("^je cherche \"(.*?)\"$")
+	public void je_cherche(String xpath_) throws Throwable {
+		xpath = xpath_;
 		mapEntities = x.getEntitiesByXpath(xpath);
+		
+		xpath_ = new String(xpath_.substring(1, xpath_.length() - 1));
+		
+		String[] tags = xpath_.split("/");
+		tagToFind = tags[tags.length - 1];
 		
 	}
 	
-	@Then("^je dois trouver : (\\d+)$")
-	public void je_dois_trouver(int nbEntities) throws Throwable {
+	@Then("^je dois trouver : (\\d+) entite$")
+	public void je_dois_trouver_entite(int nbEntities) throws Throwable {
 
-		assertTrue("Expected number of entitie(s) : " + nbEntities + "/Found : "+mapEntities.size() + " entitie(s)",mapEntities.size() == nbEntities);
+		assertTrue(mapEntities.size() + " entitie(s) found"
+				+ "/ Expected : " + nbEntities ,
+				
+				mapEntities.size() == nbEntities);
 		
 		for (Map.Entry<Long, AbstractXMLEntity> xmlEntity : mapEntities.entrySet()) {
-			assertTrue(xmlEntity.getValue().getTag().equals(tagToFind));
+			assertTrue("At least one tag is wrong : "+xmlEntity.getValue().getTag()
+					+"/ Expected : "+tagToFind,
+					
+					xmlEntity.getValue().getTag().equals(tagToFind));
 		}
 		
 	}
