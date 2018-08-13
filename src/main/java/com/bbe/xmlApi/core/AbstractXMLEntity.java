@@ -13,9 +13,11 @@ public abstract class AbstractXMLEntity {
 	protected List<Long> isFatherOf;
 	protected long isChildOf = -1;
 	protected Map<String, String> attributes = null;
-	protected int level = 0;
+	protected int level = 0;//TODO bug
 	protected boolean isVirtualXMLEntity;
 	
+	public abstract Object getThis();
+
 	public abstract String showXml();
 	public abstract String showXml(String version, String encoding, String grammaire);
 	public abstract String showXmlValue();
@@ -29,7 +31,7 @@ public abstract class AbstractXMLEntity {
 		this_.setIsFatherOf(x_.getId());
 		x_.setIsChildOf(this.getId());
 		x_.level = this.level+1;
-		XMLEntityControler.mapEntities.put(x_.getId(), x_);
+		XMLEntityControler.getMapEntities().put(x_.getId(), x_);
 
 		return x_;
 	}
@@ -42,10 +44,9 @@ public abstract class AbstractXMLEntity {
 		this.setIsFatherOf(x_.getId());
 		x_.setIsChildOf(this.getId());
 		x_.level = this.level+1;
-		XMLEntityControler.mapEntities.put(x_.getId(), x_);
+		XMLEntityControler.getMapEntities().put(x_.getId(), x_);
 		return x_;
 	}
-	public abstract Object getThis();
 	
 	public boolean thisNodeHasNoAttribute() {
 		if (attributes==null) {
@@ -82,7 +83,7 @@ public abstract class AbstractXMLEntity {
 		return XMLEntityControler.getInstance().getEntity(isChildOf);
 	}
 
-	void setIsChildOf(long isChildOf) {
+	protected void setIsChildOf(long isChildOf) {
 		this.isChildOf = isChildOf;
 	}
 
@@ -103,7 +104,7 @@ public abstract class AbstractXMLEntity {
 		return mapEntities;
 	}
 
-	void setIsFatherOf(long id2) {
+	protected void setIsFatherOf(long id2) {
 		if (isFatherOf==null) 
 		{
 			isFatherOf = new ArrayList<>();

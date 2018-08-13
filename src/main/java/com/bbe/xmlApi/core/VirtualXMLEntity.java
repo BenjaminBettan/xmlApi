@@ -1,11 +1,8 @@
 package com.bbe.xmlApi.core;
 
-
-
 import java.util.Map;
 
 /**
- * 
  * @author benjamin
  * Entity to persist
  */
@@ -17,29 +14,25 @@ public class VirtualXMLEntity extends AbstractXMLEntity{
 		this.attributes = currentAttributes;
 		this.level = level2;
 		this.isVirtualXMLEntity = true;
+		
 	}
 
 	public VirtualXMLEntity(String currentTag, Map<String, String> att) {
-		this(currentTag,att,0);
-		XMLEntityControler.mapEntities.put(this.getId(), this);
+		this(currentTag, att,0);
+		XMLEntityControler.getMapEntities().put(this.getId(), this);
 	}
 	
 	public VirtualXMLEntity(String currentTag) {
-		this(currentTag,null,0);
-	}
-	
-	@Override
-	public XMLEntity addChild(AbstractXMLEntity x_) {
-		return addChild((VirtualXMLEntity) x_);
+		this(currentTag, null,0);
+		XMLEntityControler.getMapEntities().put(this.getId(), this);
 	}
 
-	public XMLEntity addChild(XMLEntity x_) {
-		this.setIsFatherOf(x_.getId());
-		x_.setIsChildOf(this.getId());
-		x_.level = this.level+1;
-		return x_;
-	}
 	
+	public VirtualXMLEntity(String currentTag, int i) {
+		this(currentTag, null,i);
+		XMLEntityControler.getMapEntities().put(this.getId(), this);
+	}
+
 	@Override
 	public String toString() {
 		return "XMLEntity [id=" + id + ", level=" + level + ", tag=" + tag + ", data=" + data +  ", leaf="
@@ -49,28 +42,44 @@ public class VirtualXMLEntity extends AbstractXMLEntity{
 
 	public String showXml() {
 
-		return showXml("1.0","UTF-8",null);
+		return XmlFormatter.format((showXml("1.0","UTF-8",null)));
 	}
 
 	public String showXml(String version, String encoding, String grammaire) {
 
-		return "<?xml version=\""+version+"\" encoding=\""+encoding+"\""+ ((grammaire == null) ? "" : " "+grammaire)  +" ?>"+showXmlValue();
+		return "<?xml version=\""+version+"\" encoding=\""+encoding+"\""+ ((grammaire==null) ? "" : " "+grammaire)  +" ?>"+showXmlValue();
 	}
-
+	
 	public String showXmlValue() {
-
-		String header;
-
-		if (attributes==null || attributes.size()==0) 
-		{
-			header=new String("<"+tag+">");
+		
+		String header,footer;
+		
+		if ("".equals(data) && this.isLeaf()) {
+			
+			footer=new String("");
+			if (attributes==null || attributes.size()==0) 
+			{
+				header=new String("<"+tag+"/>");
+			}
+			else 
+			{
+				header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\"/>");
+			}
+			
 		}
-		else 
-		{
-			header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\">");
+		else {
+			
+			footer=new String("</"+tag+">");
+			if (attributes==null || attributes.size()==0) 
+				{
+					header=new String("<"+tag+">");
+				}
+				else 
+				{
+					header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\">");
+				}
 		}
-
-		String footer=new String("</"+tag+">");
+		
 		return header + data + getSonTags() +footer;
 
 	}
