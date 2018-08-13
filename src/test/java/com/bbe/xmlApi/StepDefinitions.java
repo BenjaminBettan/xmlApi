@@ -13,7 +13,7 @@ import cucumber.api.java.en.*;
 public class StepDefinitions {
 	
 	private AbstractXMLEntity x;
-	private String xpath,tagToFind;
+	private String xp;
 	private Map<Long, AbstractXMLEntity> mapEntities;
 	
 	@Given("^je charge scenario (\\d+)$")
@@ -42,13 +42,8 @@ public class StepDefinitions {
 	}
 	@When("^je cherche \"(.*?)\"$")
 	public void je_cherche(String xpath_) throws Throwable {
-		xpath = xpath_;
-		mapEntities = x.getEntitiesByXpath(xpath);
-		
-		xpath_ = new String(xpath_.substring(1, xpath_.length() - 1));
-		
-		String[] tags = xpath_.split("/");
-		tagToFind = tags[tags.length - 1];
+		xp = xpath_;
+		mapEntities = x.getEntitiesByXpath(xpath_);
 		
 	}
 	
@@ -59,6 +54,12 @@ public class StepDefinitions {
 				+ "/ Expected : " + nbEntities ,
 				
 				mapEntities.size() == nbEntities);
+		
+		//seconde partie du test on verifie que tous les noeuds ont le meme nom
+		xp = xp.substring(1, xp.length() - 1);
+		
+		String[] tags = xp.split("/");
+		String tagToFind = tags[tags.length - 1];
 		
 		for (Map.Entry<Long, AbstractXMLEntity> xmlEntity : mapEntities.entrySet()) {
 			assertTrue("At least one tag is wrong : "+xmlEntity.getValue().getTag()
