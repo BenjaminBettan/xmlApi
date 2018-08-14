@@ -97,8 +97,11 @@ public abstract class AbstractXMLEntity {
 
 	public Map<Long, AbstractXMLEntity> getChilds() {
 		Map<Long, AbstractXMLEntity> mapEntities = new HashMap<Long, AbstractXMLEntity>();
-		for (Long l : isFatherOf) {
-			mapEntities.put(l, XMLEntityControler.getInstance().getEntity(l));
+
+		if ( isFatherOf!=null) {
+			for (Long l : isFatherOf) {
+				mapEntities.put(l, XMLEntityControler.getInstance().getEntity(l));
+			}	
 		}
 		
 		return mapEntities;

@@ -1,6 +1,8 @@
 package com.bbe.xmlApi;
 
 import static org.junit.Assert.assertTrue;
+
+import java.util.HashMap;
 import java.util.Map;
 
 import com.bbe.xmlApi.core.AbstractXMLEntity;
@@ -32,6 +34,15 @@ public class StepDefinitions {
 			x = new XMLEntity("x1");
 			x.addChild("x2");
 			x.addChild("x2");
+			break;
+		case 3:
+			Map<String, String> attributes = new HashMap<>();
+			attributes.put("aKey", "aValue");
+			x= new XMLEntity("x1");
+			
+			x2 = x.addChild("x2");
+			x.addChild("x2");
+			x2.addChild("x3").setAttributes(attributes);
 			break;
 
 		default:

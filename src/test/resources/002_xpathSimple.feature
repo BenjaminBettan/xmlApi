@@ -1,4 +1,4 @@
-Feature: xpath simple
+Feature: 002_xpathSimple
 
 #<?xml version="1.0" encoding="UTF-8"?>
 #<x1>
