@@ -1,50 +1,30 @@
 package com.bbe.xmlApi;
 
 import static org.junit.Assert.assertTrue;
-
-import java.util.HashMap;
 import java.util.Map;
-
 import com.bbe.xmlApi.core.Entity;
-import com.bbe.xmlApi.core.XMLEntity;
 
 import cucumber.api.java.en.*;
 
 public class StepDefinitions {
 	
-	private Entity x;
+	private Entity root;
 	private String xp;
 	private Map<Long, Entity> mapEntities;
+	private SimpleTest st = new SimpleTest();
 	
 	@Given("^je charge scenario (\\d+)$")
 	public void je_charge_scenario(int scenario) throws Throwable {
-		
-		Entity y1,x2;
 		switch (scenario) {
 		case 1:
-			x = new XMLEntity("x1");
-			y1 = new XMLEntity("y1");
-			
-			x2 = x.addChild("x2");
-			y1.addChild("y2");
-			
-			x2.addChild(y1);
+			root = st.sc_1_();
 			break;
 		case 2:
-			x = new XMLEntity("x1");
-			x.addChild("x2");
-			x.addChild("x2");
+			root = st.sc_2_();
 			break;
 		case 3:
-			Map<String, String> attributes = new HashMap<>();
-			attributes.put("aKey", "aValue");
-			x= new XMLEntity("x1");
-			
-			x2 = x.addChild("x2");
-			x.addChild("x2");
-			x2.addChild("x3").setAttributes(attributes);
+			root = st.sc_3_();
 			break;
-
 		default:
 			throw new RuntimeException();
 		}
@@ -53,7 +33,7 @@ public class StepDefinitions {
 	@When("^je cherche \"(.*?)\"$")
 	public void je_cherche(String xpath_) throws Throwable {
 		xp = xpath_;
-		mapEntities = x.getEntitiesByXpath(xpath_);
+		mapEntities = root.getEntitiesByXpath(xpath_);
 	}
 	
 	@Then("^je dois trouver : (\\d+) entite$")
