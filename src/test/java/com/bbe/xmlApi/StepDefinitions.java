@@ -2,8 +2,10 @@ package com.bbe.xmlApi;
 
 import static org.junit.Assert.assertTrue;
 import java.util.Map;
-import com.bbe.xmlApi.core.XMLEntity;
+
 import com.bbe.xmlApi.core.AbstractXMLEntity;
+import com.bbe.xmlApi.core.XMLEntity;
+
 import cucumber.api.java.en.*;
 
 public class StepDefinitions {
