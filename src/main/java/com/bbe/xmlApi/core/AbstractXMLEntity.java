@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractXMLEntity {
-	
+
 	protected long id = 0L;
 	protected String tag;
 	protected String data = new String("");
@@ -14,20 +14,19 @@ public abstract class AbstractXMLEntity {
 	protected long isChildOf = -1;
 	protected Map<String, String> attributes = null;
 	protected int level = 0;//TODO bug. le level ne se repand pas quand on utilise la methode addchild
-	protected boolean isVirtualXMLEntity;
-	
+
 	public abstract Object getThis();
 
 	public abstract String showXml();
 	public abstract String showXml(String version, String encoding, String grammaire);
 	public abstract String showXmlValue();
-	
+
 	public XMLEntity addChild(String currentTag) {
 
 		XMLEntity x_ = new XMLEntity(currentTag, level+1);
-		
+
 		XMLEntity this_ = (XMLEntity) getThis();
-		
+
 		this_.setIsFatherOf(x_.getId());
 		x_.setIsChildOf(this.getId());
 		x_.level = this.level+1;
@@ -35,7 +34,7 @@ public abstract class AbstractXMLEntity {
 
 		return x_;
 	}
-	
+
 	public XMLEntity addChild(AbstractXMLEntity x_) {
 		return addChild((XMLEntity) x_);
 	}
@@ -47,7 +46,7 @@ public abstract class AbstractXMLEntity {
 		XMLEntityControler.getMapEntities().put(x_.getId(), x_);
 		return x_;
 	}
-	
+
 	public boolean thisNodeHasNoAttribute() {
 		if (attributes==null) {
 			return true;
@@ -103,7 +102,7 @@ public abstract class AbstractXMLEntity {
 				mapEntities.put(l, XMLEntityControler.getInstance().getEntity(l));
 			}	
 		}
-		
+
 		return mapEntities;
 	}
 
@@ -114,48 +113,123 @@ public abstract class AbstractXMLEntity {
 		}
 		this.isFatherOf.add(id2);
 	}
-	
+
 	public Map<Long, AbstractXMLEntity> getEntitiesByXpath(String xpath_) {
-		
+
 		Map<Long, AbstractXMLEntity> mapEntities = new HashMap<Long, AbstractXMLEntity>();
-		
+
 		xpath_ = xpath_.substring(1, xpath_.length() - 1);
 		String[] x = xpath_.split("/");
 		String[] xp = new String[x.length - 1];
-		
+
 		for (int i = 1; i < x.length; i++) {
 			xp[i-1] = x[i];
 		}
-		
+
 		XMLEntity x_ = (XMLEntity) getThis();
 
-		if (x_.getTag().equals(x[0])) {
-			findNextEntity(mapEntities,xp,x_,0);
+		if ( ! x[0].contains("[")) {//no attribute has to be found
+			if (x_.getTag().equals(x[0])) {
+				findNextEntity(mapEntities,xp,x_,0);
+
+			}
+			else {
+				return mapEntities;	
+			}			
+		}
+		else {// an attribute has to be found
+
+			String strToParse = x[0].split("[\\[]")[1];
+			strToParse = strToParse.replace("]", "").replace("\"", "");
+			String tagToFind = x[0].split("[\\[]")[0];
+
+			String[] attToFind = strToParse.split(",");
+			for (int i = 0; i < 2; i++) {
+				attToFind[i] = attToFind[i].substring(1);
+			}
+			boolean exit = false;
+			int nbAttToFind = attToFind.length;
+			for (String att : attToFind) {
+				String[] attToFind_ = att.split("=");
+				String key,value;
+				key = attToFind_[0];
+				value = attToFind_[1];
+				if ( x_.getAttributes() !=null && x_.getAttributes().get(key).equals(value)) {
+					nbAttToFind--;//if nbAttToFind = 0 -> attributes have been found
+				}
+				else if ( x_.getAttributes() !=null && ! x_.getAttributes().get(key).equals(value)) {
+					exit = true;
+					break;
+				}
+			}
+			if ( ! exit) {
+				if (x_.getTag().equals(tagToFind) && nbAttToFind==0) {
+					findNextEntity(mapEntities,xp,x_,0);
+
+				}
+				else {
+					return mapEntities;	
+				}		
+			}
+
 
 		}
-		else {
-			return mapEntities;	
-		}
-		
+
 		return mapEntities;
 	}
-	
+
 	private void findNextEntity(Map<Long, AbstractXMLEntity> mapEntities, String[] xp, AbstractXMLEntity x_, int i) {
 		
 		String tagToFind = xp[i];
 		
-		for (Map.Entry<Long, AbstractXMLEntity> xmlEntity : x_.getChilds().entrySet()) {
-			if (tagToFind.equals(xmlEntity.getValue().getTag())) {
-				if (i+1 == xp.length) {
-					mapEntities.put(xmlEntity.getValue().id, xmlEntity.getValue());
+		if ( tagToFind.contains("[")) {//attributes have to be found
+			String strToParse = xp[i].split("[\\[]")[1];
+			strToParse = strToParse.replace("]", "").replace("\"", "");
+			tagToFind = xp[i].split("[\\[]")[0];
+			
+			for (Map.Entry<Long, AbstractXMLEntity> xmlEntity : x_.getChilds().entrySet()) {
+				String[] attToFind = strToParse.split(",");
+				for (int j = 0; j < attToFind.length; j++) {
+					attToFind[j] = attToFind[j].substring(1);
 				}
-				else {
-					findNextEntity(mapEntities,xp,xmlEntity.getValue(),i+1);					
+				int nbAttToFind = attToFind.length;
+				for (String att : attToFind) {
+					String[] attToFind_ = att.split("=");
+					String key,value;
+					key = attToFind_[0];
+					value = attToFind_[1];
+					if ( xmlEntity.getValue().getAttributes() !=null && xmlEntity.getValue().getAttributes().get(key).equals(value)) {
+						nbAttToFind--;
+					}
+				}
+				
+				if (tagToFind.equals(xmlEntity.getValue().getTag()) && nbAttToFind == 0) {
+					if (i+1 == xp.length) {
+						mapEntities.put(xmlEntity.getValue().id, xmlEntity.getValue());
+					}
+					else {
+						findNextEntity(mapEntities,xp,xmlEntity.getValue(),i+1);					
+					}
+				}
+			}
+			
+		}
+		else {
+			for (Map.Entry<Long, AbstractXMLEntity> xmlEntity : x_.getChilds().entrySet()) {
+				if (tagToFind.equals(xmlEntity.getValue().getTag())) {
+					if (i+1 == xp.length) {
+						mapEntities.put(xmlEntity.getValue().id, xmlEntity.getValue());
+					}
+					else {
+						findNextEntity(mapEntities,xp,xmlEntity.getValue(),i+1);					
+					}
 				}
 			}
 		}
+
+
 	}
-	
+
 	protected String getSonTags() {
 
 		String s = new String("");
@@ -175,4 +249,7 @@ public abstract class AbstractXMLEntity {
 		return XMLEntityControler.getInstance().getEntity(l);
 	}
 	
+	public boolean isVirtualEntity() {
+		return getThis().getClass().getSimpleName().equals("VirtualXMLEntity");
+	}
 }

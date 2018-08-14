@@ -4,12 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.bbe.xmlApi.core.AbstractXMLEntity;
+import com.bbe.xmlApi.core.VirtualXMLEntity;
 import com.bbe.xmlApi.core.XMLEntity;
 import com.bbe.xmlApi.core.XMLEntityControler;
 
 public class M {
 	
 	public static void main(String[] args) {
+		
+		VirtualXMLEntity v = new VirtualXMLEntity("");
+		
+		System.out.println(v.isVirtualEntity());
+		
 		Map<String, String> attributes = new HashMap<>();
 		attributes.put("aKey", "aValue");
 		

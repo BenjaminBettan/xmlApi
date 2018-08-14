@@ -18,5 +18,7 @@ Feature: 003_xpathComplexe
     Then je dois trouver : <answer> entite
 
   Examples:
-    | xpath                              | answer |
-    | "/x1/x2/x3[@aKey="aValue"]/"       |  1     |
+    | xpath                                             | answer |
+    | "/x1[@aKey="aValue",@bKey="bValue"]/x2/x3/"       |  0     |
+    | "/x1/x2/x3[@aKey="aValue"]/"                      |  1     |
+    

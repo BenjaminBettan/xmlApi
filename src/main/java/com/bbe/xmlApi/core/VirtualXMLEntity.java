@@ -13,8 +13,6 @@ public class VirtualXMLEntity extends AbstractXMLEntity{
 		this.tag = currentTag;
 		this.attributes = currentAttributes;
 		this.level = level2;
-		this.isVirtualXMLEntity = true;
-		
 	}
 
 	public VirtualXMLEntity(String currentTag, Map<String, String> att) {

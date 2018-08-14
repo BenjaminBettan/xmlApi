@@ -54,7 +54,6 @@ public class StepDefinitions {
 	public void je_cherche(String xpath_) throws Throwable {
 		xp = xpath_;
 		mapEntities = x.getEntitiesByXpath(xpath_);
-		
 	}
 	
 	@Then("^je dois trouver : (\\d+) entite$")
@@ -70,6 +69,12 @@ public class StepDefinitions {
 		
 		String[] tags = xp.split("/");
 		String tagToFind = tags[tags.length - 1];
+		
+		if ( tagToFind.contains("[")) {//des attributs doivent etre trouves
+			String strToParse = tagToFind.split("[\\[]")[1];
+			strToParse = strToParse.replace("]", "").replace("\"", "");
+			tagToFind = tagToFind.split("[\\[]")[0];
+		}
 		
 		for (Map.Entry<Long, AbstractXMLEntity> xmlEntity : mapEntities.entrySet()) {
 			assertTrue("At least one tag is wrong : "+xmlEntity.getValue().getTag()
