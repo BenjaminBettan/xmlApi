@@ -11,7 +11,7 @@ import com.bbe.xmlApi.util.XmlFormatter;
 public class VirtualXMLEntity extends Entity{
 
 	private VirtualXMLEntity(String currentTag, Map<String, String> currentAttributes, int level2) {
-		this.id = XMLEntityControler.getInstance().getNewValue();
+		this.id = EntityControler.getInstance().getNewValue();
 		this.tag = currentTag;
 		this.attributes = currentAttributes;
 		this.level = level2;
@@ -19,18 +19,18 @@ public class VirtualXMLEntity extends Entity{
 
 	public VirtualXMLEntity(String currentTag, Map<String, String> att) {
 		this(currentTag, att,0);
-		XMLEntityControler.getMapEntities().put(this.getId(), this);
+		EntityControler.getMapEntities().put(this.getId(), this);
 	}
 	
 	public VirtualXMLEntity(String currentTag) {
 		this(currentTag, null,0);
-		XMLEntityControler.getMapEntities().put(this.getId(), this);
+		EntityControler.getMapEntities().put(this.getId(), this);
 	}
 
 	
 	public VirtualXMLEntity(String currentTag, int i) {
 		this(currentTag, null,i);
-		XMLEntityControler.getMapEntities().put(this.getId(), this);
+		EntityControler.getMapEntities().put(this.getId(), this);
 	}
 
 	@Override

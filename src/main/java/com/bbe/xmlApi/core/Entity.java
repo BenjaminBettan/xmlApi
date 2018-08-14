@@ -26,7 +26,7 @@ public class Entity extends AbstractEntity{
 		this_.setIsFatherOf(x_.getId());
 		x_.setIsChildOf(this.getId());
 		x_.level = this.level+1;
-		XMLEntityControler.getMapEntities().put(x_.getId(), x_);
+		EntityControler.getMapEntities().put(x_.getId(), x_);
 
 		return x_;
 	}
@@ -35,7 +35,7 @@ public class Entity extends AbstractEntity{
 		this.setIsFatherOf(x_.getId());
 		x_.setIsChildOf(this.getId());
 		x_.level = this.level+1;
-		XMLEntityControler.getMapEntities().put(x_.getId(), x_);
+		EntityControler.getMapEntities().put(x_.getId(), x_);
 		return x_;
 	}
 
@@ -71,7 +71,7 @@ public class Entity extends AbstractEntity{
 	}
 
 	public Entity getParent() {
-		return XMLEntityControler.getInstance().getEntity(isChildOf);
+		return EntityControler.getInstance().getEntity(isChildOf);
 	}
 
 	protected void setIsChildOf(long isChildOf) {
@@ -91,7 +91,7 @@ public class Entity extends AbstractEntity{
 
 		if ( isFatherOf!=null) {
 			for (Long l : isFatherOf) {
-				mapEntities.put(l, XMLEntityControler.getInstance().getEntity(l));
+				mapEntities.put(l, EntityControler.getInstance().getEntity(l));
 			}	
 		}
 
@@ -230,7 +230,7 @@ public class Entity extends AbstractEntity{
 		{
 			for (Long l : isFatherOf) 
 			{
-				s += XMLEntityControler.getInstance().getEntity(l).showXmlValue();
+				s += EntityControler.getInstance().getEntity(l).showXmlValue();
 			}	
 		}
 
@@ -273,7 +273,7 @@ protected String showXmlValue_() {
 
 	
 	public Entity getEntityById(long l) {
-		return XMLEntityControler.getInstance().getEntity(l);
+		return EntityControler.getInstance().getEntity(l);
 	}
 	
 	public boolean isVirtualEntity() {

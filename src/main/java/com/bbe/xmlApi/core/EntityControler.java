@@ -7,12 +7,12 @@ import java.util.Map;
  * 
  * @author benjamin
  */
-public class XMLEntityControler{
+public class EntityControler{
 
 	/***next is for singleton*/
-	private XMLEntityControler() {}
-	private static class SingletonHolder { private final static XMLEntityControler instance = new XMLEntityControler(); }
-	public static XMLEntityControler getInstance() {  XMLEntityControler x = SingletonHolder.instance; return x; }
+	private EntityControler() {}
+	private static class SingletonHolder { private final static EntityControler instance = new EntityControler(); }
+	public static EntityControler getInstance() {  EntityControler x = SingletonHolder.instance; return x; }
 	
 	private long compt = 0L;
 	

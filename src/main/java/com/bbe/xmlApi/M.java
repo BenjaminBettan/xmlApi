@@ -6,7 +6,7 @@ import java.util.Map;
 import com.bbe.xmlApi.core.Entity;
 import com.bbe.xmlApi.core.VirtualXMLEntity;
 import com.bbe.xmlApi.core.XMLEntity;
-import com.bbe.xmlApi.core.XMLEntityControler;
+import com.bbe.xmlApi.core.EntityControler;
 
 public class M {
 	
@@ -30,8 +30,8 @@ public class M {
 		x2.addChild("x3").setAttributes(attributes);
 		
 		
-		XMLEntityControler.getInstance();
-		for (Map.Entry<Long, Entity> xmlEntity : XMLEntityControler.getMapEntities().entrySet()) {
+		EntityControler.getInstance();
+		for (Map.Entry<Long, Entity> xmlEntity : EntityControler.getMapEntities().entrySet()) {
 			System.out.println(xmlEntity.getValue());
 		}
 		System.out.println(x1.showXml());
