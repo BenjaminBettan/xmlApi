@@ -2,8 +2,6 @@ package com.bbe.xmlApi.core;
 
 import java.util.Map;
 
-import com.bbe.xmlApi.util.XmlFormatter;
-
 /**
  * @author benjamin
  * Entity to persist
@@ -39,18 +37,20 @@ public class VirtualXMLEntity extends Entity{
 				+ isLeaf() + ", isChildOf=" + isChildOf + ", attributes=" + attributes 
 				+ ", isFatherOf=" + isFatherOf +"]";
 	}
-
+	
+	@Override
 	public String showXml() {
 
-		return XmlFormatter.format((showXml("1.0","UTF-8",null)));
+		return showXml("1.0","UTF-8",null);
 	}
-
+	
+	@Override
 	public String showXml(String version, String encoding, String grammaire) {
 
 		return "<?xml version=\""+version+"\" encoding=\""+encoding+"\""+ ((grammaire==null) ? "" : " "+grammaire)  +" ?>"+showXmlValue();
 	}
 	
-	
+	@Override
 	public String showXmlValue() {
 		String s = new String("");
 		for (Long l : isFatherOf) 

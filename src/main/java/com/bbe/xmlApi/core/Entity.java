@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Entity extends AbstractEntity{
+import com.bbe.xmlApi.util.XmlFormatter;
+
+public class Entity implements Entity_I{
 
 	protected long id = 0L;
 	protected String tag;
@@ -14,7 +16,7 @@ public class Entity extends AbstractEntity{
 	protected long isChildOf = -1;
 	protected Map<String, String> attributes = null;
 	protected int level = 0;//TODO bug. le level ne se repand pas quand on utilise la methode addchild
-	
+
 	protected Entity() {}
 
 	public Entity addChild(String currentTag) {
@@ -171,14 +173,14 @@ public class Entity extends AbstractEntity{
 	}
 
 	private void findNextEntity(Map<Long, Entity> mapEntities, String[] xp, Entity x_, int i) {
-		
+
 		String tagToFind = xp[i];
-		
+
 		if ( tagToFind.contains("[")) {//attributes have to be found
 			String strToParse = xp[i].split("[\\[]")[1];
 			strToParse = strToParse.replace("]", "").replace("\"", "");
 			tagToFind = xp[i].split("[\\[]")[0];
-			
+
 			for (Map.Entry<Long, Entity> xmlEntity : x_.getChilds().entrySet()) {
 				String[] attToFind = strToParse.split(",");
 				for (int j = 0; j < attToFind.length; j++) {
@@ -194,7 +196,7 @@ public class Entity extends AbstractEntity{
 						nbAttToFind--;
 					}
 				}
-				
+
 				if (tagToFind.equals(xmlEntity.getValue().getTag()) && nbAttToFind == 0) {
 					if (i+1 == xp.length) {
 						mapEntities.put(xmlEntity.getValue().id, xmlEntity.getValue());
@@ -204,7 +206,7 @@ public class Entity extends AbstractEntity{
 					}
 				}
 			}
-			
+
 		}
 		else {
 			for (Map.Entry<Long, Entity> xmlEntity : x_.getChilds().entrySet()) {
@@ -237,12 +239,12 @@ public class Entity extends AbstractEntity{
 		return s;
 	}
 
-protected String showXmlValue_() {
-		
+	protected String showXmlValue_() {
+
 		String header,footer;
-		
+
 		if ("".equals(data) && this.isLeaf()) {
-			
+
 			footer=new String("");
 			if (attributes==null || attributes.size()==0) 
 			{
@@ -252,55 +254,94 @@ protected String showXmlValue_() {
 			{
 				header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\"/>");
 			}
-			
+
 		}
 		else {
-			
+
 			footer=new String("</"+tag+">");
 			if (attributes==null || attributes.size()==0) 
-				{
-					header=new String("<"+tag+">");
-				}
-				else 
-				{
-					header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\">");
-				}
+			{
+				header=new String("<"+tag+">");
+			}
+			else 
+			{
+				header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\">");
+			}
 		}
-		
+
 		return header + data + getSonTags() +footer;
 
 	}
 
-	
 	public Entity getEntityById(long l) {
 		return EntityControler.getInstance().getEntity(l);
 	}
-	
+
 	public boolean isVirtualEntity() {
-		return getThis().getClass().getSimpleName().equals("VirtualXMLEntity");
+		return getThis().getClass().getSimpleName().equals(VirtualXMLEntity.class.getSimpleName());
 	}
 
 	public Entity getThis() {
 		return this;
 	}
 
+	@Override
 	public String showXml() {
-		return null;
-	}
-
-	public String showXml(String version, String encoding, String grammaire) {
-		return null;
-	}
-
-	public String showXmlValue() {
-		return null;
+		if (isVirtualEntity()) {
+			return showXml("1.0","UTF-8",null);
+		}
+		else {
+			return XmlFormatter.format(showXml("1.0","UTF-8",null));
+		}
+		
 	}
 	
+	@Override
+	public String showXml(String version, String encoding, String grammaire) {
+
+		return "<?xml version=\""+version+"\" encoding=\""+encoding+"\""+ ((grammaire==null) ? "" : " "+grammaire)  +" ?>"+showXmlValue();
+	}
+
+	@Override	
+	public String showXmlValue() {
+
+		String header,footer;
+
+		if ("".equals(data) && this.isLeaf()) {
+
+			footer=new String("");
+			if (attributes==null || attributes.size()==0) 
+			{
+				header=new String("<"+tag+"/>");
+			}
+			else 
+			{
+				header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\"/>");
+			}
+
+		}
+		else {
+
+			footer=new String("</"+tag+">");
+			if (attributes==null || attributes.size()==0) 
+			{
+				header=new String("<"+tag+">");
+			}
+			else 
+			{
+				header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\">");
+			}
+		}
+
+		return header + data + getSonTags() +footer;
+
+	}
+
 	@Override
 	public String toString() {
 		return "Entity [id=" + id + ", level=" + level + ", tag=" + tag + ", data=" + data +  ", leaf="
 				+ isLeaf() + ", isChildOf=" + isChildOf + ", attributes=" + attributes 
 				+ ", isFatherOf=" + isFatherOf +"]";
 	}
-	
+
 }

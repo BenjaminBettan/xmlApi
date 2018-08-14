@@ -2,11 +2,7 @@ package com.bbe.xmlApi;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import com.bbe.xmlApi.core.Entity;
-import com.bbe.xmlApi.core.VirtualXMLEntity;
-import com.bbe.xmlApi.core.XMLEntity;
-import com.bbe.xmlApi.core.EntityControler;
+import com.bbe.xmlApi.core.*;
 
 public class M {
 	
@@ -15,10 +11,10 @@ public class M {
 		Entity v = new VirtualXMLEntity("a");
 		
 		v.addChild("b");
+		v.addChild("b");
+		v.addChild("b");
 		
 		System.out.println(v.showXml());
-		
-		System.out.println(v.isVirtualEntity());
 		
 		Map<String, String> attributes = new HashMap<>();
 		attributes.put("aKey", "aValue");
@@ -30,7 +26,6 @@ public class M {
 		x2.addChild("x3").setAttributes(attributes);
 		
 		
-		EntityControler.getInstance();
 		for (Map.Entry<Long, Entity> xmlEntity : EntityControler.getMapEntities().entrySet()) {
 			System.out.println(xmlEntity.getValue());
 		}

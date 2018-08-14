@@ -19,7 +19,7 @@ public class EntityControler{
 	private static Map<Long, Entity> mapEntities = new HashMap<Long, Entity>();
 
 	protected synchronized long getNewValue() {
-		return compt++;
+		return ++compt;
 	}
 	
 	public Entity getEntity(long l) {

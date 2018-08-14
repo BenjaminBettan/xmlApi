@@ -2,8 +2,6 @@ package com.bbe.xmlApi.core;
 
 import java.util.Map;
 
-import com.bbe.xmlApi.util.XmlFormatter;
-
 /**
  * @author benjamin
  * Entity to persist
@@ -38,51 +36,6 @@ public class XMLEntity extends Entity{
 		return "XMLEntity [id=" + id + ", level=" + level + ", tag=" + tag + ", data=" + data +  ", leaf="
 				+ isLeaf() + ", isChildOf=" + isChildOf + ", attributes=" + attributes 
 				+ ", isFatherOf=" + isFatherOf +"]";
-	}
-
-	@Override
-	public String showXml() {
-
-		return XmlFormatter.format((showXml("1.0","UTF-8",null)));
-	}
-	@Override
-	public String showXml(String version, String encoding, String grammaire) {
-
-		return "<?xml version=\""+version+"\" encoding=\""+encoding+"\""+ ((grammaire==null) ? "" : " "+grammaire)  +" ?>"+showXmlValue();
-	}
-	@Override	
-	public String showXmlValue() {
-		
-		String header,footer;
-		
-		if ("".equals(data) && this.isLeaf()) {
-			
-			footer=new String("");
-			if (attributes==null || attributes.size()==0) 
-			{
-				header=new String("<"+tag+"/>");
-			}
-			else 
-			{
-				header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\"/>");
-			}
-			
-		}
-		else {
-			
-			footer=new String("</"+tag+">");
-			if (attributes==null || attributes.size()==0) 
-				{
-					header=new String("<"+tag+">");
-				}
-				else 
-				{
-					header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\">");
-				}
-		}
-		
-		return header + data + getSonTags() +footer;
-
 	}
 
 }
