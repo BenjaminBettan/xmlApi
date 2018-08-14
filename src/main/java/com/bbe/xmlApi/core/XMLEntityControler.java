@@ -16,17 +16,17 @@ public class XMLEntityControler{
 	
 	private long compt = 0L;
 	
-	private static Map<Long, AbstractXMLEntity> mapEntities = new HashMap<Long, AbstractXMLEntity>();
+	private static Map<Long, Entity> mapEntities = new HashMap<Long, Entity>();
 
 	protected synchronized long getNewValue() {
 		return compt++;
 	}
 	
-	public AbstractXMLEntity getEntity(long l) {
+	public Entity getEntity(long l) {
 		return mapEntities.get(l);
 	}
 
-	public static Map<Long, AbstractXMLEntity> getMapEntities() {
+	public static Map<Long, Entity> getMapEntities() {
 		return mapEntities;
 	}
 

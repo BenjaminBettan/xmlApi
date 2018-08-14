@@ -2,11 +2,13 @@ package com.bbe.xmlApi.core;
 
 import java.util.Map;
 
+import com.bbe.xmlApi.util.XmlFormatter;
+
 /**
  * @author benjamin
  * Entity to persist
  */
-public class XMLEntity extends AbstractXMLEntity{
+public class XMLEntity extends Entity{
 
 	private XMLEntity(String currentTag, Map<String, String> currentAttributes, int level2) {
 		this.id = XMLEntityControler.getInstance().getNewValue();
@@ -38,16 +40,17 @@ public class XMLEntity extends AbstractXMLEntity{
 				+ ", isFatherOf=" + isFatherOf +"]";
 	}
 
+	@Override
 	public String showXml() {
 
 		return XmlFormatter.format((showXml("1.0","UTF-8",null)));
 	}
-
+	@Override
 	public String showXml(String version, String encoding, String grammaire) {
 
 		return "<?xml version=\""+version+"\" encoding=\""+encoding+"\""+ ((grammaire==null) ? "" : " "+grammaire)  +" ?>"+showXmlValue();
 	}
-	
+	@Override	
 	public String showXmlValue() {
 		
 		String header,footer;
@@ -80,11 +83,6 @@ public class XMLEntity extends AbstractXMLEntity{
 		
 		return header + data + getSonTags() +footer;
 
-	}
-
-	@Override
-	public Object getThis() {
-		return this;
 	}
 
 }

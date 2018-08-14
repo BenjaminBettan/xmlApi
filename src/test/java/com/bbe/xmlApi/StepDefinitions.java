@@ -5,21 +5,21 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.bbe.xmlApi.core.AbstractXMLEntity;
+import com.bbe.xmlApi.core.Entity;
 import com.bbe.xmlApi.core.XMLEntity;
 
 import cucumber.api.java.en.*;
 
 public class StepDefinitions {
 	
-	private AbstractXMLEntity x;
+	private Entity x;
 	private String xp;
-	private Map<Long, AbstractXMLEntity> mapEntities;
+	private Map<Long, Entity> mapEntities;
 	
 	@Given("^je charge scenario (\\d+)$")
 	public void je_charge_scenario(int scenario) throws Throwable {
 		
-		XMLEntity y1,x2;
+		Entity y1,x2;
 		switch (scenario) {
 		case 1:
 			x = new XMLEntity("x1");
@@ -76,7 +76,7 @@ public class StepDefinitions {
 			tagToFind = tagToFind.split("[\\[]")[0];
 		}
 		
-		for (Map.Entry<Long, AbstractXMLEntity> xmlEntity : mapEntities.entrySet()) {
+		for (Map.Entry<Long, Entity> xmlEntity : mapEntities.entrySet()) {
 			assertTrue("At least one tag is wrong : "+xmlEntity.getValue().getTag()
 					+"/ Expected : "+tagToFind,
 					

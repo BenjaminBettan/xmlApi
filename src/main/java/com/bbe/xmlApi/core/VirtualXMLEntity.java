@@ -2,11 +2,13 @@ package com.bbe.xmlApi.core;
 
 import java.util.Map;
 
+import com.bbe.xmlApi.util.XmlFormatter;
+
 /**
  * @author benjamin
  * Entity to persist
  */
-public class VirtualXMLEntity extends AbstractXMLEntity{
+public class VirtualXMLEntity extends Entity{
 
 	private VirtualXMLEntity(String currentTag, Map<String, String> currentAttributes, int level2) {
 		this.id = XMLEntityControler.getInstance().getNewValue();
@@ -33,7 +35,7 @@ public class VirtualXMLEntity extends AbstractXMLEntity{
 
 	@Override
 	public String toString() {
-		return "XMLEntity [id=" + id + ", level=" + level + ", tag=" + tag + ", data=" + data +  ", leaf="
+		return "VirtualXMLEntity [id=" + id + ", level=" + level + ", tag=" + tag + ", data=" + data +  ", leaf="
 				+ isLeaf() + ", isChildOf=" + isChildOf + ", attributes=" + attributes 
 				+ ", isFatherOf=" + isFatherOf +"]";
 	}
@@ -48,44 +50,16 @@ public class VirtualXMLEntity extends AbstractXMLEntity{
 		return "<?xml version=\""+version+"\" encoding=\""+encoding+"\""+ ((grammaire==null) ? "" : " "+grammaire)  +" ?>"+showXmlValue();
 	}
 	
+	
 	public String showXmlValue() {
-		
-		String header,footer;
-		
-		if ("".equals(data) && this.isLeaf()) {
-			
-			footer=new String("");
-			if (attributes==null || attributes.size()==0) 
-			{
-				header=new String("<"+tag+"/>");
-			}
-			else 
-			{
-				header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\"/>");
-			}
-			
-		}
-		else {
-			
-			footer=new String("</"+tag+">");
-			if (attributes==null || attributes.size()==0) 
-				{
-					header=new String("<"+tag+">");
-				}
-				else 
-				{
-					header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\">");
-				}
+		String s = new String("");
+		for (Long l : isFatherOf) 
+		{
+			s+=getEntityById(l).showXmlValue_();
 		}
 		
-		return header + data + getSonTags() +footer;
-
+		return s;
 	}
-
-	@Override
-	public Object getThis() {
-		return this;
-	}
-
+	
 }
 

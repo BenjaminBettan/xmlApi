@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractXMLEntity {
+public class Entity extends AbstractEntity{
 
 	protected long id = 0L;
 	protected String tag;
@@ -14,18 +14,14 @@ public abstract class AbstractXMLEntity {
 	protected long isChildOf = -1;
 	protected Map<String, String> attributes = null;
 	protected int level = 0;//TODO bug. le level ne se repand pas quand on utilise la methode addchild
+	
+	protected Entity() {}
 
-	public abstract Object getThis();
+	public Entity addChild(String currentTag) {
 
-	public abstract String showXml();
-	public abstract String showXml(String version, String encoding, String grammaire);
-	public abstract String showXmlValue();
+		Entity x_ = new XMLEntity(currentTag, level+1);
 
-	public XMLEntity addChild(String currentTag) {
-
-		XMLEntity x_ = new XMLEntity(currentTag, level+1);
-
-		XMLEntity this_ = (XMLEntity) getThis();
+		Entity this_ = (Entity) getThis();
 
 		this_.setIsFatherOf(x_.getId());
 		x_.setIsChildOf(this.getId());
@@ -35,11 +31,7 @@ public abstract class AbstractXMLEntity {
 		return x_;
 	}
 
-	public XMLEntity addChild(AbstractXMLEntity x_) {
-		return addChild((XMLEntity) x_);
-	}
-
-	public XMLEntity addChild(XMLEntity x_) {
+	public Entity addChild(Entity x_) {
 		this.setIsFatherOf(x_.getId());
 		x_.setIsChildOf(this.getId());
 		x_.level = this.level+1;
@@ -78,7 +70,7 @@ public abstract class AbstractXMLEntity {
 		return isFatherOf == null || isFatherOf.size() == 0;
 	}
 
-	public AbstractXMLEntity getParent() {
+	public Entity getParent() {
 		return XMLEntityControler.getInstance().getEntity(isChildOf);
 	}
 
@@ -94,8 +86,8 @@ public abstract class AbstractXMLEntity {
 		this.attributes = attributes;
 	}
 
-	public Map<Long, AbstractXMLEntity> getChilds() {
-		Map<Long, AbstractXMLEntity> mapEntities = new HashMap<Long, AbstractXMLEntity>();
+	public Map<Long, Entity> getChilds() {
+		Map<Long, Entity> mapEntities = new HashMap<Long, Entity>();
 
 		if ( isFatherOf!=null) {
 			for (Long l : isFatherOf) {
@@ -114,9 +106,9 @@ public abstract class AbstractXMLEntity {
 		this.isFatherOf.add(id2);
 	}
 
-	public Map<Long, AbstractXMLEntity> getEntitiesByXpath(String xpath_) {
+	public Map<Long, Entity> getEntitiesByXpath(String xpath_) {
 
-		Map<Long, AbstractXMLEntity> mapEntities = new HashMap<Long, AbstractXMLEntity>();
+		Map<Long, Entity> mapEntities = new HashMap<Long, Entity>();
 
 		xpath_ = xpath_.substring(1, xpath_.length() - 1);
 		String[] x = xpath_.split("/");
@@ -126,7 +118,7 @@ public abstract class AbstractXMLEntity {
 			xp[i-1] = x[i];
 		}
 
-		XMLEntity x_ = (XMLEntity) getThis();
+		Entity x_ = (Entity) getThis();
 
 		if ( ! x[0].contains("[")) {//no attribute has to be found
 			if (x_.getTag().equals(x[0])) {
@@ -178,7 +170,7 @@ public abstract class AbstractXMLEntity {
 		return mapEntities;
 	}
 
-	private void findNextEntity(Map<Long, AbstractXMLEntity> mapEntities, String[] xp, AbstractXMLEntity x_, int i) {
+	private void findNextEntity(Map<Long, Entity> mapEntities, String[] xp, Entity x_, int i) {
 		
 		String tagToFind = xp[i];
 		
@@ -187,7 +179,7 @@ public abstract class AbstractXMLEntity {
 			strToParse = strToParse.replace("]", "").replace("\"", "");
 			tagToFind = xp[i].split("[\\[]")[0];
 			
-			for (Map.Entry<Long, AbstractXMLEntity> xmlEntity : x_.getChilds().entrySet()) {
+			for (Map.Entry<Long, Entity> xmlEntity : x_.getChilds().entrySet()) {
 				String[] attToFind = strToParse.split(",");
 				for (int j = 0; j < attToFind.length; j++) {
 					attToFind[j] = attToFind[j].substring(1);
@@ -215,7 +207,7 @@ public abstract class AbstractXMLEntity {
 			
 		}
 		else {
-			for (Map.Entry<Long, AbstractXMLEntity> xmlEntity : x_.getChilds().entrySet()) {
+			for (Map.Entry<Long, Entity> xmlEntity : x_.getChilds().entrySet()) {
 				if (tagToFind.equals(xmlEntity.getValue().getTag())) {
 					if (i+1 == xp.length) {
 						mapEntities.put(xmlEntity.getValue().id, xmlEntity.getValue());
@@ -245,11 +237,70 @@ public abstract class AbstractXMLEntity {
 		return s;
 	}
 
-	public AbstractXMLEntity getEntityById(long l) {
+protected String showXmlValue_() {
+		
+		String header,footer;
+		
+		if ("".equals(data) && this.isLeaf()) {
+			
+			footer=new String("");
+			if (attributes==null || attributes.size()==0) 
+			{
+				header=new String("<"+tag+"/>");
+			}
+			else 
+			{
+				header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\"/>");
+			}
+			
+		}
+		else {
+			
+			footer=new String("</"+tag+">");
+			if (attributes==null || attributes.size()==0) 
+				{
+					header=new String("<"+tag+">");
+				}
+				else 
+				{
+					header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\">");
+				}
+		}
+		
+		return header + data + getSonTags() +footer;
+
+	}
+
+	
+	public Entity getEntityById(long l) {
 		return XMLEntityControler.getInstance().getEntity(l);
 	}
 	
 	public boolean isVirtualEntity() {
 		return getThis().getClass().getSimpleName().equals("VirtualXMLEntity");
 	}
+
+	public Entity getThis() {
+		return this;
+	}
+
+	public String showXml() {
+		return null;
+	}
+
+	public String showXml(String version, String encoding, String grammaire) {
+		return null;
+	}
+
+	public String showXmlValue() {
+		return null;
+	}
+	
+	@Override
+	public String toString() {
+		return "Entity [id=" + id + ", level=" + level + ", tag=" + tag + ", data=" + data +  ", leaf="
+				+ isLeaf() + ", isChildOf=" + isChildOf + ", attributes=" + attributes 
+				+ ", isFatherOf=" + isFatherOf +"]";
+	}
+	
 }
