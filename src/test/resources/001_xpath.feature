@@ -1,4 +1,4 @@
-Feature: test xpath du scenario 1
+Feature: xpath
 
 #XMLEntity [id=0, level=0, tag=x1, data=, leaf=false, isChildOf=-1, attributes=null, isFatherOf=[2]]
 #XMLEntity [id=2, level=1, tag=x2, data=, leaf=false, isChildOf=0, attributes=null, isFatherOf=[1]]

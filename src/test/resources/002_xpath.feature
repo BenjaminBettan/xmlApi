@@ -1,4 +1,4 @@
-Feature: test xpath du scenario 2
+Feature: xpath
 
 #<?xml version="1.0" encoding="UTF-8"?>
 #<x1>
