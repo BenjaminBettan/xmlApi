@@ -1,13 +1,9 @@
 package com.bbe.xmlApi;
 
-
 import static org.junit.Assert.assertTrue;
-
 import java.util.Map;
-
 import com.bbe.xmlApi.core.XMLEntity;
 import com.bbe.xmlApi.core.AbstractXMLEntity;
-
 import cucumber.api.java.en.*;
 
 public class StepDefinitions {
@@ -68,6 +64,5 @@ public class StepDefinitions {
 					
 					xmlEntity.getValue().getTag().equals(tagToFind));
 		}
-		
 	}
 }

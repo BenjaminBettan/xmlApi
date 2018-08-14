@@ -13,7 +13,7 @@ public abstract class AbstractXMLEntity {
 	protected List<Long> isFatherOf;
 	protected long isChildOf = -1;
 	protected Map<String, String> attributes = null;
-	protected int level = 0;//TODO bug
+	protected int level = 0;//TODO bug. le level ne se repand pas quand on utilise la methode addchild
 	protected boolean isVirtualXMLEntity;
 	
 	public abstract Object getThis();
