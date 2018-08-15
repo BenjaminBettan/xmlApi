@@ -1,14 +1,17 @@
 package com.bbe.xmlApi.core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.bbe.xmlApi.util.XmlFormatter;
+import com.bbe.xmlApi.util.XmlFormatterIndent;
 
-public class Entity implements Entity_I{
-
+public class Entity implements Entity_I,Serializable{
+	
+	private static final long serialVersionUID = Long.MAX_VALUE - 999;
+	
 	protected long id = 0L;
 	protected String tag;
 	protected String data = new String("");
@@ -19,23 +22,23 @@ public class Entity implements Entity_I{
 
 	protected Entity() {}
 
-	public Entity addChild(String currentTag) {
+	public Entity_I addChild(String currentTag) {
 
 		Entity x_ = new XMLEntity(currentTag, level+1);
 
-		Entity this_ = (Entity) getThis();
-		this_.setIsFatherOf(x_.getId());
+		this.setIsFatherOf(x_.getId());
 		x_.setIsChildOf(this.getId());
-		EntityControler.getMapEntities().put(x_.getId(), x_);
+		EntityControler.putEntity(x_);
 
 		return x_;
 	}
-
-	public Entity addChild(Entity x_) {
+	
+	public Entity_I addChild(Entity_I x_) {
+		XMLEntity e = (XMLEntity) x_;
 		this.setIsFatherOf(x_.getId());
-		x_.setIsChildOf(this.getId());
-		x_.level = this.level+1;
-		EntityControler.getMapEntities().put(x_.getId(), x_);
+		e.setIsChildOf(this.getId());
+		e.level = this.level+1;
+		EntityControler.putEntity(e);
 		return x_;
 	}
 
@@ -70,7 +73,7 @@ public class Entity implements Entity_I{
 		return isFatherOf == null || isFatherOf.size() == 0;
 	}
 
-	public Entity getParent() {
+	public Entity_I getParent() {
 		if (isChildOf>0) {
 			return EntityControler.getMapEntities().get(isChildOf);	
 		}
@@ -79,9 +82,10 @@ public class Entity implements Entity_I{
 		}
 	}
 
-	protected void setLevel(int level2) {
+	public void setLevel(int level2) {
 		level = level2;
 	}
+	
 	protected void setIsChildOf(long isChildOf) {
 		this.isChildOf = isChildOf;
 	}
@@ -94,8 +98,8 @@ public class Entity implements Entity_I{
 		this.attributes = attributes;
 	}
 
-	public Map<Long, Entity> getChilds() {
-		Map<Long, Entity> mapEntities = new HashMap<Long, Entity>();
+	public Map<Long, Entity_I> getChilds() {
+		Map<Long, Entity_I> mapEntities = new HashMap<Long, Entity_I>();
 
 		if ( isFatherOf!=null) {
 			for (Long l : isFatherOf) {
@@ -114,9 +118,9 @@ public class Entity implements Entity_I{
 		this.isFatherOf.add(id2);
 	}
 
-	public Map<Long, Entity> getEntitiesByXpath(String xpath_) {
+	public Map<Long, Entity_I> getEntitiesByXpath(String xpath_) {
 
-		Map<Long, Entity> mapEntities = new HashMap<Long, Entity>();
+		Map<Long, Entity_I> mapEntities = new HashMap<Long, Entity_I>();
 
 		xpath_ = xpath_.substring(1, xpath_.length() - 1);
 		String[] x = xpath_.split("/");
@@ -126,7 +130,7 @@ public class Entity implements Entity_I{
 			xp[i-1] = x[i];
 		}
 
-		Entity x_ = (Entity) getThis();
+		Entity x_ = this;
 
 		if ( ! x[0].contains("[")) {//no attribute has to be found
 			if (x_.getTag().equals(x[0])) {
@@ -178,7 +182,7 @@ public class Entity implements Entity_I{
 		return mapEntities;
 	}
 
-	private void findNextEntity(Map<Long, Entity> mapEntities, String[] xp, Entity x_, int i) {
+	private void findNextEntity(Map<Long, Entity_I> mapEntities, String[] xp, Entity_I x_, int i) {
 
 		String tagToFind = xp[i];
 
@@ -187,7 +191,7 @@ public class Entity implements Entity_I{
 			strToParse = strToParse.replace("]", "").replace("\"", "");
 			tagToFind = xp[i].split("[\\[]")[0];
 
-			for (Map.Entry<Long, Entity> xmlEntity : x_.getChilds().entrySet()) {
+			for (Map.Entry<Long, Entity_I> xmlEntity : x_.getChilds().entrySet()) {
 				String[] attToFind = strToParse.split(",");
 				for (int j = 0; j < attToFind.length; j++) {
 					attToFind[j] = attToFind[j].substring(1);
@@ -205,7 +209,7 @@ public class Entity implements Entity_I{
 
 				if (tagToFind.equals(xmlEntity.getValue().getTag()) && nbAttToFind == 0) {
 					if (i+1 == xp.length) {
-						mapEntities.put(xmlEntity.getValue().id, xmlEntity.getValue());
+						mapEntities.put(xmlEntity.getValue().getId(), xmlEntity.getValue());
 					}
 					else {
 						findNextEntity(mapEntities,xp,xmlEntity.getValue(),i+1);					
@@ -215,10 +219,10 @@ public class Entity implements Entity_I{
 
 		}
 		else {
-			for (Map.Entry<Long, Entity> xmlEntity : x_.getChilds().entrySet()) {
+			for (Map.Entry<Long, Entity_I> xmlEntity : x_.getChilds().entrySet()) {
 				if (tagToFind.equals(xmlEntity.getValue().getTag())) {
 					if (i+1 == xp.length) {
-						mapEntities.put(xmlEntity.getValue().id, xmlEntity.getValue());
+						mapEntities.put(xmlEntity.getValue().getId(), xmlEntity.getValue());
 					}
 					else {
 						findNextEntity(mapEntities,xp,xmlEntity.getValue(),i+1);					
@@ -245,18 +249,12 @@ public class Entity implements Entity_I{
 		return s;
 	}
 
-
-
-	public Entity getEntityById(long l) {
+	public Entity_I getEntityById(long l) {
 		return EntityControler.getInstance().getEntity(l);
 	}
 
 	public boolean isVirtualEntity() {
-		return getThis().getClass().getSimpleName().equals(VirtualXMLEntity.class.getSimpleName());
-	}
-
-	public Entity getThis() {
-		return this;
+		return this.getClass().getSimpleName().equals(VirtualXMLEntity.class.getSimpleName());
 	}
 
 	@Override
@@ -265,7 +263,7 @@ public class Entity implements Entity_I{
 			return showXml("1.0","UTF-8",null);
 		}
 		else {
-			return XmlFormatter.format(showXml("1.0","UTF-8",null));
+			return XmlFormatterIndent.format(showXml("1.0","UTF-8",null));
 		}
 
 	}
@@ -315,6 +313,5 @@ public class Entity implements Entity_I{
 				+ isLeaf() + ", isChildOf=" + isChildOf + ", attributes=" + attributes 
 				+ ", isFatherOf=" + isFatherOf +"]";
 	}
-
 
 }

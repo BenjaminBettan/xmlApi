@@ -24,9 +24,9 @@ import java.io.Writer;
  * String formattedXml = new XmlFormatter().format("<tag><nested>hello</nested></tag>");
  * </code>
  */
-public class XmlFormatter {
+public class XmlFormatterIndent {
 
-    public XmlFormatter() {
+    public XmlFormatterIndent() {
     }
 
     public static String format(String unformattedXml) {

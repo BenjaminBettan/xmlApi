@@ -7,37 +7,42 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class MySaxHandler extends DefaultHandler {
-	private Entity root;
+	
+	private Entity_I root,pointer;
+	
 	private int level = 0;
 	private Map<String, String> currentAttributes = null;
-	private boolean isFirstOccurance = true; 
-	private Entity pointer = null;
+	private boolean isFirstOccuranceInProcess = true; 
 
 	@Override
 	public void startElement(String uri, String localName, String tagName, Attributes attributes) throws SAXException {
-		if (attributes.getLength()>0) {
-			currentAttributes = new HashMap<>();	
-		}
-
-		for (int i=0; i < attributes.getLength(); i++) 
-		{
-			currentAttributes.put(attributes.getQName(i), attributes.getValue(i));
-		}
 		
-		if (isFirstOccurance) {
-			isFirstOccurance = false;
-			root = new XMLEntity(tagName, currentAttributes, level);
-			EntityControler.getMapEntities().put(root.getId(), root);
-			pointer = root;
+		if (attributes.getLength()>0) {
+			currentAttributes = new HashMap<>();
+			for (int i=0; i < attributes.getLength(); i++) 
+			{
+				currentAttributes.put(attributes.getQName(i), attributes.getValue(i));
+			}
 		}
 		else {
-			pointer = pointer.addChild(tagName);
+			currentAttributes = null;
+		}
+		
+		if (isFirstOccuranceInProcess) {
+			
+			root = new XMLEntity(tagName, currentAttributes, level);
+			pointer = root;
+			isFirstOccuranceInProcess = false;
+		}
+		else {
+			
+			pointer = pointer.addChild(tagName);//now pointer is focus on the child
 			pointer.setAttributes(currentAttributes);
 			pointer.setLevel(level);
+			
 		}
 		
 		level++;
-		currentAttributes = null;
 	}
 
 	@Override
@@ -53,13 +58,13 @@ public class MySaxHandler extends DefaultHandler {
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		level--;
 		if (pointer.getParent()==null) {//sax process is over. -> clear if you want to use this instance again
-			isFirstOccurance = true;
+			isFirstOccuranceInProcess = true;
 		}
 		pointer = pointer.getParent();
 		
 	}
 	
-	public Entity getRoot() {
+	public Entity_I getRoot() {
 		return root;
 	}
 }

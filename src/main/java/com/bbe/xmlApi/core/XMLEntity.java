@@ -1,34 +1,35 @@
 package com.bbe.xmlApi.core;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  * @author benjamin
  * Entity to persist
  */
-public class XMLEntity extends Entity{
-
-	protected XMLEntity(String currentTag, Map<String, String> currentAttributes, int level2) {
+public class XMLEntity extends Entity implements Serializable{
+	
+	private static final long serialVersionUID = Long.MAX_VALUE - 9999;
+	
+	public XMLEntity(String currentTag, Map<String, String> currentAttributes, int level2) {
 		this.id = EntityControler.getInstance().getNewValue();
 		this.tag = currentTag;
 		this.attributes = currentAttributes;
 		this.level = level2;
+		EntityControler.putEntity(this);
 	}
 
 	public XMLEntity(String currentTag, Map<String, String> att) {
 		this(currentTag, att,0);
-		EntityControler.getMapEntities().put(this.getId(), this);
 	}
 	
 	public XMLEntity(String currentTag) {
 		this(currentTag, null,0);
-		EntityControler.getMapEntities().put(this.getId(), this);
 	}
 
 	
 	public XMLEntity(String currentTag, int i) {
 		this(currentTag, null,i);
-		EntityControler.getMapEntities().put(this.getId(), this);
 	}
 
 	@Override

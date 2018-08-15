@@ -1,53 +1,58 @@
 package com.bbe.xmlApi;
 
-import static org.junit.Assert.assertTrue;
-import java.util.Map;
-import com.bbe.xmlApi.core.Entity;
-
+import org.junit.Assert;
 import cucumber.api.java.en.*;
+import java.util.Map;
+import com.bbe.xmlApi.core.EntityControler;
+import com.bbe.xmlApi.core.Entity_I;
 
 public class StepDefinitions {
 	
-	private Entity root;
-	private String xp;
-	private Map<Long, Entity> mapEntities;
-	private SimpleTest st = new SimpleTest();
+	private String xpathToFind;
+	private Map<Long, Entity_I> mapEntitiesFound;
+	private SimpleTest simpleTest = new SimpleTest();
 	
 	@Given("^je charge scenario (\\d+)$")
 	public void je_charge_scenario(int scenario) throws Throwable {
+		
+		EntityControler.clean();//
+		
 		switch (scenario) {
-		case 1:
-			root = st.sc_1_();
-			break;
-		case 2:
-			root = st.sc_2_();
-			break;
-		case 3:
-			root = st.sc_3_();
-			break;
-		default:
-			throw new RuntimeException();
+			case 1:
+				simpleTest.sc_1_();
+				break;
+			case 2:
+				simpleTest.sc_2_();
+				break;
+			case 3:
+				simpleTest.sc_3_();
+				break;
+			default:
+				throw new RuntimeException();
 		}
+		
 	}
 	
 	@When("^je cherche \"(.*?)\"$")
 	public void je_cherche(String xpath_) throws Throwable {
-		xp = xpath_;
-		mapEntities = root.getEntitiesByXpath(xpath_);
+		
+		xpathToFind = xpath_;
+		mapEntitiesFound = EntityControler.getRoot().getEntitiesByXpath(xpath_);
+		
 	}
 	
 	@Then("^je dois trouver : (\\d+) entite$")
 	public void je_dois_trouver_entite(int nbEntities) throws Throwable {
 
-		assertTrue(mapEntities.size() + " entitie(s) found"
+		Assert.assertTrue(mapEntitiesFound.size() + " entitie(s) found"
 				+ "/ Expected : " + nbEntities ,
 				
-				mapEntities.size() == nbEntities);
+				mapEntitiesFound.size() == nbEntities);
 		
 		//seconde partie du test on verifie que tous les noeuds ont le meme nom
-		xp = xp.substring(1, xp.length() - 1);
+		xpathToFind = xpathToFind.substring(1, xpathToFind.length() - 1);
 		
-		String[] tags = xp.split("/");
+		String[] tags = xpathToFind.split("/");
 		String tagToFind = tags[tags.length - 1];
 		
 		if ( tagToFind.contains("[")) {//des attributs doivent etre trouves
@@ -56,11 +61,12 @@ public class StepDefinitions {
 			tagToFind = tagToFind.split("[\\[]")[0];
 		}
 		
-		for (Map.Entry<Long, Entity> xmlEntity : mapEntities.entrySet()) {
-			assertTrue("At least one tag is wrong : "+xmlEntity.getValue().getTag()
+		for (Map.Entry<Long, Entity_I> xmlEntity : mapEntitiesFound.entrySet()) {
+			Assert.assertTrue("At least one tag is wrong : "+xmlEntity.getValue().getTag()
 					+"/ Expected : "+tagToFind,
 					
 					xmlEntity.getValue().getTag().equals(tagToFind));
 		}
+		
 	}
 }
