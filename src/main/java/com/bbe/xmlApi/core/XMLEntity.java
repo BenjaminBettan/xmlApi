@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class XMLEntity extends Entity{
 
-	private XMLEntity(String currentTag, Map<String, String> currentAttributes, int level2) {
+	protected XMLEntity(String currentTag, Map<String, String> currentAttributes, int level2) {
 		this.id = EntityControler.getInstance().getNewValue();
 		this.tag = currentTag;
 		this.attributes = currentAttributes;

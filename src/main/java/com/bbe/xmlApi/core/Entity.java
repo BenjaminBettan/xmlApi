@@ -24,10 +24,8 @@ public class Entity implements Entity_I{
 		Entity x_ = new XMLEntity(currentTag, level+1);
 
 		Entity this_ = (Entity) getThis();
-
 		this_.setIsFatherOf(x_.getId());
 		x_.setIsChildOf(this.getId());
-		x_.level = this.level+1;
 		EntityControler.getMapEntities().put(x_.getId(), x_);
 
 		return x_;
@@ -73,9 +71,17 @@ public class Entity implements Entity_I{
 	}
 
 	public Entity getParent() {
-		return EntityControler.getInstance().getEntity(isChildOf);
+		if (isChildOf>0) {
+			return EntityControler.getMapEntities().get(isChildOf);	
+		}
+		else {
+			return null;
+		}
 	}
 
+	protected void setLevel(int level2) {
+		level = level2;
+	}
 	protected void setIsChildOf(long isChildOf) {
 		this.isChildOf = isChildOf;
 	}
@@ -239,39 +245,7 @@ public class Entity implements Entity_I{
 		return s;
 	}
 
-	protected String showXmlValue_() {
 
-		String header,footer;
-
-		if ("".equals(data) && this.isLeaf()) {
-
-			footer=new String("");
-			if (attributes==null || attributes.size()==0) 
-			{
-				header=new String("<"+tag+"/>");
-			}
-			else 
-			{
-				header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\"/>");
-			}
-
-		}
-		else {
-
-			footer=new String("</"+tag+">");
-			if (attributes==null || attributes.size()==0) 
-			{
-				header=new String("<"+tag+">");
-			}
-			else 
-			{
-				header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\">");
-			}
-		}
-
-		return header + data + getSonTags() +footer;
-
-	}
 
 	public Entity getEntityById(long l) {
 		return EntityControler.getInstance().getEntity(l);
@@ -293,9 +267,9 @@ public class Entity implements Entity_I{
 		else {
 			return XmlFormatter.format(showXml("1.0","UTF-8",null));
 		}
-		
+
 	}
-	
+
 	@Override
 	public String showXml(String version, String encoding, String grammaire) {
 
@@ -304,7 +278,6 @@ public class Entity implements Entity_I{
 
 	@Override	
 	public String showXmlValue() {
-
 		String header,footer;
 
 		if ("".equals(data) && this.isLeaf()) {
@@ -334,7 +307,6 @@ public class Entity implements Entity_I{
 		}
 
 		return header + data + getSonTags() +footer;
-
 	}
 
 	@Override
@@ -343,5 +315,6 @@ public class Entity implements Entity_I{
 				+ isLeaf() + ", isChildOf=" + isChildOf + ", attributes=" + attributes 
 				+ ", isFatherOf=" + isFatherOf +"]";
 	}
+
 
 }

@@ -2,12 +2,10 @@ package com.bbe.xmlApi;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
-
 import com.bbe.xmlApi.core.Entity;
 import com.bbe.xmlApi.core.EntityControler;
 import com.bbe.xmlApi.core.VirtualXMLEntity;
@@ -28,8 +26,11 @@ public class SimpleTest {
 			for (Map.Entry<Long, Entity> xmlEntity : EntityControler.getMapEntities().entrySet()) {
 				System.out.println(xmlEntity.getValue());
 			}
-			System.out.println("\n\n"+root.showXml()+"\n\n");
-			EntityControler.clean();
+			if (root !=null) {
+				System.out.println("\n\n"+root.showXml()+"\n\n");
+				EntityControler.clean();	
+			}
+			
 			System.out.println(message+"\n\n------------------------------\n");
 
 		}
@@ -114,6 +115,17 @@ public class SimpleTest {
 		root.addChild("x2");
 		x2.addChild("x3").setAttributes(attributes);
 		return root;
+	}
+
+	
+	@Test
+	public void testSax() {
+		root = EntityControler.getInstance().parseWithSax("target/surefire-reports/TEST-com.bbe.xmlApi.SimpleTest.xml");
+	}
+	
+	@Test
+	public void testSax2() {
+		root = EntityControler.getInstance().parseWithSax("pom.xml");
 	}
 
 }

@@ -55,7 +55,7 @@ public class VirtualXMLEntity extends Entity{
 		String s = new String("");
 		for (Long l : isFatherOf) 
 		{
-			s+=getEntityById(l).showXmlValue_();
+			s+=getEntityById(l).showXmlValue();
 		}
 		
 		return s;
