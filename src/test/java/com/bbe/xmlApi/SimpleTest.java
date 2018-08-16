@@ -10,6 +10,7 @@ import com.bbe.xmlApi.core.EntityControler;
 import com.bbe.xmlApi.core.Entity_I;
 import com.bbe.xmlApi.core.VirtualXMLEntity;
 import com.bbe.xmlApi.core.XMLEntity;
+import com.bbe.xmlApi.util.JsonTransformer;
 
 public class SimpleTest {
 	
@@ -67,13 +68,53 @@ public class SimpleTest {
 		sc_3_();
 	}
 	
-//debut tests
-	
+//tests start here
+	/**
+	 * load pom.xml then transform and print json equivalent
+	 */
 	@Test
 	public void testSax() {
 		EntityControler.getInstance().parseWithSax("pom.xml");
-		XmlPersist.persist("hashmap.ser");
+		System.out.println(JsonTransformer.xmlToJson(EntityControler.getRoot().showXmlValue()));
+		
 	}
+	
+	@Test
+	public void testPersistLoad() {
+		// persist HashMap to file then load and print
+		String filePath = "hashmap.ser";
+		sc_1_();
+		XmlPersist.persist(filePath);
+		HashMap<Long, Entity_I> e = XmlLoad.serializeObjectToEntity(filePath);
+		System.out.println("e.values()");
+		System.out.println(e.values());
+		
+	}
+	
+//	@Test
+//	public void testPersistPerf() {
+//		
+//		long start = System.currentTimeMillis();
+//		Entity_I root = new XMLEntity("root");
+//		while (true) {
+//			if (System.currentTimeMillis() - start > 100) {
+//				break;
+//			} else {
+//				root.addChild("a");
+//			}
+//		}
+//		
+//		System.out.println("Size : "+EntityControler.getMapEntities().size());
+//		
+//		// persist HashMap to file then load and print
+//		String filePath = "hashmap.ser";
+//		XmlPersist.persist(filePath);
+//		HashMap<Long, Entity_I> e = XmlLoad.serializeObjectToEntity(filePath);
+//		System.out.println("e.values()");
+//		System.out.println(e.values());
+//		
+//	}
+	
 	
 	public Entity_I a_() {
 		Entity_I root = new VirtualXMLEntity("a");

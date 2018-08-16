@@ -8,13 +8,13 @@ public class JsonTransformer {
 
     public static int PRETTY_PRINT_INDENT_FACTOR = 4;
 
-    public static void xmlToJson(String xmlStr) {
+    public static String xmlToJson(String xmlStr) {
         try {
             JSONObject xmlJSONObj = XML.toJSONObject(xmlStr);
-            String jsonPrettyPrintString = xmlJSONObj.toString(PRETTY_PRINT_INDENT_FACTOR);
-            System.out.println(jsonPrettyPrintString);
+            return xmlJSONObj.toString(PRETTY_PRINT_INDENT_FACTOR);
         } catch (JSONException je) {
             System.out.println(je.toString());
         }
+		return null;
     }
 }
