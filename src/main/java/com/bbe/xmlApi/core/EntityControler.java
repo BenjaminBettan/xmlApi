@@ -20,14 +20,14 @@ public class EntityControler{
 	private static class SingletonHolder { private final static EntityControler instance = new EntityControler(); }
 	public static EntityControler getInstance() {return SingletonHolder.instance;}
 	
-	private static Map<Long, Entity_I> mapEntities = new HashMap<Long, Entity_I>();
-	private static Entity_I root;
+	private static Map<Long, Entity> mapEntities = new HashMap<Long, Entity>();
+	private static Entity root;
 
 	protected synchronized long getNewValue() {
 		return mapEntities.size() + 1;
 	}
 	
-	public Entity_I getEntity(long l) {
+	public Entity getEntity(long l) {
 		return mapEntities.get(l);
 	}
 	
@@ -46,18 +46,18 @@ public class EntityControler{
 	 * Please use EntityControler.putEntity(Entity e) to update your field EntityControler.mapEntities
 	 * @return
 	 */
-	public synchronized static Map<Long, Entity_I> getMapEntities() {
+	public synchronized static Map<Long, Entity> getMapEntities() {
 		return mapEntities;
 	}
 	
-	public synchronized static void putEntity(Entity e) {
+	public synchronized static void putEntity(EntityImplementation e) {
 		mapEntities.put(e.getId(), e);
 		if (root == null) {
 			root = e;
 		}
 	}
 	
-	public Entity_I parseWithSax(String filePath) {
+	public Entity parseWithSax(String filePath) {
 		
 		MySaxHandler mySaxHandler = new MySaxHandler();
 		
@@ -73,7 +73,7 @@ public class EntityControler{
 		return null;
 	}
 
-	public static Entity_I getRoot() {
+	public static Entity getRoot() {
 		return root;
 	}
 	

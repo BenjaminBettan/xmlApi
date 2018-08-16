@@ -4,12 +4,12 @@ import org.junit.Assert;
 import cucumber.api.java.en.*;
 import java.util.Map;
 import com.bbe.xmlApi.core.EntityControler;
-import com.bbe.xmlApi.core.Entity_I;
+import com.bbe.xmlApi.core.Entity;
 
 public class StepDefinitions {
 	
 	private String xpathToFind;
-	private Map<Long, Entity_I> mapEntitiesFound;
+	private Map<Long, Entity> mapEntitiesFound;
 	private SimpleTest simpleTest = new SimpleTest();
 	
 	@Given("^je charge \"(.*?)\"$")
@@ -68,7 +68,7 @@ public class StepDefinitions {
 			tagToFind = tagToFind.split("[\\[]")[0];
 		}
 		
-		for (Map.Entry<Long, Entity_I> xmlEntity : mapEntitiesFound.entrySet()) {
+		for (Map.Entry<Long, Entity> xmlEntity : mapEntitiesFound.entrySet()) {
 			Assert.assertTrue("At least one tag is wrong : "+xmlEntity.getValue().getTag()
 					+"/ Expected : "+tagToFind,
 					

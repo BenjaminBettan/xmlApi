@@ -8,11 +8,11 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class MySaxHandler extends DefaultHandler {
 	
-	private Entity_I root,pointer;
+	private Entity root,pointer;
 	private int level = 0;
 	private boolean isFirstOccuranceInProcess = true; 
 
-	public Entity_I getRoot() {
+	public Entity getRoot() {
 		return root;
 	}
 	

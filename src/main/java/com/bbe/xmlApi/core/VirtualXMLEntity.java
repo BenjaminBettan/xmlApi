@@ -4,10 +4,10 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * @author benjamin
  * Entity to persist
+ * @author benjamin
  */
-public class VirtualXMLEntity extends Entity implements Serializable{
+public class VirtualXMLEntity extends EntityImplementation implements Serializable{
 
 	private static final long serialVersionUID = Long.MAX_VALUE - 99999;
 

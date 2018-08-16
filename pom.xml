@@ -18,12 +18,8 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
+		<!--tests -->
+
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
@@ -31,6 +27,13 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!--CUCUMBER -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>info.cukes</groupId>
 			<artifactId>cucumber-junit</artifactId>
@@ -43,6 +46,9 @@
 			<version>1.2.2</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- END OF CUCUMBER -->
+
 		<!-- indent xml -->
 		<dependency>
 			<groupId>xerces</groupId>
@@ -55,6 +61,7 @@
 			<artifactId>sax</artifactId>
 			<version>2.0.1</version>
 		</dependency>
+		<!-- xmlToJson -->
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>

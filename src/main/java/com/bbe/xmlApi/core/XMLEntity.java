@@ -3,11 +3,12 @@ package com.bbe.xmlApi.core;
 import java.io.Serializable;
 import java.util.Map;
 
+
 /**
- * @author benjamin
  * Entity to persist
+ * @author benjamin
  */
-public class XMLEntity extends Entity implements Serializable{
+public class XMLEntity extends EntityImplementation implements Serializable{
 
 	private static final long serialVersionUID = Long.MAX_VALUE - 9999;
 

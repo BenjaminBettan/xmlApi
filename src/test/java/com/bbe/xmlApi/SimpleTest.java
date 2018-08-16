@@ -7,10 +7,9 @@ import org.junit.Test;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import com.bbe.xmlApi.core.EntityControler;
-import com.bbe.xmlApi.core.Entity_I;
+import com.bbe.xmlApi.core.Entity;
 import com.bbe.xmlApi.core.VirtualXMLEntity;
 import com.bbe.xmlApi.core.XMLEntity;
-import com.bbe.xmlApi.util.JsonTransformer;
 
 public class SimpleTest {
 	
@@ -25,7 +24,7 @@ public class SimpleTest {
 
 		private void printAndPrepareNextTest(String message) {
 
-			for (Map.Entry<Long, Entity_I> xmlEntity : EntityControler.getMapEntities().entrySet()) {
+			for (Map.Entry<Long, Entity> xmlEntity : EntityControler.getMapEntities().entrySet()) {
 				System.out.println(xmlEntity.getValue());
 			}
 			if (EntityControler.getRoot() !=null) {
@@ -73,9 +72,9 @@ public class SimpleTest {
 	 * load pom.xml then transform and print json equivalent
 	 */
 	@Test
-	public void testSax() {
+	public void testSaxToJson() {
 		EntityControler.getInstance().parseWithSax("pom.xml");
-		System.out.println(JsonTransformer.xmlToJson(EntityControler.getRoot().showXmlValue()));
+		System.out.println(EntityControler.getRoot().showJson());
 		
 	}
 	
@@ -85,7 +84,7 @@ public class SimpleTest {
 		String filePath = "hashmap.ser";
 		sc_1_();
 		XmlPersist.persist(filePath);
-		HashMap<Long, Entity_I> e = XmlLoad.serializeObjectToEntity(filePath);
+		HashMap<Long, Entity> e = XmlLoad.serializeObjectToEntity(filePath);
 		System.out.println("e.values()");
 		System.out.println(e.values());
 		
@@ -116,27 +115,27 @@ public class SimpleTest {
 //	}
 	
 	
-	public Entity_I a_() {
-		Entity_I root = new VirtualXMLEntity("a");
+	public Entity a_() {
+		Entity root = new VirtualXMLEntity("a");
 		root.addChild("b");
 		root.addChild("b");
 		root.addChild("b");
 		return root;
 	}
 
-	public Entity_I b_() {
-		Entity_I root = new XMLEntity("x1");
+	public Entity b_() {
+		Entity root = new XMLEntity("x1");
 		Map<String, String> attributes = new HashMap<>();
 		attributes.put("aKey", "aValue");
 
-		Entity_I x2 = root.addChild("x2");
+		Entity x2 = root.addChild("x2");
 		root.addChild("x2");
 		x2.addChild("x3").setAttributes(attributes);
 		return root;
 	}
 	
-	public Entity_I sc_1_() {
-		Entity_I y1, x2,root;
+	public Entity sc_1_() {
+		Entity y1, x2,root;
 		
 		root = new XMLEntity("x1");
 		x2 = root.addChild("x2");
@@ -147,15 +146,15 @@ public class SimpleTest {
 		return root;
 	}
 	
-	public Entity_I sc_2_() {
-		Entity_I root = new XMLEntity("x1");
+	public Entity sc_2_() {
+		Entity root = new XMLEntity("x1");
 		root.addChild("x2");
 		root.addChild("x2");
 		return root;
 	}
 
-	public Entity_I sc_3_() {
-		Entity_I root,x2;
+	public Entity sc_3_() {
+		Entity root,x2;
 		Map<String, String> attributes = new HashMap<>();
 		attributes.put("aKey", "aValue");
 		root= new XMLEntity("x1");
