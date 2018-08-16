@@ -1,4 +1,4 @@
-package com.bbe.xmlApi;
+package com.bbe.testXmlApi;
 
 import java.util.HashMap;
 import java.util.Map;

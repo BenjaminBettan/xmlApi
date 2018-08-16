@@ -7,6 +7,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.SAXException;
+
+import com.bbe.xmlApi.util.SaxHandler;
 /***
  * This is a singleton.
  * 
