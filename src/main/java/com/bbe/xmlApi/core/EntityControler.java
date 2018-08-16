@@ -59,7 +59,7 @@ public class EntityControler{
 	
 	public Entity parseWithSax(String filePath) {
 		
-		MySaxHandler mySaxHandler = new MySaxHandler();
+		SaxHandler mySaxHandler = new SaxHandler();
 		
 		try {
 			SAXParserFactory.newInstance().newSAXParser().parse(filePath, mySaxHandler);

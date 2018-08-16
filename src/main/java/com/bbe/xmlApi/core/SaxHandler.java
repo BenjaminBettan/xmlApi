@@ -6,7 +6,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class MySaxHandler extends DefaultHandler {
+public class SaxHandler extends DefaultHandler {
 	
 	private Entity root,pointer;
 	private int level = 0;
