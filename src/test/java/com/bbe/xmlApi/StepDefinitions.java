@@ -14,6 +14,9 @@ public class StepDefinitions {
 	
 	@Given("^je charge \"(.*?)\"$")
 	public void je_charge(String filePath) throws Throwable {
+		
+		EntityControler.clean();//
+		
 		EntityControler.getInstance().parseWithSax(filePath);
 	}
 	
@@ -40,7 +43,6 @@ public class StepDefinitions {
 	
 	@When("^je cherche \"(.*?)\"$")
 	public void je_cherche(String xpath_) throws Throwable {
-		
 		xpathToFind = xpath_;
 		mapEntitiesFound = EntityControler.getRoot().getEntitiesByXpath(xpath_);
 		

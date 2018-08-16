@@ -185,8 +185,9 @@ public class Entity implements Entity_I,Serializable{
 	private void findNextEntity(Map<Long, Entity_I> mapEntities, String[] xp, Entity_I x_, int i) {
 
 		String tagToFind = xp[i];
-
-		if ( tagToFind.contains("[")) {//attributes have to be found
+		if (tagToFind.equals("..")) {
+			findNextEntity(mapEntities,xp,x_.getParent(),i+1);	
+		}else if ( tagToFind.contains("[")) {//attributes have to be found
 			String strToParse = xp[i].split("[\\[]")[1];
 			strToParse = strToParse.replace("]", "").replace("\"", "");
 			tagToFind = xp[i].split("[\\[]")[0];
@@ -230,8 +231,6 @@ public class Entity implements Entity_I,Serializable{
 				}
 			}
 		}
-
-
 	}
 
 	protected String getSonTags() {
