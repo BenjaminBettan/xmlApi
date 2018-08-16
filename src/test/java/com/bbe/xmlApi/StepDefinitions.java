@@ -12,6 +12,11 @@ public class StepDefinitions {
 	private Map<Long, Entity_I> mapEntitiesFound;
 	private SimpleTest simpleTest = new SimpleTest();
 	
+	@Given("^je charge \"(.*?)\"$")
+	public void je_charge(String filePath) throws Throwable {
+		EntityControler.getInstance().parseWithSax(filePath);
+	}
+	
 	@Given("^je charge scenario (\\d+)$")
 	public void je_charge_scenario(int scenario) throws Throwable {
 		
