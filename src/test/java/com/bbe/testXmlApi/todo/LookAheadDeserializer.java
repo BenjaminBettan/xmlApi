@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import com.bbe.xmlapi.core.XMLEntity;
+
 public class LookAheadDeserializer {
 
     private static byte[] serialize(Object obj) throws IOException {
@@ -35,18 +37,18 @@ public class LookAheadDeserializer {
     public static void main(String[] args) {
         try {
             // Serialize a Bicycle instance
-            byte[] serializedBicycle = serialize(new Bicycle(0, "Unicycle", 1));
+            byte[] serializedBicycle = serialize(new XMLEntity("Unicycle"));
 
             // Serialize a File instance
             byte[] serializedFile = serialize(new File("Unexpected Object"));
 
             // Deserialize the Bicycle instance (legitimate use case)
-            Bicycle bicycle0 = (Bicycle) deserialize(serializedBicycle);
-            System.out.println(bicycle0.getName() + " has been deserialized.");
+            XMLEntity xMLEntity = (XMLEntity) deserialize(serializedBicycle);
+            System.out.println(xMLEntity + " has been deserialized.");
 
             // Deserialize the File instance (error case)
-            Bicycle bicycle1 = (Bicycle) deserialize(serializedFile);
-            System.out.println(bicycle1);
+            xMLEntity = (XMLEntity) deserialize(serializedFile);
+            System.out.println(xMLEntity);
 
         } catch (Exception ex) {
             ex.printStackTrace(System.err);

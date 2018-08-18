@@ -5,6 +5,10 @@ import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectStreamClass;
 
+import com.bbe.xmlapi.core.Entity;
+import com.bbe.xmlapi.core.VirtualXMLEntity;
+import com.bbe.xmlapi.core.XMLEntity;
+
 public class LookAheadObjectInputStream extends ObjectInputStream {
 
     public LookAheadObjectInputStream(InputStream inputStream)
@@ -18,11 +22,14 @@ public class LookAheadObjectInputStream extends ObjectInputStream {
     @Override
     protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException,
             ClassNotFoundException {
-        if (!desc.getName().equals(Bicycle.class.getName())) {
-            throw new InvalidClassException(
+        if (desc.getName().equals(XMLEntity.class.getName()) || desc.getName().equals(VirtualXMLEntity.class.getName()) || desc.getName().equals(Entity.class.getName())) {
+        	return super.resolveClass(desc);
+        }
+        else {
+        	throw new InvalidClassException(
                     "Unauthorized deserialization attempt",
                     desc.getName());
-        }
-        return super.resolveClass(desc);
+		}
+        
     }
 }
