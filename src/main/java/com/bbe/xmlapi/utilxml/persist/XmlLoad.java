@@ -32,7 +32,8 @@ public class XmlLoad
 					ValidatingObjectInputStream ois = new ValidatingObjectInputStream(bais);
 				) 
 			{
-				ois.accept(Entity.class);
+				ValidatingObjectInputStream v = ois.accept(Entity.class);
+				v.defaultReadObject();
 				e = (Entity) ois.readObject();
 			} catch (IOException e1) {
 				logger.warn(e1.getMessage());
