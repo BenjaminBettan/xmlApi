@@ -1,52 +1,45 @@
 package com.bbe.xmlApi.util.xml.persist;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.nio.file.Files;
+import java.io.File;
+import org.apache.commons.io.serialization.ValidatingObjectInputStream;
+import org.apache.log4j.Logger;
+
 import com.bbe.xmlApi.core.Entity;
 
 public class XmlLoad
 {
+	private final static Logger logger = Logger.getLogger(XmlLoad.class);
+
 	public static Entity serializeObjectToEntity(long l)
 	{
 		Entity e = null;
-		String filePath = Useful.getPath(l);
-		FileInputStream fis = null;
-		ObjectInputStream ois = null;
-		
+		String filePath = Useful.convertToFilePath(l);
+		File f = new File((filePath+Useful.getPrefix()+l));
+		byte[] fileContent = null;
 		try {
-			fis = new FileInputStream(filePath+Useful.getPrefix()+l);
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
+			fileContent = Files.readAllBytes(f.toPath());
+		} catch (IOException e1) {
+			logger.warn(e1.getMessage());
 		}
-		if (fis!=null) {
-			try {
-				ois = new ObjectInputStream(fis);
+		if (fileContent !=null) {
+			try (
+					ByteArrayInputStream bais = new ByteArrayInputStream(fileContent);
+					ValidatingObjectInputStream ois = new ValidatingObjectInputStream(bais);
+				) 
+			{
+				ois.accept(Entity.class);
+				e = (Entity) ois.readObject();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			if (ois!=null) {
-				try {
-					e = (Entity) ois.readObject();
-				} catch (ClassNotFoundException | IOException e1) {
-					e1.printStackTrace();
-				}
-				try {
-					ois.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-			try {
-				fis.close();
-			} catch (IOException e1) {
-				e1.printStackTrace();
+				logger.warn(e1.getMessage());
+			} catch (ClassNotFoundException e1) {
+				logger.warn(e1.getMessage());
 			}
 		}
-		
+
 		return e;
-		
+
 	}
 }

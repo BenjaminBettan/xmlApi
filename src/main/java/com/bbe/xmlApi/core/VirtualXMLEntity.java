@@ -5,7 +5,7 @@ import java.io.Serializable;
  * Entity to persist
  * @author benjamin
  */
-public class VirtualXMLEntity extends EntityImplementation implements Serializable{
+public class VirtualXMLEntity extends Entity implements Serializable{
 
 	private static final long serialVersionUID = Long.MAX_VALUE - 99999;
 /**
@@ -14,6 +14,7 @@ public class VirtualXMLEntity extends EntityImplementation implements Serializab
  * Note : this kind of xml can't be indented yet
  */
 	public VirtualXMLEntity() {
+		this.isChildOf = -1;
 		EntityControler.putEntity(this);
 	}
 
@@ -21,7 +22,7 @@ public class VirtualXMLEntity extends EntityImplementation implements Serializab
 	public String toString() {
 		return "VirtualXMLEntity [id=" + id + ", level=" + level + ", tag=" + tag + ", data=" + data +  ", leaf="
 				+ isLeaf() + ", isChildOf=" + isChildOf + ", attributes=" + attributes 
-				+ ", isFatherOf=" + isFatherOf +"]";
+				+ ", isFatherOf=" + getIsFatherOf() +"]";
 	}
 
 	@Override
@@ -39,7 +40,7 @@ public class VirtualXMLEntity extends EntityImplementation implements Serializab
 	@Override
 	public String show() {
 		String s = new String("");
-		for (Long l : isFatherOf) 
+		for (Long l : getIsFatherOf()) 
 		{
 			s+=getEntityById(l).show();
 		}

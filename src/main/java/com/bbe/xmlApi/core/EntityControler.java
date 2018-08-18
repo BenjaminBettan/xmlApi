@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -29,6 +30,8 @@ public class EntityControler{
 	private static Map<Long, Entity> mapEntities = new HashMap<Long, Entity>();
 	private static Entity root;
 	private long id = 0;
+	
+	private final static Logger logger = Logger.getLogger(EntityControler.class);
 	
 	private static boolean toHardDrive = false;
 
@@ -66,7 +69,7 @@ public class EntityControler{
 		return mapEntities;
 	}
 	
-	public synchronized static void putEntity(EntityImplementation e) {
+	public synchronized static void putEntity(Entity e) {
 		if (toHardDrive) {
 			XmlPersist.persist(e);
 		}
@@ -88,21 +91,21 @@ public class EntityControler{
 			return mySaxHandler.getRoot();
 			
 		} catch (ParserConfigurationException | SAXException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		return null;
 	}
 	
-	public Entity parseWithSax(String xmlContent) {
+	public static Entity parseWithSax(String xmlContent) {
 		
 		SaxHandler mySaxHandler = new SaxHandler();
 		
 		try {
 			SAXParserFactory.newInstance().newSAXParser().parse(new InputSource(new StringReader(xmlContent)), mySaxHandler);
 		} catch (SAXException | IOException | ParserConfigurationException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		root = mySaxHandler.getRoot();
 		

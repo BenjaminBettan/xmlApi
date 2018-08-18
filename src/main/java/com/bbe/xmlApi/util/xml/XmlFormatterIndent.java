@@ -1,5 +1,7 @@
 package com.bbe.xmlApi.util.xml;
 
+import org.apache.log4j.Logger;
+
 //https://stackoverflow.com/questions/139076/how-to-pretty-print-xml-from-java
 
 import org.apache.xml.serialize.OutputFormat;
@@ -25,36 +27,44 @@ import java.io.Writer;
  * </code>
  */
 public class XmlFormatterIndent {
-
-	public XmlFormatterIndent() {
-	}
+	private final static Logger logger = Logger.getLogger(XmlFormatterIndent.class);
+	private XmlFormatterIndent() {}
 
 	public static String format(String unformattedXml) throws IOException {
+
 		final Document document = parseXmlFile(unformattedXml);
-
-		OutputFormat format = new OutputFormat(document);
-		format.setLineWidth(65);
-		format.setIndenting(true);
-		format.setIndent(2);
 		Writer out = new StringWriter();
-		XMLSerializer serializer = new XMLSerializer(out, format);
-		serializer.serialize(document);
+		
+		if (document!=null) {
+			
+			OutputFormat format = new OutputFormat(document);
+			format.setLineWidth(65);
+			format.setIndenting(true);
+			format.setIndent(2);
+			
+			XMLSerializer serializer = new XMLSerializer(out, format);
+			serializer.serialize(document);
 
-		return out.toString();
+			return out.toString();
+		}
+		return "";
 	}
 
-	private static Document parseXmlFile(String in) {
+	private static Document parseXmlFile(String in) {//get a Document instance by SAX
 		try {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			InputSource is = new InputSource(new StringReader(in));
 			return db.parse(is);
 		} catch (ParserConfigurationException e) {
-			throw new RuntimeException(e);
+			logger.warn(e.getMessage());
 		} catch (SAXException e) {
-			throw new RuntimeException(e);
+			logger.warn(e.getMessage());
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			logger.warn(e.getMessage());
 		}
+
+		return null;
+
 	}
 }

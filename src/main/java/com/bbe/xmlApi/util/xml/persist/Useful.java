@@ -6,24 +6,29 @@ public enum Useful {
 
 	private static String prefix,tmp;
 	private static long tmpSubDir = System.currentTimeMillis();
+	private final static String STR_1 = "/";
+	private final static String STR_2 = "\\";
+	private final static String STR_3 = "/tmp/";
+	private final static String STR_4 = "C:\\tmp\\";
+	
 
 	public static String getPrefix() {
 		if (prefix==null) {
-			if (System.getProperty("user.dir").split("/").length>0) 
-			{
-				prefix = new String("/");
-				tmp= new String("/tmp/");
+			if (System.getProperty("user.dir").split(STR_1).length>0) 
+			{//linux
+				prefix = STR_1;
+				tmp= STR_3;
 			}
 			else 
-			{
-				prefix = new String("\\");
-				tmp= new String("C:\\tmp\\");
+			{//windows
+				prefix = STR_2;
+				tmp= STR_4;
 			}
 		}
 		return prefix;
 	}
 
-	public static String getPath(long l){
+	public static String convertToFilePath(long l){
 		prefix=getPrefix();
 		
 		StringBuilder sb = new StringBuilder();
@@ -36,4 +41,11 @@ public enum Useful {
 		
 		return sb.append(prefix).toString();
 	}
+
+	public static void setTmpSubDir(long tmpSubDir) {
+		Useful.tmpSubDir = tmpSubDir;
+	}
+	
+	
+	
 }
