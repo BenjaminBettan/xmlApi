@@ -3,3 +3,6 @@ cd /home/benjamin/app/sts-bundle/sts-3.9.1.RELEASE/workspace/xmlApi
 mvn clean install dependency:copy-dependencies
 cd /home/benjamin/app/sts-bundle/sts-3.9.1.RELEASE/workspace/xmlApi/target
 java -cp "xmlApi-0.0.1-SNAPSHOT.jar:dependency/*" com.bbe.main.Main pom.xml
+
+sonar :
+sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=admin
