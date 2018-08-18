@@ -1,14 +1,18 @@
 package com.bbe.xmlApi.core;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.bbe.xmlApi.util.SaxHandler;
+import com.bbe.xmlApi.util.xml.SaxHandler;
+import com.bbe.xmlApi.util.xml.persist.XmlLoad;
+import com.bbe.xmlApi.util.xml.persist.XmlPersist;
 /***
  * This is a singleton.
  * 
@@ -24,12 +28,22 @@ public class EntityControler{
 	
 	private static Map<Long, Entity> mapEntities = new HashMap<Long, Entity>();
 	private static Entity root;
+	private long id = 0;
+	
+	private static boolean toHardDrive = false;
+
+	public static void setToHardDrive(boolean toHardDrive) {
+		EntityControler.toHardDrive = toHardDrive;
+	}
 
 	protected synchronized long getNewValue() {
-		return mapEntities.size() + 1;
+		return id++;
 	}
 	
 	public Entity getEntity(long l) {
+		if (toHardDrive) {
+			return XmlLoad.serializeObjectToEntity(l);	
+		}
 		return mapEntities.get(l);
 	}
 	
@@ -46,20 +60,26 @@ public class EntityControler{
 
 	/**
 	 * Please use EntityControler.putEntity(Entity e) to update your field EntityControler.mapEntities
-	 * @return
+	 * @return empty if toHardDrive==true
 	 */
 	public synchronized static Map<Long, Entity> getMapEntities() {
 		return mapEntities;
 	}
 	
 	public synchronized static void putEntity(EntityImplementation e) {
-		mapEntities.put(e.getId(), e);
+		if (toHardDrive) {
+			XmlPersist.persist(e);
+		}
+		else {
+			mapEntities.put(e.getId(), e);	
+		}
+		
 		if (root == null) {
 			root = e;
 		}
 	}
 	
-	public Entity parseWithSax(String filePath) {
+	public Entity parseFileWithSax(String filePath) {
 		
 		SaxHandler mySaxHandler = new SaxHandler();
 		
@@ -73,6 +93,20 @@ public class EntityControler{
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public Entity parseWithSax(String xmlContent) {
+		
+		SaxHandler mySaxHandler = new SaxHandler();
+		
+		try {
+			SAXParserFactory.newInstance().newSAXParser().parse(new InputSource(new StringReader(xmlContent)), mySaxHandler);
+		} catch (SAXException | IOException | ParserConfigurationException e) {
+			e.printStackTrace();
+		}
+		root = mySaxHandler.getRoot();
+		
+		return root;
 	}
 
 	public static Entity getRoot() {

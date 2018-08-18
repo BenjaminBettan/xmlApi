@@ -3,11 +3,17 @@ package com.bbe.xmlApi.core;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.xmlunit.builder.DiffBuilder;
+import org.xmlunit.diff.ComparisonControllers;
+import org.xmlunit.diff.Diff;
+import org.xmlunit.diff.Difference;
+
 import com.bbe.xmlApi.util.JsonTransformer;
-import com.bbe.xmlApi.util.XmlFormatterIndent;
+import com.bbe.xmlApi.util.xml.XmlFormatterIndent;
 
 /**
  * Entity to persist
@@ -80,8 +86,8 @@ public class EntityImplementation implements Entity,Serializable{
 	}
 
 	public Entity getParent() {
-		if (isChildOf>0) {
-			return EntityControler.getMapEntities().get(isChildOf);	
+		if (isChildOf>=0) {
+			return this.getEntityById((isChildOf));	
 		}
 		else {
 			return null;
@@ -247,7 +253,7 @@ public class EntityImplementation implements Entity,Serializable{
 		{
 			for (Long l : isFatherOf) 
 			{
-				s += EntityControler.getInstance().getEntity(l).showXmlValue();
+				s += EntityControler.getInstance().getEntity(l).show();
 			}	
 		}
 
@@ -276,11 +282,11 @@ public class EntityImplementation implements Entity,Serializable{
 	@Override
 	public String showXml(String version, String encoding, String grammaire) {
 
-		return "<?xml version=\""+version+"\" encoding=\""+encoding+"\""+ ((grammaire==null) ? "" : " "+grammaire)  +" ?>"+showXmlValue();
+		return "<?xml version=\""+version+"\" encoding=\""+encoding+"\""+ ((grammaire==null) ? "" : " "+grammaire)  +" ?>"+show();
 	}
 
 	@Override	
-	public String showXmlValue() {
+	public String show() {
 		String header,footer;
 
 		if ("".equals(data) && this.isLeaf()) {
@@ -335,6 +341,25 @@ public class EntityImplementation implements Entity,Serializable{
 	@Override
 	public String showJson() {
 		return JsonTransformer.xmlToJson(this.showXml());
+	}
+
+	@Override
+	public Iterator<Difference> getDiff(Entity e) {
+	    Diff myDiff = DiffBuilder
+	  	      .compare(this.show())
+	  	      .withTest(e.show())
+	  	       .build();
+		return myDiff.getDifferences().iterator();
+	}
+
+	@Override
+	public boolean isDiff(Entity e) {
+	    Diff myDiff = DiffBuilder
+		  	      .compare(this.show())
+		  	      .withTest(e.show())
+		  	      .withComparisonController(ComparisonControllers.StopWhenDifferent)
+		  	       .build();
+		return myDiff.getDifferences().iterator().hasNext();
 	}
 
 }

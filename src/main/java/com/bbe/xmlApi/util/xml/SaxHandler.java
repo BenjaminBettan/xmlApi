@@ -1,4 +1,4 @@
-package com.bbe.xmlApi.util;
+package com.bbe.xmlApi.util.xml;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +13,6 @@ public class SaxHandler extends DefaultHandler {
 	
 	private Entity root,pointer;
 	private int level = 0;
-	private boolean isFirstOccuranceInProcess = true; 
 
 	public Entity getRoot() {
 		return root;
@@ -35,9 +34,7 @@ public class SaxHandler extends DefaultHandler {
 			
 		}
 		
-		if (isFirstOccuranceInProcess) {
-			
-			isFirstOccuranceInProcess = false;
+		if (pointer == null) {
 			
 			root = new XMLEntity(tagName, currentAttributes, level);
 			pointer = root;
@@ -62,7 +59,7 @@ public class SaxHandler extends DefaultHandler {
 		
 		if ( data != null && ! data.equals("") ) 
 		{	
-			pointer.setData(data);
+			pointer.setData(pointer.getData()+data);
 		}
 		
 	}
@@ -74,10 +71,4 @@ public class SaxHandler extends DefaultHandler {
 		pointer = pointer.getParent();
 		
 	}
-	
-	@Override
-	public void endDocument() {
-		isFirstOccuranceInProcess = true;
-	}
-	
 }

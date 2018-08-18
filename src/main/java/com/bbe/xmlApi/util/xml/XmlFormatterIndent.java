@@ -1,4 +1,4 @@
-package com.bbe.xmlApi.util;
+package com.bbe.xmlApi.util.xml;
 
 //https://stackoverflow.com/questions/139076/how-to-pretty-print-xml-from-java
 

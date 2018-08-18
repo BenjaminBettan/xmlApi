@@ -2,7 +2,7 @@ Feature: 004_xpathComplexe
 
 #@see test.xml
 
-  Scenario Outline: test xpath du scenario 3
+  Scenario Outline: test xpath
     Given je charge "test.xml"
     When je cherche <xpath>
     Then je dois trouver : <answer> entite

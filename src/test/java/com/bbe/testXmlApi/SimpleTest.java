@@ -1,15 +1,21 @@
 package com.bbe.testXmlApi;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
-import com.bbe.xmlApi.core.EntityControler;
+import org.xmlunit.diff.Difference;
+
 import com.bbe.xmlApi.core.Entity;
+import com.bbe.xmlApi.core.EntityControler;
 import com.bbe.xmlApi.core.VirtualXMLEntity;
 import com.bbe.xmlApi.core.XMLEntity;
+import com.bbe.xmlApi.util.xml.WebConnectionGetter;
+import com.bbe.xmlApi.util.xml.persist.XmlLoad;
 
 public class SimpleTest {
 	
@@ -23,15 +29,13 @@ public class SimpleTest {
 		}
 
 		private void printAndPrepareNextTest(String message) {
-
-			for (Map.Entry<Long, Entity> xmlEntity : EntityControler.getMapEntities().entrySet()) {
-				System.out.println(xmlEntity.getValue());
-			}
+//			for (Map.Entry<Long, Entity> xmlEntity : EntityControler.getMapEntities().entrySet()) {
+//				System.out.println(xmlEntity.getValue());
+//			}
 			if (EntityControler.getRoot() !=null) {
 				System.out.println("\n\n"+EntityControler.getRoot().showXml()+"\n\n");
-				EntityControler.clean();	
 			}
-			
+			EntityControler.clean();	
 			System.out.println(message+"\n\n------------------------------\n");
 
 		}
@@ -73,22 +77,48 @@ public class SimpleTest {
 	 */
 	@Test
 	public void testSaxToJson() {
-		EntityControler.getInstance().parseWithSax("pom.xml");
+		EntityControler.getInstance().parseFileWithSax("pom.xml");
 		System.out.println(EntityControler.getRoot().showJson());
 		
 	}
 	
 	@Test
 	public void testPersistLoad() {
-		// persist HashMap to file then load and print
-		String filePath = "hashmap.ser";
-		sc_1_();
-		XmlPersist.persist(filePath);
-		HashMap<Long, Entity> e = XmlLoad.serializeObjectToEntity(filePath);
-		System.out.println("e.values()");
-		System.out.println(e.values());
+		EntityControler.setToHardDrive(true);
 		
+		Entity root = sc_1_();
+		
+		root = XmlLoad.serializeObjectToEntity(root.getId());
+		
+		EntityControler.setToHardDrive(false);
+		EntityControler.clean();	
+
 	}
+	
+	@Test
+	public void testUrl() {
+		
+		Entity root = WebConnectionGetter.get("https://www.hugedomains.com/domain_profile.cfm?d=pacificgrandprix&e=com");
+		
+		System.out.println(root);
+	}
+	
+	@Test
+	public void testXmlUnitApi(){
+		Entity a = b_();
+		Entity b = sc_1_();
+	    Assert.assertTrue("devraient etre different..." , a.isDiff(b));
+
+		Iterator<Difference> iter = a.getDiff(b);
+		
+	    int size = 0;
+	    while (iter.hasNext()) {
+	        System.out.println(iter.next().toString());
+	        size++;
+	    }
+	    Assert.assertTrue("size = "+size,size==7);
+	}
+	
 	
 //	@Test
 //	public void testPersistPerf() {
@@ -116,7 +146,7 @@ public class SimpleTest {
 	
 	
 	public Entity a_() {
-		Entity root = new VirtualXMLEntity("a");
+		Entity root = new VirtualXMLEntity();
 		root.addChild("b");
 		root.addChild("b");
 		root.addChild("b");

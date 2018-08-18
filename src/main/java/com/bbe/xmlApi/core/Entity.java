@@ -1,13 +1,17 @@
 package com.bbe.xmlApi.core;
 
+import java.util.Iterator;
 import java.util.Map;
 
+import org.xmlunit.diff.Difference;
+
 public interface Entity {
-	
+	public Iterator<Difference> getDiff(Entity e);
+	public boolean isDiff(Entity e);
 	public String showJson();
 	public String showXml();
 	public String showXml(String version, String encoding, String grammaire);
-	public String showXmlValue();
+	public String show();
 	public Entity addChild(String currentTag);
 	public Entity addChild(Entity x_);
 	public boolean thisNodeHasNoAttribute();

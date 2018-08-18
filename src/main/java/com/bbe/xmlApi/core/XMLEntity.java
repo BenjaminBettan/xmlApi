@@ -13,28 +13,29 @@ public class XMLEntity extends EntityImplementation implements Serializable{
 	private static final long serialVersionUID = Long.MAX_VALUE - 9999;
 
 	public XMLEntity(String currentTag, Map<String, String> currentAttributes, int level2, String currentData) {
-		this.id = EntityControler.getInstance().getNewValue();
 		this.tag = currentTag;
 		this.attributes = currentAttributes;
 		this.level = level2;
-		this.data = currentData;
+		this.data = (currentData == null) ? "" : currentData;
+		
+		this.id = EntityControler.getInstance().getNewValue();
 		EntityControler.putEntity(this);
 	}
 
 	public XMLEntity(String currentTag) {
-		this(currentTag, null,0,null);
+		this(currentTag, null,0,"");
 	}
 
 	public XMLEntity(String currentTag, Map<String, String> currentAttributes, int level2) {
-		this(currentTag, currentAttributes,level2,null);
+		this(currentTag, currentAttributes,level2,"");
 	}
 
 	public XMLEntity(String currentTag, Map<String, String> att) {
-		this(currentTag, att,0,null);
+		this(currentTag, att,0,"");
 	}
 
 	public XMLEntity(String currentTag, int i) {
-		this(currentTag, null,i,null);
+		this(currentTag, null,i,"");
 	}
 
 	@Override

@@ -17,7 +17,7 @@ public class StepDefinitions {
 		
 		EntityControler.clean();//
 		
-		EntityControler.getInstance().parseWithSax(filePath);
+		EntityControler.getInstance().parseFileWithSax(filePath);
 	}
 	
 	@Given("^je charge scenario (\\d+)$")
