@@ -1,20 +1,22 @@
-package com.bbe.xmlApi.util.xml.persist;
+package com.bbe.xmlapi.utilxml.persist;
 
 import java.io.*;
 
 import org.apache.log4j.Logger;
 
-import com.bbe.xmlApi.core.Entity;
+import com.bbe.xmlapi.core.Entity;
 public class XmlPersist
 {
-	private final static Logger logger = Logger.getLogger(XmlPersist.class);
+	private static final Logger logger = Logger.getLogger(XmlPersist.class);
 
+	private XmlPersist() {}
+	
 	public static boolean persist(Entity e)
 	{
 		
 		long l = e.getId();
 		
-		String filePath = Useful.convertToFilePath(l);
+		String filePath = PersistConfigurator.convertToFilePath(l);
 		new File(filePath).mkdirs();
 		
 		try(FileOutputStream fos = new FileOutputStream(filePath+l))

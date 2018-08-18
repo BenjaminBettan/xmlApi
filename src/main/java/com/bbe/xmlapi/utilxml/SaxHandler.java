@@ -1,4 +1,4 @@
-package com.bbe.xmlApi.util.xml;
+package com.bbe.xmlapi.utilxml;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,8 +6,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.bbe.xmlApi.core.Entity;
-import com.bbe.xmlApi.core.XMLEntity;
+import com.bbe.xmlapi.core.Entity;
+import com.bbe.xmlapi.core.XMLEntity;
 
 public class SaxHandler extends DefaultHandler {
 	

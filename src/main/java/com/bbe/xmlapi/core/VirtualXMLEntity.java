@@ -1,4 +1,4 @@
-package com.bbe.xmlApi.core;
+package com.bbe.xmlapi.core;
 
 import java.io.Serializable;
 /**
@@ -39,13 +39,13 @@ public class VirtualXMLEntity extends Entity implements Serializable{
 
 	@Override
 	public String show() {
-		String s = new String("");
+		sb.setLength(0);//clear sb only used here
 		for (Long l : getIsFatherOf()) 
 		{
-			s+=getEntityById(l).show();
+			sb.append(getEntityById(l).show());
 		}
 
-		return s;
+		return sb.toString();
 	}
 
 }

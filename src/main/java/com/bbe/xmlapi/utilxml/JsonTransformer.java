@@ -1,4 +1,4 @@
-package com.bbe.xmlApi.util;
+package com.bbe.xmlapi.utilxml;
 
 import org.apache.log4j.Logger;
 import org.json.JSONException;
@@ -7,8 +7,8 @@ import org.json.XML;
 
 public class JsonTransformer {
 
-    private final static int PRETTY_PRINT_INDENT_FACTOR = 4;
-    private final static Logger logger = Logger.getLogger(JsonTransformer.class);
+    private static final int PRETTY_PRINT_INDENT_FACTOR = 4;
+    private static final Logger logger = Logger.getLogger(JsonTransformer.class);
     private JsonTransformer() {}
     
     public static String xmlToJson(String xmlStr) {

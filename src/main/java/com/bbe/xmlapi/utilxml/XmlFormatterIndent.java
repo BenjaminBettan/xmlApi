@@ -1,4 +1,4 @@
-package com.bbe.xmlApi.util.xml;
+package com.bbe.xmlapi.utilxml;
 
 import org.apache.log4j.Logger;
 
@@ -27,7 +27,7 @@ import java.io.Writer;
  * </code>
  */
 public class XmlFormatterIndent {
-	private final static Logger logger = Logger.getLogger(XmlFormatterIndent.class);
+	private static final Logger logger = Logger.getLogger(XmlFormatterIndent.class);
 	private XmlFormatterIndent() {}
 
 	public static String format(String unformattedXml) throws IOException {

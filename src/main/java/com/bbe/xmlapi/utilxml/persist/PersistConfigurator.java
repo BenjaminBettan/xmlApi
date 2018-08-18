@@ -1,16 +1,16 @@
-package com.bbe.xmlApi.util.xml.persist;
+package com.bbe.xmlapi.utilxml.persist;
 
 
-public enum Useful {
-	DEFAULT;
+public class PersistConfigurator {
 
 	private static String prefix,tmp;
-	private static long tmpSubDir = System.currentTimeMillis();
+	private static long tmpSubDir;
 	private final static String STR_1 = "/";
 	private final static String STR_2 = "\\";
 	private final static String STR_3 = "/tmp/";
 	private final static String STR_4 = "C:\\tmp\\";
 	
+	private PersistConfigurator() {}
 
 	public static String getPrefix() {
 		if (prefix==null) {
@@ -42,10 +42,8 @@ public enum Useful {
 		return sb.append(prefix).toString();
 	}
 
-	public static void setTmpSubDir(long tmpSubDir) {
-		Useful.tmpSubDir = tmpSubDir;
+	public static void setTmpSubDir(long tmpSubDir_) {
+		tmpSubDir = tmpSubDir_;
 	}
-	
-	
 	
 }

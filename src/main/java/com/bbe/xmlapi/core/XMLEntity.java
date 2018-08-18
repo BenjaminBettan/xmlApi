@@ -1,4 +1,4 @@
-package com.bbe.xmlApi.core;
+package com.bbe.xmlapi.core;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -18,7 +18,7 @@ public class XMLEntity extends Entity implements Serializable{
 		this.data = (currentData == null) ? "" : currentData;
 		this.tag =  (currentTag  == null) ? "" : currentTag;
 		this.isChildOf = -1;
-		this.id = EntityControler.getInstance().getNewValue();
+		this.id = EntityControler.getNewValue();
 		EntityControler.putEntity(this);
 	}
 

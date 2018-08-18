@@ -1,4 +1,4 @@
-package com.bbe.xmlApi.core;
+package com.bbe.xmlapi.core;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -13,8 +13,8 @@ import org.xmlunit.diff.ComparisonControllers;
 import org.xmlunit.diff.Diff;
 import org.xmlunit.diff.Difference;
 
-import com.bbe.xmlApi.util.JsonTransformer;
-import com.bbe.xmlApi.util.xml.XmlFormatterIndent;
+import com.bbe.xmlapi.utilxml.JsonTransformer;
+import com.bbe.xmlapi.utilxml.XmlFormatterIndent;
 
 /**
  * Entity to persist
@@ -22,7 +22,7 @@ import com.bbe.xmlApi.util.xml.XmlFormatterIndent;
  */
 
 public class Entity implements Serializable{
-	
+
 	private static final long serialVersionUID = Long.MAX_VALUE - 999;
 	private static final String STR_ATTRIBUTES_TO_FIND = "[\\[]";
 	
@@ -33,6 +33,7 @@ public class Entity implements Serializable{
 	protected long isChildOf;
 	transient Map<String, String> attributes;
 	protected int level;
+	protected StringBuilder sb = new StringBuilder();
 
 	protected Entity() {}
 
@@ -84,7 +85,7 @@ public class Entity implements Serializable{
 	}
 
 	public boolean isLeaf() {
-		return getIsFatherOf() == null || getIsFatherOf().size() == 0;
+		return getIsFatherOf() == null || getIsFatherOf().isEmpty();
 	}
 
 	public Entity getParent() {
@@ -113,11 +114,11 @@ public class Entity implements Serializable{
 	}
 
 	public Map<Long, Entity> getChilds() {
-		Map<Long, Entity> mapEntities = new HashMap<Long, Entity>();
+		Map<Long, Entity> mapEntities = new HashMap<>();
 
 		if ( getIsFatherOf()!=null) {
 			for (Long l : getIsFatherOf()) {
-				mapEntities.put(l, EntityControler.getInstance().getEntity(l));
+				mapEntities.put(l, EntityControler.getEntity(l));
 			}	
 		}
 
@@ -134,7 +135,7 @@ public class Entity implements Serializable{
 
 	public Map<Long, Entity> getEntitiesByXpath(String xpath_) {
 
-		Map<Long, Entity> mapEntities = new HashMap<Long, Entity>();
+		Map<Long, Entity> mapEntities = new HashMap<>();
 
 		xpath_ = xpath_.substring(1, xpath_.length() - 1);
 		String[] x = xpath_.split("/");
@@ -248,29 +249,25 @@ public class Entity implements Serializable{
 	}
 
 	protected String getSonTags() {
-
-		String s = new String("");
+		sb.setLength(0);//clear sb only used here
 
 		if (getIsFatherOf()!=null) 
 		{
 			for (Long l : getIsFatherOf()) 
 			{
-				s += EntityControler.getInstance().getEntity(l).show();
+				sb.append(EntityControler.getEntity(l).show());
 			}	
 		}
 
-		return s;
+		return sb.toString();
 	}
 
 	public Entity getEntityById(long l) {
-		return EntityControler.getInstance().getEntity(l);
+		return EntityControler.getEntity(l);
 	}
 
 	public boolean isVirtualEntity() {
-		if (this instanceof VirtualXMLEntity) {
-	      return true;
-	    }
-	    return false;
+	    return this instanceof VirtualXMLEntity;
 	}
 
 	public String showXml() throws IOException {
@@ -293,27 +290,27 @@ public class Entity implements Serializable{
 
 		if ("".equals(data) && this.isLeaf()) {
 
-			footer=new String("");
+			footer="";
 			if (attributes==null || attributes.size()==0) 
 			{
-				header=new String("<"+tag+"/>");
+				header="<"+tag+"/>";
 			}
 			else 
 			{
-				header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\"/>");
+				header="<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\"/>";
 			}
 
 		}
 		else {
 
-			footer=new String("</"+tag+">");
+			footer="</"+tag+">";
 			if (attributes==null || attributes.size()==0) 
 			{
-				header=new String("<"+tag+">");
+				header="<"+tag+">";
 			}
 			else 
 			{
-				header=new String("<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\">");
+				header="<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\">";
 			}
 		}
 

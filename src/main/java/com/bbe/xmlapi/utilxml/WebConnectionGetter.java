@@ -1,15 +1,16 @@
-package com.bbe.xmlApi.util.xml;
+package com.bbe.xmlapi.utilxml;
 
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Scanner;
 import org.apache.log4j.Logger;
-import com.bbe.xmlApi.core.Entity;
-import com.bbe.xmlApi.core.EntityControler;
+
+import com.bbe.xmlapi.core.Entity;
+import com.bbe.xmlapi.core.EntityControler;
 
 public class WebConnectionGetter {
-	private final static Logger logger = Logger.getLogger(WebConnectionGetter.class);
+	private static final Logger logger = Logger.getLogger(WebConnectionGetter.class);
 
 	private WebConnectionGetter() {}
 	

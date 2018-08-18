@@ -11,12 +11,12 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.xmlunit.diff.Difference;
 
-import com.bbe.xmlApi.core.Entity;
-import com.bbe.xmlApi.core.EntityControler;
-import com.bbe.xmlApi.core.VirtualXMLEntity;
-import com.bbe.xmlApi.core.XMLEntity;
-import com.bbe.xmlApi.util.xml.WebConnectionGetter;
-import com.bbe.xmlApi.util.xml.persist.XmlLoad;
+import com.bbe.xmlapi.core.Entity;
+import com.bbe.xmlapi.core.EntityControler;
+import com.bbe.xmlapi.core.VirtualXMLEntity;
+import com.bbe.xmlapi.core.XMLEntity;
+import com.bbe.xmlapi.utilxml.WebConnectionGetter;
+import com.bbe.xmlapi.utilxml.persist.XmlLoad;
 
 public class SimpleTest {
 	

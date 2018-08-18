@@ -1,4 +1,4 @@
-package com.bbe.xmlApi.core;
+package com.bbe.xmlapi.core;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
@@ -11,9 +11,9 @@ import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.bbe.xmlApi.util.xml.SaxHandler;
-import com.bbe.xmlApi.util.xml.persist.XmlLoad;
-import com.bbe.xmlApi.util.xml.persist.XmlPersist;
+import com.bbe.xmlapi.utilxml.SaxHandler;
+import com.bbe.xmlapi.utilxml.persist.XmlLoad;
+import com.bbe.xmlapi.utilxml.persist.XmlPersist;
 /***
  * This is a singleton.
  * 
@@ -24,14 +24,14 @@ public class EntityControler{
 
 	/***next is for singleton*/
 	private EntityControler() {}
-	private static class SingletonHolder { private final static EntityControler instance = new EntityControler(); }
-	public static EntityControler getInstance() {return SingletonHolder.instance;}
+	private static class SingletonHolder { private static final EntityControler instance = new EntityControler(); }
+	public  static EntityControler getInstance() {return SingletonHolder.instance;}
 	
-	private static Map<Long, Entity> mapEntities = new HashMap<Long, Entity>();
+	private static Map<Long, Entity> mapEntities = new HashMap<>();
 	private static Entity root;
-	private long id = 0;
+	private static long id = 0;
 	
-	private final static Logger logger = Logger.getLogger(EntityControler.class);
+	private static final Logger logger = Logger.getLogger(EntityControler.class);
 	
 	private static boolean toHardDrive = false;
 
@@ -39,11 +39,11 @@ public class EntityControler{
 		EntityControler.toHardDrive = toHardDrive;
 	}
 
-	protected synchronized long getNewValue() {
+	protected static synchronized long getNewValue() {
 		return id++;
 	}
 	
-	public Entity getEntity(long l) {
+	public static Entity getEntity(long l) {
 		if (toHardDrive) {
 			return XmlLoad.serializeObjectToEntity(l);	
 		}
@@ -65,11 +65,11 @@ public class EntityControler{
 	 * Please use EntityControler.putEntity(Entity e) to update your field EntityControler.mapEntities
 	 * @return empty if toHardDrive==true
 	 */
-	public synchronized static Map<Long, Entity> getMapEntities() {
+	public static synchronized Map<Long, Entity> getMapEntities() {
 		return mapEntities;
 	}
 	
-	public synchronized static void putEntity(Entity e) {
+	public static synchronized void putEntity(Entity e) {
 		if (toHardDrive) {
 			XmlPersist.persist(e);
 		}
@@ -90,9 +90,7 @@ public class EntityControler{
 			SAXParserFactory.newInstance().newSAXParser().parse(filePath, mySaxHandler);
 			return mySaxHandler.getRoot();
 			
-		} catch (ParserConfigurationException | SAXException e) {
-			logger.warn(e.getMessage());
-		} catch (IOException e) {
+		} catch (ParserConfigurationException | SAXException | IOException e) {
 			logger.warn(e.getMessage());
 		}
 		return null;

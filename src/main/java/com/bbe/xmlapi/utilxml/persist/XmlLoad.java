@@ -1,4 +1,4 @@
-package com.bbe.xmlApi.util.xml.persist;
+package com.bbe.xmlapi.utilxml.persist;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -7,17 +7,19 @@ import java.io.File;
 import org.apache.commons.io.serialization.ValidatingObjectInputStream;
 import org.apache.log4j.Logger;
 
-import com.bbe.xmlApi.core.Entity;
+import com.bbe.xmlapi.core.Entity;
 
 public class XmlLoad
 {
-	private final static Logger logger = Logger.getLogger(XmlLoad.class);
+	private static final Logger logger = Logger.getLogger(XmlLoad.class);
 
+	private XmlLoad() {}
+	
 	public static Entity serializeObjectToEntity(long l)
 	{
 		Entity e = null;
-		String filePath = Useful.convertToFilePath(l);
-		File f = new File((filePath+Useful.getPrefix()+l));
+		String filePath = PersistConfigurator.convertToFilePath(l);
+		File f = new File((filePath+PersistConfigurator.getPrefix()+l));
 		byte[] fileContent = null;
 		try {
 			fileContent = Files.readAllBytes(f.toPath());

@@ -1,10 +1,12 @@
 package com.bbe.testXmlApi;
 
 import org.junit.Assert;
+
+import com.bbe.xmlapi.core.Entity;
+import com.bbe.xmlapi.core.EntityControler;
+
 import cucumber.api.java.en.*;
 import java.util.Map;
-import com.bbe.xmlApi.core.EntityControler;
-import com.bbe.xmlApi.core.Entity;
 
 public class StepDefinitions {
 	
