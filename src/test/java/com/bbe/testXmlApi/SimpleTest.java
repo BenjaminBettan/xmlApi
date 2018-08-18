@@ -1,5 +1,6 @@
 package com.bbe.testXmlApi;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -25,13 +26,17 @@ public class SimpleTest {
 		@Override
 		protected void failed(Throwable e, Description description) {
 
-			printAndPrepareNextTest("Fin methode" + description.getMethodName());
+			try {
+				printAndPrepareNextTest("Fin methode" + description.getMethodName());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 
-		private void printAndPrepareNextTest(String message) {
-//			for (Map.Entry<Long, Entity> xmlEntity : EntityControler.getMapEntities().entrySet()) {
-//				System.out.println(xmlEntity.getValue());
-//			}
+		private void printAndPrepareNextTest(String message) throws IOException {
+			for (Map.Entry<Long, Entity> xmlEntity : EntityControler.getMapEntities().entrySet()) {
+				System.out.println(xmlEntity.getValue());
+			}
 			if (EntityControler.getRoot() !=null) {
 				System.out.println("\n\n"+EntityControler.getRoot().showXml()+"\n\n");
 			}
@@ -42,7 +47,11 @@ public class SimpleTest {
 
 		@Override
 		protected void succeeded(Description description) {
-			printAndPrepareNextTest("Fin methode "+description.getMethodName());
+			try {
+				printAndPrepareNextTest("Fin methode "+description.getMethodName());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	};
 
@@ -74,9 +83,10 @@ public class SimpleTest {
 //tests start here
 	/**
 	 * load pom.xml then transform and print json equivalent
+	 * @throws IOException 
 	 */
 	@Test
-	public void testSaxToJson() {
+	public void testSaxToJson() throws IOException {
 		EntityControler.getInstance().parseFileWithSax("pom.xml");
 		System.out.println(EntityControler.getRoot().showJson());
 		
@@ -98,25 +108,27 @@ public class SimpleTest {
 	@Test
 	public void testUrl() {
 		
-		Entity root = WebConnectionGetter.get("https://www.hugedomains.com/domain_profile.cfm?d=pacificgrandprix&e=com");
+		Entity root = WebConnectionGetter.get("https://www.w3schools.com/xml/note.xml");
 		
 		System.out.println(root);
 	}
 	
 	@Test
 	public void testXmlUnitApi(){
+		int size;
+		
 		Entity a = b_();
 		Entity b = sc_1_();
 	    Assert.assertTrue("devraient etre different..." , a.isDiff(b));
 
 		Iterator<Difference> iter = a.getDiff(b);
 		
-	    int size = 0;
-	    while (iter.hasNext()) {
+	    for (size = 0; iter.hasNext(); size++) {
 	        System.out.println(iter.next().toString());
-	        size++;
-	    }
-	    Assert.assertTrue("size = "+size,size==7);
+
+		}
+	    
+	    Assert.assertTrue("size = 7 ? -> "+size,size==7);
 	}
 	
 	

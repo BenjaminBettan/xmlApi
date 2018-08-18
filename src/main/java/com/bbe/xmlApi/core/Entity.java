@@ -1,5 +1,6 @@
 package com.bbe.xmlApi.core;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -8,8 +9,8 @@ import org.xmlunit.diff.Difference;
 public interface Entity {
 	public Iterator<Difference> getDiff(Entity e);
 	public boolean isDiff(Entity e);
-	public String showJson();
-	public String showXml();
+	public String showJson() throws IOException;
+	public String showXml() throws IOException;
 	public String showXml(String version, String encoding, String grammaire);
 	public String show();
 	public Entity addChild(String currentTag);

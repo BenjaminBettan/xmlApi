@@ -1,5 +1,6 @@
 package com.bbe.xmlApi.core;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -269,7 +270,7 @@ public class EntityImplementation implements Entity,Serializable{
 	}
 
 	@Override
-	public String showXml() {
+	public String showXml() throws IOException {
 		if (isVirtualEntity()) {
 			return showXml("1.0","UTF-8",null);
 		}
@@ -339,7 +340,7 @@ public class EntityImplementation implements Entity,Serializable{
 	}
 
 	@Override
-	public String showJson() {
+	public String showJson() throws IOException {
 		return JsonTransformer.xmlToJson(this.showXml());
 	}
 
