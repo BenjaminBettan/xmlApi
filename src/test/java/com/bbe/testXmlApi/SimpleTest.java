@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,10 +22,12 @@ import com.bbe.xmlapi.utilxml.WebConnectionGetter;
 import com.bbe.xmlapi.utilxml.persist.XmlLoad;
 
 public class SimpleTest {
-	
+	private static final Logger logger = Logger.getLogger(SimpleTest.class);
+	{
+		PropertyConfigurator.configure("log4j.properties");
+	}
 	@Rule
 	public TestWatcher watchman= new TestWatcher() {
-		
 		@Override
 		protected void failed(Throwable e, Description description) {
 
@@ -35,13 +40,13 @@ public class SimpleTest {
 
 		private void printAndPrepareNextTest(String message) throws IOException {
 			for (Map.Entry<Long, Entity> xmlEntity : EntityControler.getMapEntities().entrySet()) {
-				System.out.println(xmlEntity.getValue());
+				logger.info(xmlEntity.getValue());
 			}
 			if (EntityControler.getRoot() !=null) {
-				System.out.println("\n\n"+EntityControler.getRoot().showXml()+"\n\n");
+				logger.info("\n\n"+EntityControler.getRoot().showXml()+"\n\n");
 			}
 			EntityControler.clean();	
-			System.out.println(message+"\n\n------------------------------\n");
+			logger.info(message+"\n\n------------------------------\n");
 
 		}
 
@@ -93,14 +98,14 @@ public class SimpleTest {
 	}
 	
 	@Test
-	public void testPersistLoad() {
-		EntityControler.setToHardDrive(true);
+	public void testPersistLoad() throws ClassNotFoundException, IOException {
+		EntityControler.setToHardDriveAndClean(true);
 		
 		Entity root = sc_1_();
 		
 		root = XmlLoad.serializeObjectToEntity(root.getId());
-		
-		EntityControler.setToHardDrive(false);
+		System.out.println(root);
+		EntityControler.setToHardDriveAndClean(false);
 		EntityControler.clean();	
 
 	}

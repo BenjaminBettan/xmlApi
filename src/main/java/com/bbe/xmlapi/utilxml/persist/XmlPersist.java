@@ -17,6 +17,7 @@ public class XmlPersist
 		long l = e.getId();
 		
 		String filePath = PersistConfigurator.convertToFilePath(l);
+		logger.info(filePath);
 		new File(filePath).mkdirs();
 		
 		try(FileOutputStream fos = new FileOutputStream(filePath+l))

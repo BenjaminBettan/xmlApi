@@ -18,6 +18,14 @@
 	</properties>
 
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.nibblesec/serialkiller -->
+		<dependency>
+			<groupId>org.nibblesec</groupId>
+			<artifactId>serialkiller</artifactId>
+			<version>0.4</version>
+		</dependency>
+
+
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>

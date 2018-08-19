@@ -33,7 +33,6 @@ public class Entity implements Serializable{
 	protected long isChildOf;
 	transient Map<String, String> attributes;
 	protected int level;
-	protected StringBuilder sb = new StringBuilder();
 
 	protected Entity() {}
 
@@ -43,8 +42,6 @@ public class Entity implements Serializable{
 
 		this.setIsFatherOf(x_.getId());
 		x_.setIsChildOf(this.getId());
-		EntityControler.putEntity(x_);
-
 		return x_;
 	}
 	
@@ -53,7 +50,6 @@ public class Entity implements Serializable{
 		this.setIsFatherOf(x_.getId());
 		e.setIsChildOf(this.getId());
 		e.level = this.level+1;
-		EntityControler.putEntity(e);
 		return x_;
 	}
 
@@ -249,17 +245,17 @@ public class Entity implements Serializable{
 	}
 
 	protected String getSonTags() {
-		sb.setLength(0);//clear sb only used here
+		String s = "";
 
 		if (getIsFatherOf()!=null) 
 		{
 			for (Long l : getIsFatherOf()) 
 			{
-				sb.append(EntityControler.getEntity(l).show());
+				s+=EntityControler.getEntity(l).show();
 			}	
 		}
 
-		return sb.toString();
+		return s;
 	}
 
 	public Entity getEntityById(long l) {

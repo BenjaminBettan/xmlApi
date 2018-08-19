@@ -12,6 +12,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.bbe.xmlapi.utilxml.SaxHandler;
+import com.bbe.xmlapi.utilxml.persist.PersistConfigurator;
 import com.bbe.xmlapi.utilxml.persist.XmlLoad;
 import com.bbe.xmlapi.utilxml.persist.XmlPersist;
 /***
@@ -22,11 +23,6 @@ import com.bbe.xmlapi.utilxml.persist.XmlPersist;
  */
 public class EntityControler{
 
-	/***next is for singleton*/
-	private EntityControler() {}
-	private static class SingletonHolder { private static final EntityControler instance = new EntityControler(); }
-	public  static EntityControler getInstance() {return SingletonHolder.instance;}
-	
 	private static Map<Long, Entity> mapEntities = new HashMap<>();
 	private static Entity root;
 	private static long id = 0;
@@ -35,17 +31,35 @@ public class EntityControler{
 	
 	private static boolean toHardDrive = false;
 
-	public static void setToHardDrive(boolean toHardDrive) {
-		EntityControler.toHardDrive = toHardDrive;
+	
+	/***next is for singleton*/
+	private EntityControler() {}
+	private static class SingletonHolder { private static final EntityControler instance = new EntityControler(); }
+	
+	public static EntityControler getInstance() {return SingletonHolder.instance;}
+	
+	
+	//End singleton part
+	
+	public static void setToHardDriveAndClean(boolean toHardDrive_) {
+		toHardDrive = toHardDrive_;
+		clean();
 	}
-
+	
 	protected static synchronized long getNewValue() {
 		return id++;
 	}
+
+	
 	
 	public static Entity getEntity(long l) {
 		if (toHardDrive) {
-			return XmlLoad.serializeObjectToEntity(l);	
+			try {
+				return XmlLoad.serializeObjectToEntity(l);
+			} catch (ClassNotFoundException | IOException e) {
+				logger.warn(e);
+				return null;
+			}	
 		}
 		return mapEntities.get(l);
 	}
@@ -57,8 +71,12 @@ public class EntityControler{
 	 *  2 - filter old values to get efficient logs
 	 */
 	public static void clean() {
+		id = 0;
 		mapEntities.clear();
 		root = null;
+		if (PersistConfigurator.getTmpSubDir()==null && toHardDrive) {
+			PersistConfigurator.setTmpSubDir(""+System.currentTimeMillis());	
+		}
 	}
 
 	/**

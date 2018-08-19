@@ -39,13 +39,13 @@ public class VirtualXMLEntity extends Entity implements Serializable{
 
 	@Override
 	public String show() {
-		sb.setLength(0);//clear sb only used here
+		String s = "";
 		for (Long l : getIsFatherOf()) 
 		{
-			sb.append(getEntityById(l).show());
+			s+=getEntityById(l).show();
 		}
 
-		return sb.toString();
+		return s;
 	}
 
 }
