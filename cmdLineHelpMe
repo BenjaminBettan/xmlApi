@@ -1,12 +1,10 @@
-cd /home/benjamin/app/sts-bundle/sts-3.9.1.RELEASE/workspace/xmlApi
-
 clean install dependency:copy-dependencies
 cd /home/benjamin/app/sts-bundle/sts-3.9.1.RELEASE/workspace/xmlApi/target
 java -cp "xmlApi-0.0.1-SNAPSHOT.jar:dependency/*" com.bbe.main.Main pom.xml
 
 sonar :
 
-./home/benjamin/app/sonarqube-7.3/bin/linux-x86-64/
+cd /home/benjamin/app/sonarqube-7.3/bin/linux-x86-64/
 ./sonar.sh console
 
 sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=admin
