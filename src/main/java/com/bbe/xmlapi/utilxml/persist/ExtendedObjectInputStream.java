@@ -10,9 +10,9 @@ import com.bbe.xmlapi.core.Entity;
 import com.bbe.xmlapi.core.VirtualXMLEntity;
 import com.bbe.xmlapi.core.XMLEntity;
 
-public class LookAheadObjectInputStream extends ObjectInputStream {
+public class ExtendedObjectInputStream extends ObjectInputStream {
 	
-	public LookAheadObjectInputStream(InputStream inputStream) throws IOException {
+	public ExtendedObjectInputStream(InputStream inputStream) throws IOException {
 		super(inputStream);
 	}
 

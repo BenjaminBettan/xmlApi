@@ -1,10 +1,7 @@
 package com.bbe.xmlapi.core;
 
 import java.io.Serializable;
-/**
- * Entity to persist
- * @author benjamin
- */
+
 public class VirtualXMLEntity extends Entity implements Serializable{
 
 	private static final long serialVersionUID = Long.MAX_VALUE - 99999;

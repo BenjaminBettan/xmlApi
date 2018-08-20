@@ -13,14 +13,9 @@ import org.xmlunit.diff.ComparisonControllers;
 import org.xmlunit.diff.Diff;
 import org.xmlunit.diff.Difference;
 
-import com.bbe.xmlapi.utilxml.persist.XmlPersist;
+import com.bbe.xmlapi.utilxml.persist.EntityToSerialize;
 import com.bbe.xmlapi.utilxml.restitution.JsonTransformer;
 import com.bbe.xmlapi.utilxml.restitution.XmlFormatterIndent;
-
-/**
- * Entity to persist
- * @author benjamin
- */
 
 public class Entity implements Serializable{
 
@@ -44,8 +39,8 @@ public class Entity implements Serializable{
 		this.setIsFatherOf(e.getId());
 		e.setIsChildOf(this.getId());
 		if (EntityControler.isPersistMode()) {
-			XmlPersist.persist(this);
-			XmlPersist.persist(e);
+			EntityToSerialize.persistOnHardDrive(this);
+			EntityToSerialize.persistOnHardDrive(e);
 		}
 		return e;
 	}
@@ -55,8 +50,8 @@ public class Entity implements Serializable{
 		e.setIsChildOf(this.getId());
 		e.level = this.level+1;
 		if (EntityControler.isPersistMode()) {
-			XmlPersist.persist(this);
-			XmlPersist.persist(e);
+			EntityToSerialize.persistOnHardDrive(this);
+			EntityToSerialize.persistOnHardDrive(e);
 		}
 		return e;
 	}
@@ -79,7 +74,7 @@ public class Entity implements Serializable{
 	public void setTag(String tag) {
 		this.tag = tag;
 		if (EntityControler.isPersistMode()) {
-			XmlPersist.persist(this);
+			EntityToSerialize.persistOnHardDrive(this);
 		}
 	}
 
@@ -90,7 +85,7 @@ public class Entity implements Serializable{
 	public void setData(String data) {
 		this.data = data;
 		if (EntityControler.isPersistMode()) {
-			XmlPersist.persist(this);
+			EntityToSerialize.persistOnHardDrive(this);
 		}
 	}
 
@@ -110,7 +105,7 @@ public class Entity implements Serializable{
 	public void setLevel(int level2) {
 		level = level2;
 		if (EntityControler.isPersistMode()) {
-			XmlPersist.persist(this);
+			EntityToSerialize.persistOnHardDrive(this);
 		}
 	}
 	
@@ -125,7 +120,7 @@ public class Entity implements Serializable{
 	public void setAttributes(Map<String, String> attributes) {
 		this.attributes = attributes;
 		if (EntityControler.isPersistMode()) {
-			XmlPersist.persist(this);
+			EntityToSerialize.persistOnHardDrive(this);
 		}
 	}
 
@@ -152,7 +147,7 @@ public class Entity implements Serializable{
 		}
 		this.getIsFatherOf().add(id2);
 		if (EntityControler.isPersistMode()) {
-			XmlPersist.persist(this);
+			EntityToSerialize.persistOnHardDrive(this);
 		}
 	}
 

@@ -9,12 +9,12 @@ import org.apache.log4j.Logger;
 import com.bbe.xmlapi.core.Entity;
 import com.bbe.xmlapi.core.XMLEntity;
 
-public class XmlLoad
+public class SerializeToEntity
 {
-	private static final Logger logger = Logger.getLogger(XmlLoad.class);
-	private XmlLoad() {}
+	private static final Logger logger = Logger.getLogger(SerializeToEntity.class);
+	private SerializeToEntity() {}
 
-	public static Entity serializeObjectToEntity(long l) throws ClassNotFoundException, IOException	{
+	public static Entity get(long l) throws ClassNotFoundException, IOException	{
 		Entity e = null;
 		String filePath = PersistConfigurator.convertToFilePath(l);
 		File f = new File((filePath+PersistConfigurator.getPrefix()+l));
@@ -34,7 +34,7 @@ public class XmlLoad
 		Object obj =null;
 		try (ByteArrayInputStream bais = new ByteArrayInputStream(buffer)){
 			//LookAheadObjectInputStream instead of InputStream
-			try(LookAheadObjectInputStream ois = new LookAheadObjectInputStream(bais)) {
+			try(ExtendedObjectInputStream ois = new ExtendedObjectInputStream(bais)) {
 				try {
 					obj = ois.readObject();
 				} 
@@ -47,8 +47,8 @@ public class XmlLoad
 			} catch (IOException e3) {
 				logger.warn(e3.getMessage());
 			}
-		} catch (IOException e5) {
-			logger.warn(e5.getMessage());
+		} catch (IOException e4) {
+			logger.warn(e4.getMessage());
 		}
 		return obj;
 	}

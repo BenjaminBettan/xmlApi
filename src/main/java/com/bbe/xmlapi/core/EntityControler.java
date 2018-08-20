@@ -13,8 +13,8 @@ import org.xml.sax.SAXException;
 
 import com.bbe.xmlapi.utilxml.other.SaxHandler;
 import com.bbe.xmlapi.utilxml.persist.PersistConfigurator;
-import com.bbe.xmlapi.utilxml.persist.XmlLoad;
-import com.bbe.xmlapi.utilxml.persist.XmlPersist;
+import com.bbe.xmlapi.utilxml.persist.SerializeToEntity;
+import com.bbe.xmlapi.utilxml.persist.EntityToSerialize;
 
 /**Singleton */
 public class EntityControler{
@@ -49,7 +49,7 @@ public class EntityControler{
 	public static Entity getEntity(long l) {
 		if (toHardDrive) {
 			try {
-				return XmlLoad.serializeObjectToEntity(l);
+				return SerializeToEntity.get(l);
 			} catch (ClassNotFoundException | IOException e) {
 				logger.warn(e);
 				return null;
@@ -83,7 +83,7 @@ public class EntityControler{
 	
 	public static synchronized void putEntity(Entity e) {
 		if (toHardDrive) {
-			XmlPersist.persist(e);
+			EntityToSerialize.persistOnHardDrive(e);
 		}
 		else {
 			mapEntities.put(e.getId(), e);	

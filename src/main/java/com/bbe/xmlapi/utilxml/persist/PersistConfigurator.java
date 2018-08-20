@@ -1,28 +1,27 @@
 package com.bbe.xmlapi.utilxml.persist;
 
-
 public class PersistConfigurator {
 
 	private static String prefix,tmp;
 	private static String tmpSubDir;
-	private final static String PREFIX_LINUX = "/";
-	private final static String PREFIX_WINDOWS = "\\";
-	private final static String TMP_LINUX = "/tmp";
-	private final static String TMP_WINDOWS = "C:\\tmp";
+	private final static String LINUX_PREFIX = "/";
+	private final static String WINDOWS_PREFIX = "\\";
+	private final static String LINUX_TMP = "/tmp";
+	private final static String WINDOWS_TMP = "C:\\tmp";
 	
 	private PersistConfigurator() {}
 
 	public static String getPrefix() {
 		if (prefix==null) {
-			if (System.getProperty("user.dir").split(PREFIX_LINUX).length>0) 
+			if (System.getProperty("user.dir").split(LINUX_PREFIX).length>0) 
 			{//linux
-				prefix = PREFIX_LINUX;
-				tmp= TMP_LINUX;
+				prefix = LINUX_PREFIX;
+				tmp= LINUX_TMP;
 			}
 			else 
 			{//windows
-				prefix = PREFIX_WINDOWS;
-				tmp= TMP_WINDOWS;
+				prefix = WINDOWS_PREFIX;
+				tmp= WINDOWS_TMP;
 			}
 		}
 		return prefix;
@@ -49,5 +48,12 @@ public class PersistConfigurator {
 	public static String getTmpSubDir() {
 		return tmpSubDir;
 	}
-	
+
+	public static String getTmp() {
+		return tmp;
+	}
+
+	public static void setTmp(String tmp) {
+		PersistConfigurator.tmp = tmp;
+	}
 }

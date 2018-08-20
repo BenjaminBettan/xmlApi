@@ -19,7 +19,7 @@ import com.bbe.xmlapi.core.EntityControler;
 import com.bbe.xmlapi.core.VirtualXMLEntity;
 import com.bbe.xmlapi.core.XMLEntity;
 import com.bbe.xmlapi.utilxml.other.WebConnectionGetter;
-import com.bbe.xmlapi.utilxml.persist.XmlLoad;
+import com.bbe.xmlapi.utilxml.persist.SerializeToEntity;
 
 public class SimpleTest {
 	private static final Logger logger = Logger.getLogger(SimpleTest.class);
@@ -103,7 +103,7 @@ public class SimpleTest {
 		
 		Entity root = EntityControler.getInstance().parseFileWithSax("pom.xml");
 		EntityControler.clean();
-		root = XmlLoad.serializeObjectToEntity(root.getId());
+		root = SerializeToEntity.get(root.getId());
 		logger.info(root.showJson());
 	}
 	

@@ -7,13 +7,17 @@ import java.nio.file.Paths;
 import org.apache.log4j.Logger;
 
 import com.bbe.xmlapi.core.Entity;
-public class XmlPersist
+public class EntityToSerialize
 {
-	private static final Logger logger = Logger.getLogger(XmlPersist.class);
+	private static final Logger logger = Logger.getLogger(EntityToSerialize.class);
 
-	private XmlPersist() {}
-
-	public static boolean persist(Entity e)
+	private EntityToSerialize() {}
+/**
+ * 
+ * @param e
+ * @return true if the file/entity has been persisted on hard drive (tmp directory cf com.bbe.xmlapi.utilxml.persist.PersistConfigurator.setTmp / setTmpSubDir)
+ */
+	public static boolean persistOnHardDrive(Entity e)
 	{
 
 		long l = e.getId();

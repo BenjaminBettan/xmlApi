@@ -3,11 +3,6 @@ package com.bbe.xmlapi.core;
 import java.io.Serializable;
 import java.util.Map;
 
-
-/**
- * Entity to persist
- * @author benjamin
- */
 public class XMLEntity extends Entity implements Serializable{
 
 	private static final long serialVersionUID = Long.MAX_VALUE - 9999;
