@@ -28,7 +28,7 @@ public class PersistConfigurator {
 		return prefix;
 	}
 
-	public static String convertToFilePath(long l){
+	public static String convertToFilePath(long l){ //long l=123456 / OS=linux : will return -> /tmp/1/2/3/4/5/6/ 
 		prefix=getPrefix();
 		
 		StringBuilder sb = new StringBuilder();
@@ -36,7 +36,7 @@ public class PersistConfigurator {
 		
 		for (char ch: Long.toString(l).toCharArray()) //for each char in string
 		{
-			sb.append(prefix + ch);
+			sb.append(prefix + "_" +ch);
 		}
 		
 		return sb.append(prefix).toString();

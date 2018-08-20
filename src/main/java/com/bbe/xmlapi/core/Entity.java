@@ -15,6 +15,7 @@ import org.xmlunit.diff.Difference;
 
 import com.bbe.xmlapi.utilxml.JsonTransformer;
 import com.bbe.xmlapi.utilxml.XmlFormatterIndent;
+import com.bbe.xmlapi.utilxml.persist.XmlPersist;
 
 /**
  * Entity to persist
@@ -38,19 +39,26 @@ public class Entity implements Serializable{
 
 	public Entity addChild(String currentTag) {
 
-		Entity x_ = new XMLEntity(currentTag, level+1);
+		Entity e = new XMLEntity(currentTag, level+1);
 
-		this.setIsFatherOf(x_.getId());
-		x_.setIsChildOf(this.getId());
-		return x_;
+		this.setIsFatherOf(e.getId());
+		e.setIsChildOf(this.getId());
+		if (EntityControler.isPersistMode()) {
+			XmlPersist.persist(this);
+			XmlPersist.persist(e);
+		}
+		return e;
 	}
 	
-	public Entity addChild(Entity x_) {
-		XMLEntity e = (XMLEntity) x_;
-		this.setIsFatherOf(x_.getId());
+	public Entity addChild(Entity e) {
+		this.setIsFatherOf(e.getId());
 		e.setIsChildOf(this.getId());
 		e.level = this.level+1;
-		return x_;
+		if (EntityControler.isPersistMode()) {
+			XmlPersist.persist(this);
+			XmlPersist.persist(e);
+		}
+		return e;
 	}
 
 	public boolean thisNodeHasNoAttribute() {
@@ -70,6 +78,9 @@ public class Entity implements Serializable{
 
 	public void setTag(String tag) {
 		this.tag = tag;
+		if (EntityControler.isPersistMode()) {
+			XmlPersist.persist(this);
+		}
 	}
 
 	public String getData() {
@@ -78,6 +89,9 @@ public class Entity implements Serializable{
 
 	public void setData(String data) {
 		this.data = data;
+		if (EntityControler.isPersistMode()) {
+			XmlPersist.persist(this);
+		}
 	}
 
 	public boolean isLeaf() {
@@ -95,6 +109,9 @@ public class Entity implements Serializable{
 
 	public void setLevel(int level2) {
 		level = level2;
+		if (EntityControler.isPersistMode()) {
+			XmlPersist.persist(this);
+		}
 	}
 	
 	protected void setIsChildOf(long isChildOf) {
@@ -107,6 +124,9 @@ public class Entity implements Serializable{
 
 	public void setAttributes(Map<String, String> attributes) {
 		this.attributes = attributes;
+		if (EntityControler.isPersistMode()) {
+			XmlPersist.persist(this);
+		}
 	}
 
 	public Map<Long, Entity> getChilds() {
@@ -127,6 +147,9 @@ public class Entity implements Serializable{
 			childsId = new ArrayList<>();
 		}
 		this.getIsFatherOf().add(id2);
+		if (EntityControler.isPersistMode()) {
+			XmlPersist.persist(this);
+		}
 	}
 
 	public Map<Long, Entity> getEntitiesByXpath(String xpath_) {

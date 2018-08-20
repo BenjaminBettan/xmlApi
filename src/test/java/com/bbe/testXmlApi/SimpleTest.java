@@ -45,7 +45,7 @@ public class SimpleTest {
 			if (EntityControler.getRoot() !=null) {
 				logger.info("\n\n"+EntityControler.getRoot().showXml()+"\n\n");
 			}
-			EntityControler.clean();	
+			EntityControler.setToHardDriveAndClean(false);
 			logger.info(message+"\n\n------------------------------\n");
 
 		}
@@ -93,7 +93,7 @@ public class SimpleTest {
 	@Test
 	public void testSaxToJson() throws IOException {
 		EntityControler.getInstance().parseFileWithSax("pom.xml");
-		System.out.println(EntityControler.getRoot().showJson());
+		logger.info(EntityControler.getRoot().showJson());
 		
 	}
 	
@@ -101,13 +101,10 @@ public class SimpleTest {
 	public void testPersistLoad() throws ClassNotFoundException, IOException {
 		EntityControler.setToHardDriveAndClean(true);
 		
-		Entity root = sc_1_();
-		
+		Entity root = EntityControler.getInstance().parseFileWithSax("pom.xml");
+		EntityControler.clean();
 		root = XmlLoad.serializeObjectToEntity(root.getId());
-		System.out.println(root);
-		EntityControler.setToHardDriveAndClean(false);
-		EntityControler.clean();	
-
+		logger.info(root.showJson());
 	}
 	
 	@Test
@@ -115,7 +112,7 @@ public class SimpleTest {
 		
 		Entity root = WebConnectionGetter.get("https://www.w3schools.com/xml/note.xml");
 		
-		System.out.println(root);
+		logger.info(root);
 	}
 	
 	@Test

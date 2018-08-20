@@ -32,6 +32,11 @@ public class EntityControler{
 	private static boolean toHardDrive = false;
 
 	
+	public static boolean isPersistMode() {
+		return toHardDrive;
+	}
+
+
 	/***next is for singleton*/
 	private EntityControler() {}
 	private static class SingletonHolder { private static final EntityControler instance = new EntityControler(); }
@@ -49,8 +54,6 @@ public class EntityControler{
 	protected static synchronized long getNewValue() {
 		return id++;
 	}
-
-	
 	
 	public static Entity getEntity(long l) {
 		if (toHardDrive) {
