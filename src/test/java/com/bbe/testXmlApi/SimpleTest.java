@@ -165,7 +165,7 @@ public class SimpleTest {
 
         long l = 0;
         for (TestPerfThread testPerfThread : arrayRefVar) {
-			l += testPerfThread.getL();
+			l += testPerfThread.getNbInstance();
 		}
 		logger.info("Size (hard drive) : " + l);
 

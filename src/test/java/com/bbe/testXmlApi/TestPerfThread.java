@@ -8,7 +8,7 @@ public class TestPerfThread implements Runnable {
 	private static final Logger logger = Logger.getLogger(TestPerfThread.class);
 	private long start;
 	private long deltaT;
-	private long l = 0;
+	private long nbInstance = 0;
 
 
 	public TestPerfThread setStart(long start) {
@@ -25,22 +25,22 @@ public class TestPerfThread implements Runnable {
 
 	@Override
 	public void run() {
-		l = 0;
+		nbInstance = 0;
 		XMLEntity root = new XMLEntity("root");
 		while (true) {
 			if (System.currentTimeMillis() - start > deltaT) {
-				logger.info(getL() + " entities persisted for this thread");
+				logger.info(nbInstance + " entities persisted for this thread");
 				break;
 			} else {
 				root.addChild("a");
-				l++;
+				nbInstance++;
 			}
 		}
 	}
 
 
-	public long getL() {
-		return l;
+	public long getNbInstance() {
+		return nbInstance;
 	}
 
 }
