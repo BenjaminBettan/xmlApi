@@ -1,4 +1,4 @@
-package com.bbe.xmlapi.utilxml.other;
+package com.bbe.xmlapi.util.other;
 
 import java.util.HashMap;
 import java.util.Map;

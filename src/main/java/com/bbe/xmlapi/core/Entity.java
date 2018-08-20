@@ -13,9 +13,9 @@ import org.xmlunit.diff.ComparisonControllers;
 import org.xmlunit.diff.Diff;
 import org.xmlunit.diff.Difference;
 
-import com.bbe.xmlapi.utilxml.persist.EntityToSerialize;
-import com.bbe.xmlapi.utilxml.restitution.JsonTransformer;
-import com.bbe.xmlapi.utilxml.restitution.XmlFormatterIndent;
+import com.bbe.xmlapi.util.persist.EntityToSerialize;
+import com.bbe.xmlapi.util.restitution.JsonTransformer;
+import com.bbe.xmlapi.util.restitution.XmlFormatterIndent;
 
 public class Entity implements Serializable{
 

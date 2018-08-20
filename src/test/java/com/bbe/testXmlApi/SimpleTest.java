@@ -18,8 +18,8 @@ import com.bbe.xmlapi.core.Entity;
 import com.bbe.xmlapi.core.EntityControler;
 import com.bbe.xmlapi.core.VirtualXMLEntity;
 import com.bbe.xmlapi.core.XMLEntity;
-import com.bbe.xmlapi.utilxml.other.WebConnectionGetter;
-import com.bbe.xmlapi.utilxml.persist.SerializeToEntity;
+import com.bbe.xmlapi.util.other.WebConnectionGetter;
+import com.bbe.xmlapi.util.persist.SerializeToEntity;
 
 public class SimpleTest {
 	private static final Logger logger = Logger.getLogger(SimpleTest.class);

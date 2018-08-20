@@ -1,4 +1,4 @@
-package com.bbe.xmlapi.utilxml.persist;
+package com.bbe.xmlapi.util.persist;
 
 public class PersistConfigurator {
 

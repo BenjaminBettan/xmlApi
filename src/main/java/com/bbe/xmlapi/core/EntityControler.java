@@ -11,10 +11,10 @@ import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.bbe.xmlapi.utilxml.other.SaxHandler;
-import com.bbe.xmlapi.utilxml.persist.PersistConfigurator;
-import com.bbe.xmlapi.utilxml.persist.SerializeToEntity;
-import com.bbe.xmlapi.utilxml.persist.EntityToSerialize;
+import com.bbe.xmlapi.util.other.SaxHandler;
+import com.bbe.xmlapi.util.persist.EntityToSerialize;
+import com.bbe.xmlapi.util.persist.PersistConfigurator;
+import com.bbe.xmlapi.util.persist.SerializeToEntity;
 
 /**Singleton */
 public class EntityControler{

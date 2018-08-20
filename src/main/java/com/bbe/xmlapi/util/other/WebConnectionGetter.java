@@ -1,4 +1,4 @@
-package com.bbe.xmlapi.utilxml.other;
+package com.bbe.xmlapi.util.other;
 
 import java.io.IOException;
 import java.net.URL;
