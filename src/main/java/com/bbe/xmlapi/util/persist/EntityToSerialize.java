@@ -17,7 +17,7 @@ public class EntityToSerialize
  * @param e
  * @return true if the file/entity has been persisted on hard drive (tmp directory cf com.bbe.xmlapi.utilxml.persist.PersistConfigurator.setTmp / setTmpSubDir)
  */
-	public static boolean persistOnHardDrive(Entity e)
+	public static synchronized boolean persistOnHardDrive(Entity e)
 	{
 
 		long l = e.getId();

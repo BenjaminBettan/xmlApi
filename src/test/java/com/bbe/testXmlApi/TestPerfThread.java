@@ -9,6 +9,13 @@ public class TestPerfThread implements Runnable {
 	private long start;
 	private long deltaT;
 	private long nbInstance = 0;
+	private XMLEntity root;
+
+
+	public TestPerfThread setNbInstance(long nbInstance) {
+		this.nbInstance = nbInstance;
+		return this;
+	}
 
 
 	public TestPerfThread setStart(long start) {
@@ -23,10 +30,14 @@ public class TestPerfThread implements Runnable {
 	}
 
 
+	public TestPerfThread setRoot(XMLEntity root) {
+		this.root = root;
+		return this;
+	}
+
+
 	@Override
 	public void run() {
-		nbInstance = 0;
-		XMLEntity root = new XMLEntity("root");
 		while (true) {
 			if (System.currentTimeMillis() - start > deltaT) {
 				logger.info(nbInstance + " entities persisted for this thread");

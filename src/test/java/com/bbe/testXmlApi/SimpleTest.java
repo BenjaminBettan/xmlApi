@@ -163,7 +163,7 @@ public class SimpleTest {
 		EntityControler.setToHardDriveAndClean(true);
 		
         executeTestPerf(deltaT);
-
+        //print result
         long l = 0;
         for (TestPerfThread testPerfThread : arrayRefVar) {
 			l += testPerfThread.getNbInstance();
@@ -176,11 +176,12 @@ public class SimpleTest {
 	
 	private void executeTestPerf(long deltaT) {
 		executor = Executors.newFixedThreadPool(arrayRefVar.length);
+		XMLEntity root = new XMLEntity("");
 
 		long start = System.currentTimeMillis();
 
         for (int i = 0; i < arrayRefVar.length; i++) {
-            executor.execute(arrayRefVar[i].setDeltaT(deltaT).setStart(start));
+            executor.execute(arrayRefVar[i].setDeltaT(deltaT).setStart(start).setRoot(root).setNbInstance(0));
           }
         executor.shutdown();
         while (!executor.isTerminated()) {
