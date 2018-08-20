@@ -81,7 +81,7 @@ public class EntityControler{
 		return mapEntities;
 	}
 	
-	public static synchronized void putEntity(Entity e) {
+	protected static synchronized void putEntity(Entity e) {
 		if (toHardDrive) {
 			EntityToSerialize.persistOnHardDrive(e);
 		}

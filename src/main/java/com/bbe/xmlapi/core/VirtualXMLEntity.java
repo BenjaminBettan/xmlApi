@@ -12,6 +12,7 @@ public class VirtualXMLEntity extends Entity implements Serializable{
  */
 	public VirtualXMLEntity() {
 		this.isChildOf = -1;
+		this.id = EntityControler.getNewValue();
 		EntityControler.putEntity(this);
 	}
 
