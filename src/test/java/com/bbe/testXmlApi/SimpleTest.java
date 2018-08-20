@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -23,6 +25,9 @@ import com.bbe.xmlapi.util.persist.SerializeToEntity;
 
 public class SimpleTest {
 	private static final Logger logger = Logger.getLogger(SimpleTest.class);
+	private boolean show = true;
+	private ExecutorService executor;
+	private TestPerfThread[] arrayRefVar;
 	{
 		PropertyConfigurator.configure("log4j.properties");
 	}
@@ -39,12 +44,16 @@ public class SimpleTest {
 		}
 
 		private void printAndPrepareNextTest(String message) throws IOException {
-			for (Map.Entry<Long, Entity> xmlEntity : EntityControler.getMapEntities().entrySet()) {
-				logger.info(xmlEntity.getValue());
+			if (show) {
+				for (Map.Entry<Long, Entity> xmlEntity : EntityControler.getMapEntities().entrySet()) {
+					logger.info(xmlEntity.getValue());
+				}
+				if (EntityControler.getRoot() !=null) {
+					logger.info("\n\n"+EntityControler.getRoot().showXml()+"\n\n");
+				}
 			}
-			if (EntityControler.getRoot() !=null) {
-				logger.info("\n\n"+EntityControler.getRoot().showXml()+"\n\n");
-			}
+			show = true;
+			
 			EntityControler.setToHardDriveAndClean(false);
 			logger.info(message+"\n\n------------------------------\n");
 
@@ -133,32 +142,52 @@ public class SimpleTest {
 	    Assert.assertTrue("size = 7 ? -> "+size,size==7);
 	}
 	
+///*	
+	@Test
+	public void testPersistPerf() {
+		long deltaT = 10;//in ms
+		int poolSize = 8;//nb thread
+		logger.info("deltaT is : "+deltaT+"ms / nb thread is " + poolSize);
+		arrayRefVar = new TestPerfThread[poolSize];
+        for (int i = 0; i < arrayRefVar.length; i++) {
+        	arrayRefVar[i] = new TestPerfThread();
+		}
+		
+        executeTestPerf(deltaT);
+        
+		logger.info("Size (memory) : "+EntityControler.getMapEntities().size());
+		
+		//test #2 to hard drive
+		
+		EntityControler.setToHardDriveAndClean(true);
+		
+        executeTestPerf(deltaT);
+
+        long l = 0;
+        for (TestPerfThread testPerfThread : arrayRefVar) {
+			l += testPerfThread.getL();
+		}
+		logger.info("Size (hard drive) : " + l);
+
+		show = false;
+		
+	}
+	//*/
 	
-//	@Test
-//	public void testPersistPerf() {
-//		
-//		long start = System.currentTimeMillis();
-//		Entity_I root = new XMLEntity("root");
-//		while (true) {
-//			if (System.currentTimeMillis() - start > 100) {
-//				break;
-//			} else {
-//				root.addChild("a");
-//			}
-//		}
-//		
-//		System.out.println("Size : "+EntityControler.getMapEntities().size());
-//		
-//		// persist HashMap to file then load and print
-//		String filePath = "hashmap.ser";
-//		XmlPersist.persist(filePath);
-//		HashMap<Long, Entity_I> e = XmlLoad.serializeObjectToEntity(filePath);
-//		System.out.println("e.values()");
-//		System.out.println(e.values());
-//		
-//	}
-	
-	
+	private void executeTestPerf(long deltaT) {
+		executor = Executors.newFixedThreadPool(arrayRefVar.length);
+
+		long start = System.currentTimeMillis();
+
+        for (int i = 0; i < arrayRefVar.length; i++) {
+            executor.execute(arrayRefVar[i].setDeltaT(deltaT).setStart(start));
+          }
+        executor.shutdown();
+        while (!executor.isTerminated()) {
+        }
+		
+	}
+
 	public Entity a_() {
 		Entity root = new VirtualXMLEntity();
 		root.addChild("b");
