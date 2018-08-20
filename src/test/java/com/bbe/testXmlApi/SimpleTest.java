@@ -116,6 +116,7 @@ public class SimpleTest {
 		logger.info(root.showJson());
 	}
 	
+	///*	
 	@Test
 	public void testUrl() {
 		
@@ -123,6 +124,7 @@ public class SimpleTest {
 		
 		logger.info(root);
 	}
+	//*/
 	
 	@Test
 	public void testXmlUnitApi(){
@@ -142,7 +144,6 @@ public class SimpleTest {
 	    Assert.assertTrue("size = 7 ? -> "+size,size==7);
 	}
 	
-///*	
 	@Test
 	public void testPersistPerf() {
 		long deltaT = 10;//in ms
@@ -172,7 +173,6 @@ public class SimpleTest {
 		show = false;
 		
 	}
-	//*/
 	
 	private void executeTestPerf(long deltaT) {
 		executor = Executors.newFixedThreadPool(arrayRefVar.length);
