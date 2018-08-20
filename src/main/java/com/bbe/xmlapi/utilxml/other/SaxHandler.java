@@ -1,4 +1,4 @@
-package com.bbe.xmlapi.utilxml;
+package com.bbe.xmlapi.utilxml.other;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,7 @@ import com.bbe.xmlapi.core.XMLEntity;
 public class SaxHandler extends DefaultHandler {
 	
 	private Entity root,pointer;
-	private int level = 0;
+	private int level = 0;//for root tag : 0, for every son : 1,...
 
 	public Entity getRoot() {
 		return root;
@@ -20,7 +20,7 @@ public class SaxHandler extends DefaultHandler {
 	
 	@Override
 	public void startElement(String uri, String localName, String tagName, Attributes attributes) throws SAXException {
-		
+		//get attributes and put it inside HashMap
 		Map<String, String> currentAttributes = null;
 		
 		if (attributes.getLength()>0) {
@@ -33,7 +33,7 @@ public class SaxHandler extends DefaultHandler {
 			}
 			
 		}
-		
+		//create the new instance here and set parent/child link 
 		if (pointer == null) {
 			
 			root = new XMLEntity(tagName, currentAttributes, level);
@@ -58,10 +58,9 @@ public class SaxHandler extends DefaultHandler {
 		String data = new String(caracteres, debut, longueur).trim();
 		
 		if ( data != null && ! data.equals("") ) 
-		{	
+		{//concatenation because characters method may be called several times
 			pointer.setData(pointer.getData()+data);
 		}
-		
 	}
 
 	@Override

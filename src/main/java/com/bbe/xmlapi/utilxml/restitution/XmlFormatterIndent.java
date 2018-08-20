@@ -1,4 +1,4 @@
-package com.bbe.xmlapi.utilxml;
+package com.bbe.xmlapi.utilxml.restitution;
 
 import org.apache.log4j.Logger;
 
@@ -23,11 +23,13 @@ import java.io.Writer;
  * <p/>
  * eg.
  * <code>
- * String formattedXml = new XmlFormatter().format("<tag><nested>hello</nested></tag>");
+ * String formattedXml = XmlFormatterIndent.format("<tag><nested>hello</nested></tag>");
  * </code>
  */
 public class XmlFormatterIndent {
 	private static final Logger logger = Logger.getLogger(XmlFormatterIndent.class);
+	private static final int LINE_WIDTH = 65;
+	private static final int LINE_INDENT = 2;
 	private XmlFormatterIndent() {}
 
 	public static String format(String unformattedXml) throws IOException {
@@ -38,9 +40,9 @@ public class XmlFormatterIndent {
 		if (document!=null) {
 			
 			OutputFormat format = new OutputFormat(document);
-			format.setLineWidth(65);
+			format.setLineWidth(LINE_WIDTH);
 			format.setIndenting(true);
-			format.setIndent(2);
+			format.setIndent(LINE_INDENT);
 			
 			XMLSerializer serializer = new XMLSerializer(out, format);
 			serializer.serialize(document);

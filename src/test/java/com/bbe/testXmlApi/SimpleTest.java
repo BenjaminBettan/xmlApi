@@ -18,7 +18,7 @@ import com.bbe.xmlapi.core.Entity;
 import com.bbe.xmlapi.core.EntityControler;
 import com.bbe.xmlapi.core.VirtualXMLEntity;
 import com.bbe.xmlapi.core.XMLEntity;
-import com.bbe.xmlapi.utilxml.WebConnectionGetter;
+import com.bbe.xmlapi.utilxml.other.WebConnectionGetter;
 import com.bbe.xmlapi.utilxml.persist.XmlLoad;
 
 public class SimpleTest {
@@ -208,5 +208,4 @@ public class SimpleTest {
 		x2.addChild("x3").setAttributes(attributes);
 		return root;
 	}
-
 }

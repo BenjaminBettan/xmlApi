@@ -1,4 +1,4 @@
-package com.bbe.xmlapi.utilxml;
+package com.bbe.xmlapi.utilxml.restitution;
 
 import org.apache.log4j.Logger;
 import org.json.JSONException;

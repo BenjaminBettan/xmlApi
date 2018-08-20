@@ -13,9 +13,9 @@ import org.xmlunit.diff.ComparisonControllers;
 import org.xmlunit.diff.Diff;
 import org.xmlunit.diff.Difference;
 
-import com.bbe.xmlapi.utilxml.JsonTransformer;
-import com.bbe.xmlapi.utilxml.XmlFormatterIndent;
 import com.bbe.xmlapi.utilxml.persist.XmlPersist;
+import com.bbe.xmlapi.utilxml.restitution.JsonTransformer;
+import com.bbe.xmlapi.utilxml.restitution.XmlFormatterIndent;
 
 /**
  * Entity to persist
@@ -31,7 +31,7 @@ public class Entity implements Serializable{
 	protected String tag;
 	protected String data;
 	private List<Long> childsId;
-	protected long isChildOf;
+	protected long isChildOf;//-1 -> root node
 	transient Map<String, String> attributes;
 	protected int level;
 
@@ -140,7 +140,11 @@ public class Entity implements Serializable{
 
 		return mapEntities;
 	}
-
+	
+	public List<Long> getIsFatherOf() {
+		return childsId;
+	}
+	
 	protected void setIsFatherOf(long id2) {
 		if (getIsFatherOf()==null) 
 		{
@@ -150,6 +154,43 @@ public class Entity implements Serializable{
 		if (EntityControler.isPersistMode()) {
 			XmlPersist.persist(this);
 		}
+	}
+
+	/**
+	 * Note that when you use addChild method, level field is not updated to sons
+	 * @return 0 for root, 1 for his son...
+	 */
+	public int getLevel() {
+		return level;
+	}
+
+	public boolean isRootNode() {
+		return isChildOf==-1;
+	}
+
+	public boolean isVirtualEntity() {
+	    return this instanceof VirtualXMLEntity;
+	}
+
+	public Iterator<Difference> getDiff(Entity e) {
+	    Diff myDiff = DiffBuilder
+	  	      .compare(this.show())
+	  	      .withTest(e.show())
+	  	       .build();
+		return myDiff.getDifferences().iterator();
+	}
+
+	public boolean isDiff(Entity e) {
+	    Diff myDiff = DiffBuilder
+		  	      .compare(this.show())
+		  	      .withTest(e.show())
+		  	      .withComparisonController(ComparisonControllers.StopWhenDifferent)
+		  	       .build();
+		return myDiff.getDifferences().iterator().hasNext();
+	}
+
+	public Entity getEntityById(long l) {
+		return EntityControler.getEntity(l);
 	}
 
 	public Map<Long, Entity> getEntitiesByXpath(String xpath_) {
@@ -267,26 +308,8 @@ public class Entity implements Serializable{
 		}
 	}
 
-	protected String getSonTags() {
-		String s = "";
-
-		if (getIsFatherOf()!=null) 
-		{
-			for (Long l : getIsFatherOf()) 
-			{
-				s+=EntityControler.getEntity(l).show();
-			}	
-		}
-
-		return s;
-	}
-
-	public Entity getEntityById(long l) {
-		return EntityControler.getEntity(l);
-	}
-
-	public boolean isVirtualEntity() {
-	    return this instanceof VirtualXMLEntity;
+	public String showJson() throws IOException {
+		return JsonTransformer.xmlToJson(this.showXml());
 	}
 
 	public String showXml() throws IOException {
@@ -336,48 +359,25 @@ public class Entity implements Serializable{
 		return header + data + getSonTags() +footer;
 	}
 
+	protected String getSonTags() {
+		String s = "";
+
+		if (getIsFatherOf()!=null) 
+		{
+			for (Long l : getIsFatherOf()) 
+			{
+				s+=EntityControler.getEntity(l).show();
+			}	
+		}
+
+		return s;
+	}
+	
 	@Override
 	public String toString() {
 		return "Entity [id=" + id + ", level=" + level + ", tag=" + tag + ", data=" + data +  ", leaf="
 				+ isLeaf() + ", isChildOf=" + isChildOf + ", attributes=" + attributes 
 				+ ", isFatherOf=" + getIsFatherOf() +"]";
-	}
-
-	/**
-	 * Note that when you use addChild method, level field is not updated to sons
-	 * @return 0 for root, 1 for his son...
-	 */
-	public int getLevel() {
-		return level;
-	}
-
-	public boolean isRootNode() {
-		return isChildOf==-1;
-	}
-
-	public String showJson() throws IOException {
-		return JsonTransformer.xmlToJson(this.showXml());
-	}
-
-	public Iterator<Difference> getDiff(Entity e) {
-	    Diff myDiff = DiffBuilder
-	  	      .compare(this.show())
-	  	      .withTest(e.show())
-	  	       .build();
-		return myDiff.getDifferences().iterator();
-	}
-
-	public boolean isDiff(Entity e) {
-	    Diff myDiff = DiffBuilder
-		  	      .compare(this.show())
-		  	      .withTest(e.show())
-		  	      .withComparisonController(ComparisonControllers.StopWhenDifferent)
-		  	       .build();
-		return myDiff.getDifferences().iterator().hasNext();
-	}
-
-	public List<Long> getIsFatherOf() {
-		return childsId;
 	}
 
 }

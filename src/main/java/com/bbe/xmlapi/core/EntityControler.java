@@ -11,40 +11,31 @@ import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.bbe.xmlapi.utilxml.SaxHandler;
+import com.bbe.xmlapi.utilxml.other.SaxHandler;
 import com.bbe.xmlapi.utilxml.persist.PersistConfigurator;
 import com.bbe.xmlapi.utilxml.persist.XmlLoad;
 import com.bbe.xmlapi.utilxml.persist.XmlPersist;
-/***
- * This is a singleton.
- * 
- * 
- * @author benjamin
- */
+
+/**Singleton */
 public class EntityControler{
+
+	/***Next is for singleton*/
+	private EntityControler() {}
+	private static class SingletonHolder { private static final EntityControler instance = new EntityControler(); }
+	public static EntityControler getInstance() {return SingletonHolder.instance;}
+	/***End singleton part*/
+
+	private static final Logger logger = Logger.getLogger(EntityControler.class);
 
 	private static Map<Long, Entity> mapEntities = new HashMap<>();
 	private static Entity root;
 	private static long id = 0;
 	
-	private static final Logger logger = Logger.getLogger(EntityControler.class);
-	
 	private static boolean toHardDrive = false;
-
 	
 	public static boolean isPersistMode() {
 		return toHardDrive;
 	}
-
-
-	/***next is for singleton*/
-	private EntityControler() {}
-	private static class SingletonHolder { private static final EntityControler instance = new EntityControler(); }
-	
-	public static EntityControler getInstance() {return SingletonHolder.instance;}
-	
-	
-	//End singleton part
 	
 	public static void setToHardDriveAndClean(boolean toHardDrive_) {
 		toHardDrive = toHardDrive_;
@@ -77,7 +68,7 @@ public class EntityControler{
 		id = 0;
 		mapEntities.clear();
 		root = null;
-		if (PersistConfigurator.getTmpSubDir()==null && toHardDrive) {
+		if (PersistConfigurator.getTmpSubDir()==null && toHardDrive) {//Set tmp dir
 			PersistConfigurator.setTmpSubDir(""+System.currentTimeMillis());	
 		}
 	}

@@ -1,4 +1,4 @@
-package com.bbe.xmlapi.utilxml;
+package com.bbe.xmlapi.utilxml.other;
 
 import java.io.IOException;
 import java.net.URL;
@@ -13,7 +13,11 @@ public class WebConnectionGetter {
 	private static final Logger logger = Logger.getLogger(WebConnectionGetter.class);
 
 	private WebConnectionGetter() {}
-	
+	/**
+	 * get entity by an url. example : WebConnectionGetter.get("https://www.w3schools.com/xml/note.xml");
+	 * @param url the url where the xml content is
+	 * @return root entity
+	 */
 	public static Entity get(String url) {
 
 		String content = null;

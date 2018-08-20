@@ -17,7 +17,7 @@ public class LookAheadObjectInputStream extends ObjectInputStream {
 	}
 
 	/**
-	 * Only deserialize instances of our expected Bicycle class
+	 * Only deserialize instances of our expected Entity class
 	 */
 	@Override
 	protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException,
