@@ -31,7 +31,6 @@ public class EntityToSerialize
 				ObjectOutputStream oos = new ObjectOutputStream(fos);
 				oos.writeObject(e);
 				oos.close();
-				fos.close();
 				return true;
 			}catch(IOException ioe)
 			{

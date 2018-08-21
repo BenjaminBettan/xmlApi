@@ -4,10 +4,10 @@ public class PersistConfigurator {
 
 	private static String prefix,tmp;
 	private static String tmpSubDir;
-	private final static String LINUX_PREFIX = "/";
-	private final static String WINDOWS_PREFIX = "\\";
-	private final static String LINUX_TMP = "/tmp";
-	private final static String WINDOWS_TMP = "C:\\tmp";
+	private static final String LINUX_PREFIX = "/";
+	private static final String WINDOWS_PREFIX = "\\";
+	private static final String LINUX_TMP = "/tmp";
+	private static final String WINDOWS_TMP = "C:\\tmp";
 	
 	private PersistConfigurator() {}
 

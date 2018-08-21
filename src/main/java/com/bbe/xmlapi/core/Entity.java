@@ -367,12 +367,4 @@ public class Entity implements Serializable{
 
 		return s;
 	}
-	
-	@Override
-	public String toString() {
-		return "Entity [id=" + id + ", level=" + level + ", tag=" + tag + ", data=" + data +  ", leaf="
-				+ isLeaf() + ", isChildOf=" + isChildOf + ", attributes=" + attributes 
-				+ ", isFatherOf=" + getIsFatherOf() +"]";
-	}
-
 }

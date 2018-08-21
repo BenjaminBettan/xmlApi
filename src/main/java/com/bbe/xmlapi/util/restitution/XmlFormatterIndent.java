@@ -58,14 +58,9 @@ public class XmlFormatterIndent {
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			InputSource is = new InputSource(new StringReader(in));
 			return db.parse(is);
-		} catch (ParserConfigurationException e) {
-			logger.warn(e.getMessage());
-		} catch (SAXException e) {
-			logger.warn(e.getMessage());
-		} catch (IOException e) {
+		} catch (ParserConfigurationException | SAXException | IOException e) {
 			logger.warn(e.getMessage());
 		}
-
 		return null;
 
 	}

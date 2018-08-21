@@ -1,10 +1,12 @@
-clean install dependency:copy-dependencies
+
+generate jar from main class (com.bbe.main.Main) 
+
 cd /home/benjamin/app/sts-bundle/sts-3.9.1.RELEASE/workspace/xmlApi/target
-java -cp "xmlApi-0.0.1-SNAPSHOT.jar:dependency/*" com.bbe.main.Main pom.xml
+java -cp "xmlApi-0.0.1-SNAPSHOT.jar:dependency/*" com.bbe.main.Main arg0InMainMethod
 
 sonar :
 
-cd /home/benjamin/app/sonarqube-7.3/bin/linux-x86-64/
-./sonar.sh console
+clean jacoco:prepare-agent test install dependency:copy-dependencies
 
-sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=admin -Dsonar.junit.reportPaths=target/surefire-reports/ -Dsonar.tests=src/test  
+cd /home/benjamin/app/sts-bundle/sts-3.9.1.RELEASE/workspace/xmlApi
+/home/benjamin/app/sonar-runner-2.4/bin/sonar-runner

@@ -21,7 +21,7 @@ public class ExtendedObjectInputStream extends ObjectInputStream {
 	 */
 	@Override
 	protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException,
-	ClassNotFoundException,InvalidClassException {
+	ClassNotFoundException {
 
 		Class<?> instance = super.resolveClass(desc);
 
