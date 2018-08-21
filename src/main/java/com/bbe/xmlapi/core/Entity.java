@@ -355,16 +355,16 @@ public class Entity implements Serializable{
 	}
 
 	protected String getSonTags() {
-		String s = "";
+		StringBuilder s = new StringBuilder();
 
 		if (getIsFatherOf()!=null) 
 		{
 			for (Long l : getIsFatherOf()) 
 			{
-				s+=EntityControler.getEntity(l).show();
+				s.append(EntityControler.getEntity(l).show());
 			}	
 		}
 
-		return s;
+		return s.toString();
 	}
 }
