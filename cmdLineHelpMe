@@ -7,4 +7,4 @@ sonar :
 cd /home/benjamin/app/sonarqube-7.3/bin/linux-x86-64/
 ./sonar.sh console
 
-sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=admin
+sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=admin -Dsonar.junit.reportPaths=target/surefire-reports/ -Dsonar.tests=src/test  
