@@ -19,7 +19,7 @@ import com.bbe.xmlapi.util.persist.SerializeToEntity;
 /**Singleton */
 public class EntityControler{
 
-	/***Next is for singleton*/
+	/***Next is for singleton http://thecodersbreakfast.net/index.php?post/2008/02/25/26-de-la-bonne-implementation-du-singleton-en-java*/
 	private EntityControler() {}
 	private static class SingletonHolder { private static final EntityControler instance = new EntityControler(); }
 	public static EntityControler getInstance() {return SingletonHolder.instance;}

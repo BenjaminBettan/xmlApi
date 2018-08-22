@@ -5,6 +5,11 @@ generate jar from main class (com.bbe.main.Main) :
 	
 	java -cp "xmlApi-0.0.1-SNAPSHOT.jar:dependency/*" com.bbe.main.Main arg0InMainMethod
 
+sonar server :
+
+	cd /home/benjamin/app/sonarqube-7.3/bin/linux-x86-64
+	./sonar.sh console
+
 sonar :
 
 	(mvn) clean jacoco:prepare-agent test install dependency:copy-dependencies

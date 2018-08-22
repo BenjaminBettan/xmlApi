@@ -84,7 +84,8 @@ public class SimpleTest extends AbstractTests{
 	public void testValidate() throws Exception {
 		
 		Entity root = EntityControler.parseFileWithSax("xmlSamples"+PersistConfigurator.getPrefix()+"testxsd.xml");
-		boolean b = root.validateWithXsd("test");
+		String[] xsd = {"test"};
+		boolean b = root.validateWithXsd(xsd);
 		Assert.assertTrue("Incorrect basic validation",b);
 		logger.info(b);
 //		logger.info(root);
@@ -94,7 +95,8 @@ public class SimpleTest extends AbstractTests{
 	public void testValidatewrong() throws Exception {
 		
 		Entity root = EntityControler.parseFileWithSax("xmlSamples"+PersistConfigurator.getPrefix()+"testxsd2.xml");
-		boolean b = root.validateWithXsd("test");
+		String[] xsd = {"test"};
+		boolean b = root.validateWithXsd(xsd);
 		Assert.assertTrue("Incorrect basic validation",b==false);
 		logger.info(b);
 //		logger.info(root);

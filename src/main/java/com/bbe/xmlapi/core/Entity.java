@@ -16,6 +16,7 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -31,7 +32,7 @@ import org.xmlunit.diff.Difference;
 
 import com.bbe.xmlapi.util.persist.EntityToSerialize;
 import com.bbe.xmlapi.util.persist.PersistConfigurator;
-import com.bbe.xmlapi.util.restitution.JsonTransformer;
+import com.bbe.xmlapi.util.restitution.XmlToJson;
 import com.bbe.xmlapi.util.restitution.XmlFormatterIndent;
 
 public class Entity implements Serializable{
@@ -332,8 +333,8 @@ public class Entity implements Serializable{
 		}
 	}
 
-	public String showJson() throws IOException {
-		return JsonTransformer.xmlToJson(this.showXml());
+	public String showJson() {
+		return XmlToJson.get(this.showXml());
 	}
 
 	public String showXml() {
@@ -408,19 +409,29 @@ public class Entity implements Serializable{
 		return s.toString();
 	}
 
-	public boolean validateWithXsd(String xsd) {
+	public boolean validateWithXsd(String[] xsdFileName) {
 		
-		String path = "xsd"+PersistConfigurator.getPrefix()+xsd+".xsd";
 		
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;
+		StreamSource[] s = new StreamSource[xsdFileName.length];
+		Source[] source = new Source[xsdFileName.length];
+		
+		for (int i = 0; i < xsdFileName.length; i++) {
+			String pathToXsd = "xsd"+PersistConfigurator.getPrefix()+xsdFileName[i]+".xsd";
+			s[i] = new StreamSource(new File(pathToXsd));
+			source[i] = s[i];
+		}
+		
+		
 		try {
+			
 			db = dbf.newDocumentBuilder();
 			db.parse(new InputSource(new StringReader(this.showXml())));// check well formed
 			
 			SchemaFactory sFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			Schema schema=sFactory.newSchema(new File(path));
-			
+			Schema schema = sFactory.newSchema(source);//check xsd
+		
 			Validator validator = schema.newValidator();
 			validator.validate(new StreamSource(new ByteArrayInputStream(this.showXml().getBytes(StandardCharsets.UTF_8))));
 			
@@ -429,9 +440,6 @@ public class Entity implements Serializable{
 			return false;
 
 		}
-		
-		
-
 
 		return true;
 	}
