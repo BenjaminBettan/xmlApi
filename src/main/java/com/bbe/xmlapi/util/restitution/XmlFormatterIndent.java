@@ -32,7 +32,7 @@ public class XmlFormatterIndent {
 	private static final int LINE_INDENT = 2;
 	private XmlFormatterIndent() {}
 
-	public static String format(String unformattedXml) throws IOException {
+	public static String format(String unformattedXml) {
 
 		final Document document = parseXmlFile(unformattedXml);
 		Writer out = new StringWriter();
@@ -45,7 +45,11 @@ public class XmlFormatterIndent {
 			format.setIndent(LINE_INDENT);
 			
 			XMLSerializer serializer = new XMLSerializer(out, format);
-			serializer.serialize(document);
+			try {
+				serializer.serialize(document);
+			} catch (IOException e) {
+				logger.error(e.getMessage());
+			}
 
 			return out.toString();
 		}

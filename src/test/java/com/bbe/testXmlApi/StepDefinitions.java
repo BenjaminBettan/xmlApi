@@ -19,7 +19,7 @@ public class StepDefinitions {
 		
 		EntityControler.clean();//
 		
-		EntityControler.getInstance().parseFileWithSax(filePath);
+		EntityControler.parseFileWithSax(filePath);
 	}
 	
 	@Given("^je charge scenario (\\d+)$")
@@ -29,13 +29,13 @@ public class StepDefinitions {
 		
 		switch (scenario) {
 			case 1:
-				simpleTest.sc_1_();
+				simpleTest.testUnitaire3_();
 				break;
 			case 2:
-				simpleTest.sc_2_();
+				simpleTest.testUnitaire4_();
 				break;
 			case 3:
-				simpleTest.sc_3_();
+				simpleTest.testUnitaire5_();
 				break;
 			default:
 				throw new RuntimeException();

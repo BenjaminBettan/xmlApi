@@ -41,12 +41,7 @@ public class SaxHandler extends DefaultHandler {
 			
 		}
 		else {
-			
-			pointer = pointer.addChild(tagName);//now pointer is focus on the child
-			
-			pointer.setAttributes(currentAttributes);
-			pointer.setLevel(level);
-			
+			pointer = pointer.addChild(tagName).setAttributes(currentAttributes).setLevel(level);//now pointer is focus on the child
 		}
 		
 		level++;

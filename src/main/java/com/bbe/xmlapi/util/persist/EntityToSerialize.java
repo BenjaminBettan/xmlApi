@@ -25,7 +25,7 @@ public class EntityToSerialize
 		String filePath = PersistConfigurator.convertToFilePath(l);
 		new File(filePath).mkdirs();
 		
-		if (Files.isDirectory(Paths.get(filePath))) {
+		if (Files.isDirectory(Paths.get(filePath))) {//if dir exist
 			try(FileOutputStream fos = new FileOutputStream(filePath+l))
 			{
 				ObjectOutputStream oos = new ObjectOutputStream(fos);

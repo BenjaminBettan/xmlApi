@@ -1,19 +1,36 @@
 package com.bbe.xmlapi.core;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+
+import org.apache.log4j.Logger;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import org.xmlunit.builder.DiffBuilder;
 import org.xmlunit.diff.ComparisonControllers;
 import org.xmlunit.diff.Diff;
 import org.xmlunit.diff.Difference;
 
 import com.bbe.xmlapi.util.persist.EntityToSerialize;
+import com.bbe.xmlapi.util.persist.PersistConfigurator;
 import com.bbe.xmlapi.util.restitution.JsonTransformer;
 import com.bbe.xmlapi.util.restitution.XmlFormatterIndent;
 
@@ -21,7 +38,7 @@ public class Entity implements Serializable{
 
 	private static final long serialVersionUID = Long.MAX_VALUE - 999;
 	private static final String STR_ATTRIBUTES_TO_FIND = "[\\[]";
-	
+	private static final Logger logger = Logger.getLogger(Entity.class);
 	protected long id;
 	protected String tag;
 	protected String data;
@@ -319,7 +336,7 @@ public class Entity implements Serializable{
 		return JsonTransformer.xmlToJson(this.showXml());
 	}
 
-	public String showXml() throws IOException {
+	public String showXml() {
 		if (isVirtualEntity()) {
 			return showXml("1.0","UTF-8",null);
 		}
@@ -390,4 +407,33 @@ public class Entity implements Serializable{
 
 		return s.toString();
 	}
+
+	public boolean validateWithXsd(String xsd) {
+		
+		String path = "xsd"+PersistConfigurator.getPrefix()+xsd+".xsd";
+		
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db;
+		try {
+			db = dbf.newDocumentBuilder();
+			db.parse(new InputSource(new StringReader(this.showXml())));// check well formed
+			
+			SchemaFactory sFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			Schema schema=sFactory.newSchema(new File(path));
+			
+			Validator validator = schema.newValidator();
+			validator.validate(new StreamSource(new ByteArrayInputStream(this.showXml().getBytes(StandardCharsets.UTF_8))));
+			
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			logger.error(e.getMessage());
+			return false;
+
+		}
+		
+		
+
+
+		return true;
+	}
+
 }

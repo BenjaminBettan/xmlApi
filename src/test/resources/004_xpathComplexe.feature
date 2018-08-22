@@ -3,7 +3,7 @@ Feature: 004_xpathComplexe
 #@see test.xml
 
   Scenario Outline: test xpath
-    Given je charge "test.xml"
+    Given je charge "xmlSamples/test.xml"
     When je cherche <xpath>
     Then je dois trouver : <answer> entite
 

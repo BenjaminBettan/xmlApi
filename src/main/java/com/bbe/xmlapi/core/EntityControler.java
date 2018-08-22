@@ -94,7 +94,7 @@ public class EntityControler{
 		}
 	}
 	
-	public Entity parseFileWithSax(String filePath) throws Exception {
+	public static Entity parseFileWithSax(String filePath) throws Exception {
 		
 		SaxHandler mySaxHandler = new SaxHandler();
 		
