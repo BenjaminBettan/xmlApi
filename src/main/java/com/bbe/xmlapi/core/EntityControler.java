@@ -94,21 +94,20 @@ public class EntityControler{
 		}
 	}
 	
-	public Entity parseFileWithSax(String filePath) {
+	public Entity parseFileWithSax(String filePath) throws Exception {
 		
 		SaxHandler mySaxHandler = new SaxHandler();
 		
 		try {
 			SAXParserFactory.newInstance().newSAXParser().parse(filePath, mySaxHandler);
 			return mySaxHandler.getRoot();
-			
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			logger.warn(e.getMessage());
+			throw e;
 		}
-		return null;
 	}
 	
-	public static Entity parseWithSax(String xmlContent) {
+	public static Entity parseWithSax(String xmlContent) throws Exception {
 		
 		SaxHandler mySaxHandler = new SaxHandler();
 		
@@ -116,6 +115,7 @@ public class EntityControler{
 			SAXParserFactory.newInstance().newSAXParser().parse(new InputSource(new StringReader(xmlContent)), mySaxHandler);
 		} catch (SAXException | IOException | ParserConfigurationException e) {
 			logger.error(e.getMessage());
+			throw e;
 		}
 		root = mySaxHandler.getRoot();
 		

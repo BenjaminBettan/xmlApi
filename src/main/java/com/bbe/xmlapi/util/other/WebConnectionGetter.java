@@ -17,8 +17,9 @@ public class WebConnectionGetter {
 	 * get entity by an url. example : WebConnectionGetter.get("https://www.w3schools.com/xml/note.xml");
 	 * @param url the url where the xml content is
 	 * @return root entity
+	 * @throws Exception 
 	 */
-	public static Entity get(String url) {
+	public static Entity get(String url) throws Exception {
 
 		String content = null;
 		URLConnection connection = null;
@@ -36,6 +37,7 @@ public class WebConnectionGetter {
 				content = scanner.next();
 			}catch ( Exception e ) {
 				logger.warn(e.getMessage());
+				throw e;
 			}	
 		}
 

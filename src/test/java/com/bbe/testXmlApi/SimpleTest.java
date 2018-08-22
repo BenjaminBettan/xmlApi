@@ -18,7 +18,6 @@ import org.xmlunit.diff.Difference;
 
 import com.bbe.xmlapi.core.Entity;
 import com.bbe.xmlapi.core.EntityControler;
-import com.bbe.xmlapi.core.VirtualXMLEntity;
 import com.bbe.xmlapi.core.XMLEntity;
 import com.bbe.xmlapi.util.other.WebConnectionGetter;
 import com.bbe.xmlapi.util.persist.SerializeToEntity;
@@ -97,17 +96,17 @@ public class SimpleTest {
 //tests start here
 	/**
 	 * load pom.xml then transform and print json equivalent
-	 * @throws IOException 
+	 * @throws Exception 
 	 */
 	@Test
-	public void testSaxToJson() throws IOException {
+	public void testSaxToJson() throws Exception {
 		EntityControler.getInstance().parseFileWithSax("pom.xml");
 		logger.info(EntityControler.getRoot().showJson());
 		
 	}
 	
 	@Test
-	public void testPersistLoad() throws ClassNotFoundException, IOException {
+	public void testPersistLoad() throws Exception {
 		EntityControler.setToHardDriveAndClean(true);
 		
 		Entity root = EntityControler.getInstance().parseFileWithSax("pom.xml");
@@ -118,7 +117,7 @@ public class SimpleTest {
 	
 	///*	
 	@Test
-	public void testUrl() {
+	public void testUrl() throws Exception {
 		
 		Entity root = WebConnectionGetter.get("https://www.w3schools.com/xml/note.xml");
 		
@@ -190,7 +189,8 @@ public class SimpleTest {
 	}
 
 	public Entity a_() {
-		Entity root = new VirtualXMLEntity();
+		Entity root = new XMLEntity("root");
+		root.setIsVirtualXMLEntity(true);
 		root.addChild("b");
 		root.addChild("b");
 		root.addChild("b");

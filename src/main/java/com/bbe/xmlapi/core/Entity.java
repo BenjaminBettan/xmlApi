@@ -29,6 +29,7 @@ public class Entity implements Serializable{
 	protected long isChildOf;//-1 -> root node
 	transient Map<String, String> attributes;
 	protected int level;
+	private boolean isVirtualXMLEntity = false;
 
 	protected Entity() {}
 
@@ -164,7 +165,11 @@ public class Entity implements Serializable{
 	}
 
 	public boolean isVirtualEntity() {
-	    return this instanceof VirtualXMLEntity;
+	    return this.isVirtualXMLEntity ;
+	}
+
+	public void setIsVirtualXMLEntity(boolean isVirtualXMLEntity_) {
+		this.isVirtualXMLEntity = isVirtualXMLEntity_;
 	}
 
 	public Iterator<Difference> getDiff(Entity e) {
@@ -323,35 +328,46 @@ public class Entity implements Serializable{
 	}
 
 	public String show() {
-		String header,footer;
-
-		if ("".equals(data) && this.isLeaf()) {
-
-			footer="";
-			if (attributes==null || attributes.size()==0) 
+		if (isVirtualXMLEntity) {
+			StringBuilder s = new StringBuilder();
+			for (Long l : getIsFatherOf()) 
 			{
-				header="<"+tag+"/>";
-			}
-			else 
-			{
-				header="<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\"/>";
+				s.append(getEntityById(l).show());
 			}
 
+			return s.toString();
 		}
 		else {
+			String header,footer;
 
-			footer="</"+tag+">";
-			if (attributes==null || attributes.size()==0) 
-			{
-				header="<"+tag+">";
+			if ("".equals(data) && this.isLeaf()) {
+
+				footer="";
+				if (attributes==null || attributes.size()==0) 
+				{
+					header="<"+tag+"/>";
+				}
+				else 
+				{
+					header="<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\"/>";
+				}
+
 			}
-			else 
-			{
-				header="<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\">";
+			else {
+
+				footer="</"+tag+">";
+				if (attributes==null || attributes.size()==0) 
+				{
+					header="<"+tag+">";
+				}
+				else 
+				{
+					header="<"+tag+" "+attributes.toString().substring(1, attributes.toString().length()-1).replace("=", "=\"").replace(",", "\"") + "\">";
+				}
 			}
+
+			return header + data + getSonTags() +footer;			
 		}
-
-		return header + data + getSonTags() +footer;
 	}
 
 	protected String getSonTags() {

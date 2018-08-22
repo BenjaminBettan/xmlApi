@@ -7,7 +7,6 @@ import java.io.ObjectStreamClass;
 import java.util.ArrayList;
 
 import com.bbe.xmlapi.core.Entity;
-import com.bbe.xmlapi.core.VirtualXMLEntity;
 import com.bbe.xmlapi.core.XMLEntity;
 
 public class ExtendedObjectInputStream extends ObjectInputStream {
@@ -28,7 +27,6 @@ public class ExtendedObjectInputStream extends ObjectInputStream {
 		if (instance.isArray()
 				|| instance.isPrimitive()
 				|| instance.equals(Entity.class)
-				|| instance.equals(VirtualXMLEntity.class)
 				|| instance.equals(ArrayList.class)
 				|| instance.equals(XMLEntity.class)
 				|| instance.equals(String.class)
