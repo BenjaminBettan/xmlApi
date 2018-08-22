@@ -72,22 +72,24 @@ public class Entity implements Serializable{
 		return tag;
 	}
 
-	public void setTag(String tag) {
+	public Entity setTag(String tag) {
 		this.tag = tag;
 		if (EntityControler.isPersistMode()) {
 			EntityToSerialize.persistOnHardDrive(this);
 		}
+		return this;
 	}
 
 	public String getData() {
 		return data;
 	}
 
-	public void setData(String data) {
+	public Entity setData(String data) {
 		this.data = data;
 		if (EntityControler.isPersistMode()) {
 			EntityToSerialize.persistOnHardDrive(this);
 		}
+		return this;
 	}
 
 	public boolean isLeaf() {
@@ -103,26 +105,29 @@ public class Entity implements Serializable{
 		}
 	}
 
-	public void setLevel(int level2) {
+	public Entity setLevel(int level2) {
 		level = level2;
 		if (EntityControler.isPersistMode()) {
 			EntityToSerialize.persistOnHardDrive(this);
 		}
+		return this;
 	}
 	
-	protected void setIsChildOf(long isChildOf) {
+	protected Entity setIsChildOf(long isChildOf) {
 		this.isChildOf = isChildOf;
+		return this;
 	}
 
 	public Map<String, String> getAttributes() {
 		return attributes;
 	}
 
-	public void setAttributes(Map<String, String> attributes) {
+	public Entity setAttributes(Map<String, String> attributes) {
 		this.attributes = attributes;
 		if (EntityControler.isPersistMode()) {
 			EntityToSerialize.persistOnHardDrive(this);
 		}
+		return this;
 	}
 
 	public Map<Long, Entity> getChilds() {
@@ -141,7 +146,7 @@ public class Entity implements Serializable{
 		return childsId;
 	}
 	
-	protected void setIsFatherOf(long id2) {
+	protected Entity setIsFatherOf(long id2) {
 		if (getIsFatherOf()==null) 
 		{
 			childsId = new ArrayList<>();
@@ -150,6 +155,7 @@ public class Entity implements Serializable{
 		if (EntityControler.isPersistMode()) {
 			EntityToSerialize.persistOnHardDrive(this);
 		}
+		return this;
 	}
 
 	/**
@@ -168,8 +174,9 @@ public class Entity implements Serializable{
 	    return this.isVirtualXMLEntity ;
 	}
 
-	public void setIsVirtualXMLEntity(boolean isVirtualXMLEntity_) {
+	public Entity setIsVirtualXMLEntity(boolean isVirtualXMLEntity_) {
 		this.isVirtualXMLEntity = isVirtualXMLEntity_;
+		return this;
 	}
 
 	public Iterator<Difference> getDiff(Entity e) {
