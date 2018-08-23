@@ -20,7 +20,7 @@ public class AbstractTests {
 	protected ExecutorService executor;
 	protected TestPerfThread[] arrayRefVar;
 
-	public Entity testUnitaire1_() {
+	public Entity testUnitaire4_() {
 		Entity root = new XMLEntity("root");
 		root.setIsVirtualXMLEntity(true);
 		root.addChild("b");
@@ -29,7 +29,7 @@ public class AbstractTests {
 		return root;
 	}
 
-	public Entity testUnitaire2_() {
+	public Entity testUnitaire5_() {
 		Entity root = new XMLEntity("root");
 		Map<String, String> attributes = new HashMap<>();
 		attributes.put("aKey", "aValue");
@@ -40,7 +40,7 @@ public class AbstractTests {
 		return root;
 	}
 	
-	public Entity testUnitaire3_() {
+	public Entity testUnitaire1_() {
 		Entity root_a_b, root_a,root;
 		
 		root = new XMLEntity("root");
@@ -55,14 +55,14 @@ public class AbstractTests {
 		return root;
 	}
 	
-	public Entity testUnitaire4_() {
+	public Entity testUnitaire2_() {
 		Entity root = new XMLEntity("x1");
 		root.addChild("x2");
 		root.addChild("x2");
 		return root;
 	}
 
-	public Entity testUnitaire5_() {
+	public Entity testUnitaire3_() {
 		Map<String, String> attributes = new HashMap<>();
 		attributes.put("aKey", "aValue");
 		

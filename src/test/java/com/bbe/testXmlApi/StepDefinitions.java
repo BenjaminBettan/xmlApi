@@ -29,13 +29,13 @@ public class StepDefinitions {
 		
 		switch (scenario) {
 			case 1:
-				simpleTest.testUnitaire3_();
+				simpleTest.testUnitaire1_();
 				break;
 			case 2:
-				simpleTest.testUnitaire4_();
+				simpleTest.testUnitaire2_();
 				break;
 			case 3:
-				simpleTest.testUnitaire5_();
+				simpleTest.testUnitaire3_();
 				break;
 			default:
 				throw new RuntimeException();

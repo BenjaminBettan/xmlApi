@@ -22,14 +22,14 @@ public class SimpleTest extends AbstractTests{
 	{
 		PropertyConfigurator.configure("log4j.properties");
 	}
-
+	
 	@Test
-	public void test_Unitaire1() {
+	public void testUnitaire1() {
 		testUnitaire1_();
 	}
 
 	@Test
-	public void test_Unitaire2() {
+	public void testUnitaire2() {
 		testUnitaire2_();
 	}
 	
@@ -37,16 +37,17 @@ public class SimpleTest extends AbstractTests{
 	public void testUnitaire3() {
 		testUnitaire3_();
 	}
-
-	@Test
-	public void testUnitaire4() {
-		testUnitaire4_();
-	}
 	
 	@Test
-	public void testUnitaire5() {
+	public void test_Unitaire4() {
+		testUnitaire4_();
+	}
+
+	@Test
+	public void test_Unitaire5() {
 		testUnitaire5_();
 	}
+
 	
 	//tests start here
 	/**
@@ -78,8 +79,8 @@ public class SimpleTest extends AbstractTests{
 		
 		logger.info(root);
 	}
+	//*/
 	
-	///*	
 	@Test
 	public void testValidate() throws Exception {
 		
@@ -102,14 +103,13 @@ public class SimpleTest extends AbstractTests{
 //		logger.info(root);
 	}
 	
-	//*/
 	
 	@Test
 	public void testXmlUnitApi(){
 		int size;
 		
-		Entity a = testUnitaire2_();
-		Entity b = testUnitaire3_();
+		Entity a = testUnitaire5_();
+		Entity b = testUnitaire1_();
 	    Assert.assertTrue("devraient etre different..." , a.isDiff(b));
 
 		Iterator<Difference> iter = a.getDiff(b);
