@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<shiporder orderid="889923"
+<test orderid="889924"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:noNamespaceSchemaLocation="xsd/test.xsd">
+xsi:noNamespaceSchemaLocation="../xsd/test.xsd">
   <orderperson>John Smith</orderperson>
   <shipto>
     <name>Ola Nordmann</name>
     <address>Langgt 23</address>
     <city>4000 Stavanger</city>
-    <country>Norway</country>
     <country>Norway</country>
   </shipto>
   <item>
@@ -22,4 +20,4 @@ xsi:noNamespaceSchemaLocation="xsd/test.xsd">
     <quantity>1</quantity>
     <price>9.90</price>
   </item>
-</shiporder>
+</test>

@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<shiporder orderid="889923"
+<shiporder orderid="889922"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:noNamespaceSchemaLocation="xsd/test.xsd">
+xsi:noNamespaceSchemaLocation="../xsd/shiporder.xsd">
   <orderperson>John Smith</orderperson>
   <shipto>
     <name>Ola Nordmann</name>
     <address>Langgt 23</address>
     <city>4000 Stavanger</city>
     <country>Norway</country>
+    
+    <country>Norway</country><!-- don t delete this tag, it s for a java test case -->
+    
   </shipto>
   <item>
     <title>Empire Burlesque</title>
