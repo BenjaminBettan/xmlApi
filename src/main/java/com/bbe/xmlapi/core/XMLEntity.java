@@ -29,8 +29,8 @@ public class XMLEntity extends Entity implements Serializable{
 		this(currentTag, att,0,"");
 	}
 
-	public XMLEntity(String currentTag, int i) {
-		this(currentTag, null,i,"");
+	public XMLEntity(String currentTag, int level) {
+		this(currentTag, null,level,"");
 	}
 
 	@Override
