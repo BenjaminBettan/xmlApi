@@ -49,7 +49,7 @@ public class Entity implements Serializable{
 	protected int level;
 	private boolean isVirtualXMLEntity = false;
 
-	protected Entity() {}
+	protected Entity() {} 
 
 	public Entity addChild(String currentTag) {
 
