@@ -17,3 +17,4 @@ sonar :
 	cd /home/benjamin/app/sts-bundle/sts-3.9.1.RELEASE/workspace/xmlApi
 	
 	/home/benjamin/app/sonar-runner-2.4/bin/sonar-runner
+	

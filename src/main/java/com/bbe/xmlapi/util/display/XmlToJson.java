@@ -12,6 +12,7 @@ public class XmlToJson {
     private XmlToJson() {}
     
     public static String get(String xmlStr) {
+    	
         try {
             JSONObject xmlJSONObj = XML.toJSONObject(xmlStr);
             return xmlJSONObj.toString(PRETTY_PRINT_INDENT_FACTOR);

@@ -19,35 +19,16 @@ import com.bbe.xmlapi.util.persist.SerializeToEntity;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SimpleTest extends AbstractTests{
 	private static final Logger logger = Logger.getLogger(SimpleTest.class);
-	{
-		PropertyConfigurator.configure("log4j.properties");
-	}
+	static {PropertyConfigurator.configure("log4j.properties");}
 	
 	@Test
-	public void testUnitaire1() {
+	public void testUnitaires() {
 		testUnitaire1_();
-	}
-
-	@Test
-	public void testUnitaire2() {
 		testUnitaire2_();
-	}
-	
-	@Test
-	public void testUnitaire3() {
 		testUnitaire3_();
-	}
-	
-	@Test
-	public void test_Unitaire4() {
 		testUnitaire4_();
-	}
-
-	@Test
-	public void test_Unitaire5() {
 		testUnitaire5_();
 	}
-
 	
 	//tests start here
 	/**
@@ -103,6 +84,20 @@ public class SimpleTest extends AbstractTests{
 //		logger.info(root);
 	}
 	
+	@Test
+	public void testJsonToXml() throws Exception {
+		
+        String str = "{\"name\":\"JSON\",\"integer\":1,\"double\":2.0,\"boolean\":true,\"nested\":{\"id\":42},\"array\":[1,2,3]}";  
+
+		
+		Entity root = EntityControler.parseJson(str);
+		
+		logger.info(root);
+		
+		root = EntityControler.parseJsonFile("xmlSamples"+PersistConfigurator.getPrefix()+"jgiven.LoginTest.json");
+		logger.info(root);
+	}
+	
 	
 	@Test
 	public void testXmlUnitApi(){
@@ -115,8 +110,7 @@ public class SimpleTest extends AbstractTests{
 		Iterator<Difference> iter = a.getDiff(b);
 		
 	    for (size = 0; iter.hasNext(); size++) {
-	        System.out.println(iter.next().toString());
-
+	    	logger.info(iter.next().toString());
 		}
 	    
 	    Assert.assertTrue("size = 7 ? -> "+size,size==7);
@@ -125,7 +119,7 @@ public class SimpleTest extends AbstractTests{
 	@Test
 	public void testPersistPerf() {
 		long deltaT = 10;//in ms
-		int poolSize = 8;//nb thread
+		int poolSize = 2;//nb thread
 		logger.info("deltaT is : "+deltaT+"ms / nb thread is " + poolSize);
 		arrayRefVar = new TestPerfThread[poolSize];
         for (int i = 0; i < arrayRefVar.length; i++) {

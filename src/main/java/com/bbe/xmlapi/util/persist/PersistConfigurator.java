@@ -8,8 +8,12 @@ public class PersistConfigurator {
 	private static final String WINDOWS_PREFIX = "\\";
 	private static final String LINUX_TMP = "/tmp";
 	private static final String WINDOWS_TMP = "C:\\tmp";
-	
+
 	private PersistConfigurator() {}
+
+	static   {
+		PersistConfigurator.setTmpSubDir(""+System.currentTimeMillis());	
+	}
 
 	public static String getPrefix() {
 		if (prefix==null) {
@@ -29,15 +33,15 @@ public class PersistConfigurator {
 
 	public static String convertToFilePath(long l){ //long l=123456 / OS=linux : will return -> /tmp/1/2/3/4/5/6/ 
 		prefix=getPrefix();
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append(tmp+prefix+tmpSubDir);
-		
+
 		for (char ch: Long.toString(l).toCharArray()) //for each char in string
 		{
 			sb.append(prefix + "_" +ch);
 		}
-		
+
 		return sb.append(prefix).toString();
 	}
 

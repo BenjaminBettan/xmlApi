@@ -1,19 +1,19 @@
 package com.bbe.xmlapi.core;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
-
 import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
+import com.bbe.xmlapi.util.display.JsonToXml;
 import com.bbe.xmlapi.util.other.SaxHandler;
 import com.bbe.xmlapi.util.persist.EntityToSerialize;
-import com.bbe.xmlapi.util.persist.PersistConfigurator;
 import com.bbe.xmlapi.util.persist.SerializeToEntity;
 
 /**Singleton */
@@ -29,6 +29,7 @@ public class EntityControler{
 
 	private static Map<Long, Entity> mapEntities = new HashMap<>();
 	private static Entity root;
+
 	private static long id = 0;
 	
 	private static boolean toHardDrive = false;
@@ -65,12 +66,7 @@ public class EntityControler{
 	 *  2 - filter old values to get efficient logs
 	 */
 	public static void clean() {
-		id = 0;
 		mapEntities.clear();
-		root = null;
-		if (PersistConfigurator.getTmpSubDir()==null && toHardDrive) {//Set tmp dir
-			PersistConfigurator.setTmpSubDir(""+System.currentTimeMillis());	
-		}
 	}
 
 	/**
@@ -121,9 +117,36 @@ public class EntityControler{
 		
 		return root;
 	}
+	
+	public static Entity parseJson(String jsonContent) {
+		return JsonToXml.getEntity(jsonContent);
+	}
+	
+	public static Entity parseJsonFile(String filePath) {
+		
+		try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+		    StringBuilder sb = new StringBuilder();
+		    String line = br.readLine();
+
+		    while (line != null) {
+		        sb.append(line);
+		        sb.append(System.lineSeparator());
+		        line = br.readLine();
+		    }
+		    return JsonToXml.getEntity(sb.toString());
+		} catch (IOException e) {
+			logger.error(e.getMessage());
+		}
+		
+		return null;
+	}
 
 	public static Entity getRoot() {
 		return root;
+	}
+	
+	public static void setRoot(Entity root) {
+		EntityControler.root = root;
 	}
 	
 }

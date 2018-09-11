@@ -8,6 +8,6 @@ Feature: 004_xpathComplexe
     Then je dois trouver : <answer> entite
 
   Examples:
-    | xpath                                                                    | answer |
+    | xpath                                                                            | answer |
     | "/project/dependencies/dependency/dependency/groupId[@test="toto"]/../groupId/"  |  1     |
     
