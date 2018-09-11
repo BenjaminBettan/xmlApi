@@ -1,2 +1,6 @@
 target/
 .sonar/
+.gitignore
+.settings/
+.classpath
+.project
